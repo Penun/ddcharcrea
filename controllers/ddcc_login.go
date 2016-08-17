@@ -16,7 +16,6 @@ type LoginController struct {
 type UpdateResponse struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
-	Response string `json:"response"`
 }
 
 func (this *LoginController) Get() {
@@ -32,7 +31,7 @@ func (this *LoginController) Post() {
 	if user != nil {
 		this.Redirect("/main", 302)
 	} else {
-		var user models.Users
+		var user models.User
 		err := json.Unmarshal(this.Ctx.Input.RequestBody, &user)
 
 		if err != nil {

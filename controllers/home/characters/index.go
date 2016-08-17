@@ -9,21 +9,19 @@ type CharacterController struct {
 	beego.Controller
 }
 
+type CharGetResponse struct {
+	Success bool `json:"success"`
+	Error string `json:"error"`
+	Data []models.Playchar `json:"playchars"`
+}
+
 func (this *CharacterController) Get() {
 	user := this.GetSession("user")
 	if user != nil {
-		this.Data["name"] = user.(models.Users).UserName
-		this.TplName = "main/characters.tpl"
-	} else {
-		this.Redirect("/", 302)
-	}
-}
-
-func (this *CharacterController) Post() {
-	user := this.GetSession("user")
-	if user != nil {
-		this.Data["name"] = user.(models.Users).UserName
-		this.TplName = "main/characters.tpl"	
+		resp := CharGetResponse{Success: true, Error: ""}
+		resp.Data = models.GetChars_UserId(user.(models.User).User_id)
+		this.Data["json"] = resp
+		this.ServeJSON()
 	} else {
 		this.Redirect("/", 302)
 	}

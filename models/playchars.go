@@ -4,13 +4,13 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
-func GetChars_UserId(userId int) []PlayChars {
+func GetChars_UserId(userId int) []Playchar {
 	o := orm.NewOrm()
-	var playchars []PlayChars
-	o.QueryTable("playchars").Filter("user_id", userID).All(&playchars)
+	var playchars []Playchar
+	o.QueryTable("playchar").Filter("user_id", userId).RelatedSel("raceBuild").RelatedSel("classBuild").All(&playchars)
 	if len(playchars) > 0 {
 		return playchars
 	} else {
-		return []PlayChars{} 
+		return []Playchar{} 
 	}
 }

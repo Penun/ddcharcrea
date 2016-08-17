@@ -16,8 +16,15 @@ type MainController struct {
 func (this *MainController) Get() {
 	user := this.GetSession("user")
 	if user != nil {
-		this.Data["name"] = user.(models.Users).UserName
-		this.TplName = "main/main.tpl"	
+		races := models.GetPreRaceList()
+		subRaces := models.GetPreSubRaceList()
+		classes := models.GetClassList()
+		classPaths := models.GetClassPathList()
+		this.Data["races"] = races
+		this.Data["subRaces"] = subRaces
+		this.Data["classes"] = classes
+		this.Data["classPaths"] = classPaths
+		this.TplName = "main/main.tpl"
 	} else {
 		this.Redirect("/", 302)
 	}
