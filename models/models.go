@@ -78,6 +78,12 @@ type RaceBuild struct {
 	Race *Race `orm:"rel(fk)" json:"race"`
 	SubRace *SubRace `orm:"rel(fk)" json:"sub_race"`
 	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
+	Alignment string `json:"alignment"`
+	HeightFt int `json:"height_ft"`
+	HeightIn int `json:"height_in"`
+	Weight int `json:"weight"`
+	Age int `json:"age"`
+	Options string `json:"options"`
 }
 
 type ClassBuild struct {

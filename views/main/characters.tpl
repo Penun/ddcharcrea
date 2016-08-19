@@ -5,6 +5,7 @@
 		</div>
 		<div ng-show="char.showDetails">
 			<div class="d_list_i"><b>HP</b>: {{"{{char.hit_points}}"}}</div><div class="d_list_i"><b>Exp</b>: {{"{{char.exp}}"}}</div><div class="d_list_i"><b>Sex</b>: {{"{{char.sex}}"}}</div><br />
+			<div class="d_list_i"><b>Height</b>: {{"{{char.height_ft}}' {{char.height_in}}\""}}</div><div class="d_list_i"><b>Weight</b>: {{"{{char.weight}}"}}</div><div class="d_list_i"><b>Age</b>: {{"{{char.age}}"}}</div><br /><br />
 			<div class="d_list_i"><b>Str</b>: {{"{{char.b_str}}"}}</div><div class="d_list_i"><b>Dex</b>: {{"{{char.b_dex}}"}}</div><div class="d_list_i"><b>Con</b>: {{"{{char.b_con}}"}}</div><br />
 			<div class="d_list_i"><b>Int</b>: {{"{{char.b_int}}"}}</div><div class="d_list_i"><b>Wis</b>: {{"{{char.b_wis}}"}}</div><div class="d_list_i"><b>Cha</b>: {{"{{char.b_cha}}"}}</div><br />
 			<div id="skill_panel" ng-click="charCont.RevealSkills(char.playchar_id)">
