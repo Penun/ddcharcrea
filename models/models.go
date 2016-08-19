@@ -53,6 +53,26 @@ type ClassPath struct {
 	Name string `json:"name"`
 }
 
+type Proficiency struct {
+	Proficiency_id int `orm:"pk" json:"proficiency_id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
+	SCode string `json:"s_code"`
+}
+
+type ClassProficiency struct {
+	ClassProficiency_id int `orm:"pk" json:"class_proficiency_id"`
+	Proficiency *Proficiency `orm:"rel(fk)" json:"proficiency"`
+	Class *Class `orm:"rel(fk)" json:"class"`
+	Type string `json:"type"`
+}
+
+type CbChosenProficiency struct {
+	CbChosenProficiency_id int `orm:"pk" json:"cb_chosen_proficiency_id"`
+	ClassProficiency *ClassProficiency `orm:"rel(fk)" json:"class_proficiency"`
+	ClassBuild *ClassBuild `orm:"rel(fk)" json:"class_build"`
+}
+
 type RaceBuild struct {
 	RaceBuild_id int `orm:"pk" json:"race_build_id"`
 	Race *Race `orm:"rel(fk)" json:"race"`
@@ -69,5 +89,6 @@ type ClassBuild struct {
 
 func init() {
 	orm.RegisterModel(new(User), new(Playchar), new(Race), new(SubRace), new(Class), 
-		new(ClassPath), new(RaceBuild), new(ClassBuild))
+		new(ClassPath), new(Proficiency), new(ClassProficiency), new(CbChosenProficiency), 
+		new(RaceBuild), new(ClassBuild))
 }

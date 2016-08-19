@@ -5,6 +5,7 @@
 			for (var i = 0; i < $scope.playchars.length; i++){
 				if ($scope.playchars[i].playchar_id === playchar_id){
 					if ($scope.playchars[i].showDetails == null || !$scope.playchars[i].showDetails) {
+						this.CalculateProficiencyBonus(i);
 						$scope.playchars[i].showDetails = true;
 						break;
 					} else {
@@ -86,6 +87,42 @@
 			$scope.playchars[playchar_i].sloh = m_dex;
 			$scope.playchars[playchar_i].stea = m_dex;
 			$scope.playchars[playchar_i].surv = m_wis;
-		}
+		};
+
+		this.CalculateProficiencyBonus = function(playchar_i){
+			$scope.playchars[playchar_i].showBonuses = {
+				"acro" : false,
+				"anim" : false,
+				"arca" : false,
+				"athl" : false,
+				"dece" : false,
+				"hist" : false,
+				"insi" : false,
+				"inti" : false,
+				"inve" : false,
+				"medi" : false,
+				"natu" : false,
+				"perc" : false,
+				"perf" : false,
+				"pers" : false,
+				"reli" : true,
+				"sloh" : false,
+				"stea" : true,
+				"surv" : false			
+			};
+
+			var t_lvl = $scope.playchars[playchar_i].level;
+			if (t_lvl <= 4){
+				$scope.playchars[playchar_i].profBonus = 2;
+			} else if (t_lvl > 4 && t_lvl <= 8){
+				$scope.playchars[playchar_i].profBonus = 3;
+			} else if (t_lvl > 8 && t_lvl <= 12){
+				$scope.playchars[playchar_i].profBonus = 4;
+			} else if (t_lvl > 12 && t_lvl <= 16){
+				$scope.playchars[playchar_i].profBonus = 5;
+			} else if (t_lvl > 16 && t_lvl <= 20){
+				$scope.playchars[playchar_i].profBonus = 6;
+			} 
+		};
 	}]);
 })();
