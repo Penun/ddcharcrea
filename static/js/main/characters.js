@@ -1,6 +1,6 @@
 (function(){
 	var app = angular.module('ddchar_characters', []);
-	app.controller('charController', ['$scope', function($scope){
+	app.controller('charController', ['$http', '$scope', function($http, $scope){
 		this.RevealDetails = function(playchar_id){
 			for (var i = 0; i < $scope.playchars.length; i++){
 				if ($scope.playchars[i].playchar_id === playchar_id){
@@ -15,6 +15,20 @@
 				}
 			}
 		};
+
+		this.RevealInfo = function(playchar_id){
+			for (var i = 0; i < $scope.playchars.length; i++){
+				if ($scope.playchars[i].playchar_id === playchar_id){
+					if ($scope.playchars[i].showInfo == null || !$scope.playchars[i].showInfo){
+						$scope.playchars[i].showInfo = true;
+						break;
+					} else {
+						$scope.playchars[i].showInfo = false;
+						break;
+					}
+				}
+			}
+		}; 
 
 		this.RevealSkills = function(playchar_id){
 			for (var i = 0; i < $scope.playchars.length; i++){
@@ -104,26 +118,47 @@
 		};
 
 		this.CalculateProficiencyBonus = function(playchar_i){
-			$scope.playchars[playchar_i].showBonuses = {
-				"acro" : false,
-				"anim" : false,
-				"arca" : false,
-				"athl" : false,
-				"dece" : false,
-				"hist" : false,
-				"insi" : false,
-				"inti" : false,
-				"inve" : false,
-				"medi" : false,
-				"natu" : false,
-				"perc" : false,
-				"perf" : false,
-				"pers" : false,
-				"reli" : true,
-				"sloh" : false,
-				"stea" : true,
-				"surv" : false			
-			};
+			if ($scope.playchars[playchar_i].showBonuses == null){
+				$scope.playchars[playchar_i].showBonuses = {
+					"acro" : false,
+					"anim" : false,
+					"arca" : false,
+					"athl" : false,
+					"dece" : false,
+					"hist" : false,
+					"insi" : false,
+					"inti" : false,
+					"inve" : false,
+					"medi" : false,
+					"natu" : false,
+					"perc" : false,
+					"perf" : false,
+					"pers" : false,
+					"reli" : false,
+					"sloh" : false,
+					"stea" : false,
+					"surv" : false			
+				};
+				var sendData = {
+					"playchar_in": playchar_i,
+					"class_build_id": $scope.playchars[playchar_i].class_build.class_build_id
+				};
+				$http.post("/classes/chosenprof", sendData).then(function(data){
+					if (data.data.success){
+						var t_cp = data.data.cb_chosen_proficiencies;
+						var t_sb = Object.keys($scope.playchars[data.data.playchar_in].showBonuses);
+						for (var i = 0; i < t_sb.length; i++){
+							for (var j = 0; j < t_cp.length; j++){
+								if (t_sb[i] == t_cp[j].class_proficiency.proficiency.s_code){
+									var n_stat = t_sb[i];
+									$scope.playchars[data.data.playchar_in].showBonuses[n_stat] = true;
+									break;
+								}
+							}
+						}
+					}
+				});
+			}
 
 			var t_lvl = $scope.playchars[playchar_i].level;
 			if (t_lvl <= 4){
