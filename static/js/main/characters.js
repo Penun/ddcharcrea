@@ -4,7 +4,7 @@
 		this.RevealDetails = function(playchar_id){
 			for (var i = 0; i < $scope.playchars.length; i++){
 				if ($scope.playchars[i].playchar_id === playchar_id){
-					if ($scope.playchars[i].showDetails == null || !$scope.playchars[i].showDetails) {
+					if ($scope.playchars[i].showDetails == null || !$scope.playchars[i].showDetails){
 						this.CalculateProficiencyBonus(i);
 						$scope.playchars[i].showDetails = true;
 						break;
@@ -31,6 +31,20 @@
 					}
 				}
 			} 
+		};
+
+		this.RevealBackground = function(playchar_id){
+			for (var i = 0; i < $scope.playchars.length; i++){
+				if ($scope.playchars[i].playchar_id === playchar_id){
+					if ($scope.playchars[i].showBackground == null || !$scope.playchars[i].showBackground){
+						$scope.playchars[i].showBackground = true;
+						break;
+					} else {
+						$scope.playchars[i].showBackground = false;
+						break;
+					}
+				}
+			}
 		};
 
 		this.CalculateSkills = function(playchar_i){

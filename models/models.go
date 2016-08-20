@@ -27,6 +27,7 @@ type Playchar struct {
 	User *User `orm:"rel(fk)" json:"user"`
 	RaceBuild *RaceBuild `orm:"rel(one)" json:"race_build"`
 	ClassBuild *ClassBuild `orm:"rel(one)" json:"class_build"`
+	BackgroundBuild *BackgroundBuild `orm:"rel(one)" json:"background_build"`
 }
 
 type Race struct {
@@ -73,6 +74,50 @@ type CbChosenProficiency struct {
 	ClassBuild *ClassBuild `orm:"rel(fk)" json:"class_build"`
 }
 
+type Feature struct {
+	Feature_id int `orm:"pk" json:"feature_id"`
+	Name string `json:"name"`
+	Description string `json:"description"`
+}
+
+type Background struct {
+	Background_id int `orm:"pk" json:"background_id"`
+	Name string `json:"name"`
+	Description string `json:"description"`
+	Feature *Feature `orm:"rel(fk)" json:"feature"`
+	Characteristic string `json:"characteristic"`
+}
+
+type BackgroundProficiency struct {
+	BackgroundProficiency_id int `orm:"pk" json:"background_proficiency_id"`
+	Background *Background `orm:"rel(fk)" json:"background"`
+	Proficiency *Proficiency `orm:"rel(fk)" json:"proficiency"`
+}
+
+type Trait struct {
+	Trait_id int `orm:"pk" json:"trait_id"`
+	Background *Background `orm:"rel(fk)" json:"background"`
+	Description string `json:"description"`
+}
+
+type Ideal struct {
+	Ideal_id int `orm:"pk" json:"ideal_id"`
+	Background *Background `orm:"rel(fk)" json:"background"`
+	Description string `json:"description"`
+}
+
+type Bond struct {
+	Bond_id int `orm:"pk" json:"bond_id"`
+	Background *Background `orm:"rel(fk)" json:"background"`
+	Description string `json:"description"`
+}
+
+type Flaw struct {
+	Flaw_id int `orm:"pk" json:"flaw_id"`
+	Background *Background `orm:"rel(fk)" json:"background"`
+	Description string `json:"description"`
+}
+
 type RaceBuild struct {
 	RaceBuild_id int `orm:"pk" json:"race_build_id"`
 	Race *Race `orm:"rel(fk)" json:"race"`
@@ -93,8 +138,19 @@ type ClassBuild struct {
 	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
 }
 
+type BackgroundBuild struct {
+	BackgroundBuild_id int `orm:"pk" json:"background_build_id"`
+	Background *Background `orm:"rel(fk)" json:"background"`
+	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
+	Trait *Trait `orm:"rel(fk)" json:"trait"`
+	Ideal *Ideal `orm:"rel(fk)" json:"ideal"`
+	Bond *Bond `orm:"rel(fk)" json:"bond"`
+	Flaw *Flaw `orm:"rel(fk)" json:"flaw"`
+}
+
 func init() {
 	orm.RegisterModel(new(User), new(Playchar), new(Race), new(SubRace), new(Class), 
 		new(ClassPath), new(Proficiency), new(ClassProficiency), new(CbChosenProficiency), 
-		new(RaceBuild), new(ClassBuild))
+		new(Feature), new(Background), new(BackgroundProficiency), new(Trait), new(Ideal),
+		new(Bond), new(Flaw), new(RaceBuild), new(ClassBuild), new(BackgroundBuild))
 }

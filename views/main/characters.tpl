@@ -31,6 +31,20 @@
 					<div><b>Survival</b> <i>(Wis)</i>: {{"{{char.surv}}"}}<span ng-show="char.showBonuses.surv"> + {{"{{char.profBonus}} :: {{char.surv + char.profBonus}}"}}</span></div>
 				</div>
 			</div>
+			<div id="background_panel" ng-click="charCont.RevealBackground(char.playchar_id)">
+				<h2>Background</h2>
+				<div ng-show="char.showBackground">
+					<h3>{{"{{char.background_build.background.name}}"}}</h3>
+					<div>
+						<b>Feature</b> - <i>{{"{{char.background_build.background.feature.name}}"}}</i><br />
+						<span>{{"{{char.background_build.background.feature.description}}"}}</span>	
+					</div>
+					<div><b>Trait</b> - <span>{{"{{char.background_build.trait.description}}"}}</span></div>
+					<div><b>Ideal</b><span> - {{"{{char.background_build.ideal.description}}"}}</span></div>
+					<div><b>Bond</b><span> - {{"{{char.background_build.bond.description}}"}}</span></div>
+					<div><b>Flaw</b><span> - {{"{{char.background_build.flaw.description}}"}}</span></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
