@@ -1,13 +1,5 @@
 {{template "includes/main/header.tpl"}}
 <body ng-controller="tabManager as tabM">
-	<script type="text/javascript">
-	(function(){
-		preRaces = {{.races}};
-		preSubRaces = {{.subRaces}};
-		preClasses = {{.classes}};
-		preClassPaths = {{.classPaths}};
-	})();
-	</script>
 	<div class="mainDiv" id="forwardMain">
 		<div class="headNav">
 			<ul>
@@ -18,7 +10,7 @@
 		<div id="charTab" ng-show="tabM.isSelected(1)" ng-controller="charController as charCont">
 			{{template "main/characters.tpl"}}
 		</div>
-		<div ng-show="tabM.isSelected(2)" ng-controller="raceController as raceCont">
+		<div ng-show="tabM.isSelected(2)">
 			<h1>Races</h1>
 		</div>
 	</div>

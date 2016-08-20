@@ -1,11 +1,11 @@
 <div ng-repeat="char in playchars">
 	<div class="d_list">
 		<div ng-click="charCont.RevealDetails(char.playchar_id)">
-			<div class="d_list_i"><b><i>{{"{{char.name}}"}}</i></b></div><div class="d_list_i"><b>{{"{{char.refClass}}"}}</b></div><div class="d_list_i"><b>{{"{{char.raceRef}}"}}</b></div><div class="d_list_i"><b>Lvl {{"{{char.level}}"}}</b></div><br />
+			<div class="d_list_i"><b><i>{{"{{char.name}}"}}</i></b></div><div class="d_list_i"><b>{{"{{char.class_build.class.name}}"}} <span ng-show="char.level >= 3">({{"{{char.class_build.class_path.name}}"}})</span></b></div><div class="d_list_i"><b>{{"{{char.raceRef}}"}}</b></div><div class="d_list_i"><b>Lvl {{"{{char.level}}"}}</b></div><br />
 		</div>
 		<div ng-show="char.showDetails">
 			<div class="d_list_i"><b>HP</b>: {{"{{char.hit_points}}"}}</div><div class="d_list_i"><b>Exp</b>: {{"{{char.exp}}"}}</div><div class="d_list_i"><b>Sex</b>: {{"{{char.sex}}"}}</div><br />
-			<div class="d_list_i"><b>Height</b>: {{"{{char.height_ft}}' {{char.height_in}}\""}}</div><div class="d_list_i"><b>Weight</b>: {{"{{char.weight}}"}}</div><div class="d_list_i"><b>Age</b>: {{"{{char.age}}"}}</div><br /><br />
+			<div class="d_list_i"><b>Height</b>: {{"{{char.race_build.height_ft}}' {{char.race_build.height_in}}\""}}</div><div class="d_list_i"><b>Weight</b>: {{"{{char.race_build.weight}}"}}</div><div class="d_list_i"><b>Age</b>: {{"{{char.race_build.age}}"}}</div><br /><br />
 			<div class="d_list_i"><b>Str</b>: {{"{{char.b_str}}"}}</div><div class="d_list_i"><b>Dex</b>: {{"{{char.b_dex}}"}}</div><div class="d_list_i"><b>Con</b>: {{"{{char.b_con}}"}}</div><br />
 			<div class="d_list_i"><b>Int</b>: {{"{{char.b_int}}"}}</div><div class="d_list_i"><b>Wis</b>: {{"{{char.b_wis}}"}}</div><div class="d_list_i"><b>Cha</b>: {{"{{char.b_cha}}"}}</div><br />
 			<div id="skill_panel" ng-click="charCont.RevealSkills(char.playchar_id)">
