@@ -158,6 +158,25 @@
 						}
 					}
 				});
+				sendData = {
+					"playchar_in": playchar_i,
+					"background_id": $scope.playchars[playchar_i].background_build.background.background_id
+				};
+				$http.post("/backgrounds/proficiencies/skills", sendData).then(function(data){
+					if (data.data.success){
+						var t_bs = data.data.background_proficiencies;
+						var t_sb = Object.keys($scope.playchars[data.data.playchar_in].showBonuses);
+						for (var i = 0; i < t_sb.length; i++){
+							for (var j = 0; j < t_bs.length; j++){
+								if (t_sb[i] == t_bs[j].proficiency.s_code){
+									var n_stat = t_sb[i];
+									$scope.playchars[data.data.playchar_in].showBonuses[n_stat] = true;
+									break;
+								}
+							}
+						}
+					}
+				});
 			}
 
 			var t_lvl = $scope.playchars[playchar_i].level;
