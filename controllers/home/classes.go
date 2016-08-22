@@ -12,14 +12,14 @@ type ClassesController struct {
 }
 
 type ClassGetRequest struct {
-	Playchar_in int `json:"playchar_in"`
+	P_in int `json:"p_in"`
 	ClassBuild_id int `json:"class_build_id"`
 }
 
 type ClassGetChResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
-	Playchar_in int `json:"playchar_in"`
+	P_in int `json:"p_in"`
 	Data []models.CbChosenProficiency `json:"cb_chosen_proficiencies"`
 }
 
@@ -28,7 +28,7 @@ func (this *ClassesController)  ChosenProficiencies() {
 	if user != nil {
 		var cGetReq ClassGetRequest
 		err := json.Unmarshal(this.Ctx.Input.RequestBody, &cGetReq)
-		resp := ClassGetChResp{Success: false, Error: "", Playchar_in: cGetReq.Playchar_in}
+		resp := ClassGetChResp{Success: false, Error: "", P_in: cGetReq.P_in}
 		if err == nil {
 			resp.Success = true;
 			resp.Data = models.GetCbChosenProficiencies(cGetReq.ClassBuild_id)

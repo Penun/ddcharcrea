@@ -33,12 +33,14 @@ type Playchar struct {
 type Race struct {
 	Race_id int `orm:"pk" json:"race_id"`
 	Name string `json:"name"`
+	Ability_mods string `json:"ability_mods"`
 }
 
 type SubRace struct {
 	SubRace_id int `orm:"pk" json:"sub_race_id"`
 	Race *Race `orm:"rel(fk)" json:"race"`
 	Name string `json:"name"`
+	Ability_mods string `json:"ability_mods"`
 }
 
 type Class struct {

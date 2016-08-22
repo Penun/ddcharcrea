@@ -12,14 +12,14 @@ type BackgroundsController struct {
 }
 
 type BgProfSkillRequest struct {
-	Playchar_in int `json:"playchar_in"`
+	P_in int `json:"p_in"`
 	Background_id int `json:"background_id"`
 }
 
 type BgProfSkillResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
-	Playchar_in int `json:"playchar_in"`
+	P_in int `json:"p_in"`
 	Data []models.BackgroundProficiency `json:"background_proficiencies"`
 }
 
@@ -28,7 +28,7 @@ func (this *BackgroundsController)  GetSkillProficiency() {
 	if user != nil {
 		var bPrSkRe BgProfSkillRequest
 		err := json.Unmarshal(this.Ctx.Input.RequestBody, &bPrSkRe)
-		resp := BgProfSkillResp{Success: false, Error: "", Playchar_in: bPrSkRe.Playchar_in}
+		resp := BgProfSkillResp{Success: false, Error: "", P_in: bPrSkRe.P_in}
 		if err == nil {
 			resp.Success = true;
 			resp.Data = models.GetSkillProficiencies(bPrSkRe.Background_id)
