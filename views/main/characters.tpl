@@ -1,14 +1,16 @@
-<div ng-repeat="char in user.playchars">
+<div ng-repeat="(c_ind, char) in user.playchars">
 	<div class="d_list">
-		<div ng-click="mainCont.RevealDetails(user.User_id, char.playchar_id)">
+		<div ng-click="mainCont.RevealDetails(ind, c_ind)">
 			<div class="d_list_i"><b><i>{{"{{char.name}}"}}</i>  ---  Lvl: {{"{{char.level}}"}}</b></div>
 		</div>
+		<br />
 		<div ng-show="char.showDetails">
-			<div class="d_list_i"><b>HP</b>: {{"{{char.hit_points}}"}}</div>
-			<div class="d_list_i"><b>Exp</b>: {{"{{char.exp}}"}}</div>
 			<div><b>{{"{{char.class_build.class.name}}"}} <span ng-show="char.level >= 3">({{"{{char.class_build.class_path.name}}"}})</span></b></div>
 			<div class="d_list_i"><b>{{"{{char.raceRef}}"}}</b></div>
-			<div ng-click="mainCont.RevealInfo(user.User_id, char.playchar_id)">
+			<br />
+			<div class="d_list_i"><b>HP</b>: {{"{{char.hit_points}}"}}</div>
+			<div class="d_list_i"><b>Exp</b>: {{"{{char.exp}}"}}</div>
+			<div ng-click="mainCont.RevealInfo(ind, c_ind)">
 				<h3>Info</h3>
 				<div ng-show="char.showInfo">
 					<div class="d_list_i"><b>Sex</b>: {{"{{char.sex}}"}}</div><div class="d_list_i"><b>Age</b>: {{"{{char.race_build.age}}"}}</div><br />
@@ -21,8 +23,8 @@
 			<div class="d_list_i"><b>Con</b>: {{"{{char.b_con}}"}}<span ng-show="char.bo_con > 0"> + {{"{{char.bo_con}}"}} :: {{"{{char.t_con}}"}}</span></div>
 			<div class="d_list_i"><b>Int</b>: {{"{{char.b_int}}"}}<span ng-show="char.bo_int > 0"> + {{"{{char.bo_int}}"}} :: {{"{{char.t_int}}"}}</span></div>
 			<div class="d_list_i"><b>Wis</b>: {{"{{char.b_wis}}"}}<span ng-show="char.bo_wis > 0"> + {{"{{char.bo_wis}}"}} :: {{"{{char.t_wis}}"}}</span></div>
-			<div class="d_list_i"><b>Cha</b>: {{"{{char.b_cha}}"}}<span ng-show="char.bo_cha > 0"> + {{"{{char.bo_cha}}"}} :: {{"{{char.t_cha}}"}}</span></div><br />
-			<div id="skill_panel" ng-click="mainCont.RevealSkills(user.User_id, char.playchar_id)">
+			<div class="d_list_i"><b>Cha</b>: {{"{{char.b_cha}}"}}<span ng-show="char.bo_cha > 0"> + {{"{{char.bo_cha}}"}} :: {{"{{char.t_cha}}"}}</span></div>
+			<div id="skill_panel" ng-click="mainCont.RevealSkills(ind, c_ind)">
 				<h2>Skills</h2>
 				<div ng-show="char.showSkills">
 					<div><b>Acrobatics</b> <i>(Dex)</i>: {{"{{char.m_dex}}"}}<span ng-show="char.showBonuses.acro"> + {{"{{char.profBonus}} :: {{char.m_dex + char.profBonus}}"}}</span></div>
@@ -45,7 +47,7 @@
 					<div><b>Survival</b> <i>(Wis)</i>: {{"{{char.m_wis}}"}}<span ng-show="char.showBonuses.surv"> + {{"{{char.profBonus}} :: {{char.m_wis + char.profBonus}}"}}</span></div>
 				</div>
 			</div>
-			<div id="background_panel" ng-click="mainCont.RevealBackground(user.User_id, char.playchar_id)">
+			<div id="background_panel" ng-click="mainCont.RevealBackground(ind, c_ind)">
 				<h2>Background</h2>
 				<div ng-show="char.showBackground">
 					<h3>{{"{{char.background_build.background.name}}"}}</h3>

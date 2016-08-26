@@ -30,7 +30,7 @@ func (this *ClassesController)  ChosenProficiencies() {
 		err := json.Unmarshal(this.Ctx.Input.RequestBody, &cGetReq)
 		resp := ClassGetChResp{Success: false, Error: "", P_in: cGetReq.P_in}
 		if err == nil {
-			resp.Success = true;
+			resp.Success = true
 			resp.Data = models.GetCbChosenProficiencies(cGetReq.ClassBuild_id)
 		} 
 		this.Data["json"] = resp
