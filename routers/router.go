@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"github.com/Penun/DDCharCrea/controllers"
-	"github.com/Penun/DDCharCrea/controllers/home"
+	"github.com/Penun/ddcharcrea/controllers"
+	"github.com/Penun/ddcharcrea/controllers/home"
 	"github.com/astaxie/beego"
 )
 

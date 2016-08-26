@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "github.com/Penun/DDCharCrea/routers"
+	_ "github.com/Penun/ddcharcrea/routers"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"

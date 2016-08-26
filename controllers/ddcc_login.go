@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/Penun/DDCharCrea/models"
+	"github.com/Penun/ddcharcrea/models"
 	"github.com/astaxie/beego"
 	"encoding/json"
 	"crypto/sha1"

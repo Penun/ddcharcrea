@@ -1,7 +1,7 @@
 package home
 
 import (
-	"github.com/Penun/DDCharCrea/models"
+	"github.com/Penun/ddcharcrea/models"
 	"github.com/astaxie/beego"
 )
 
