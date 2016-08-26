@@ -33,14 +33,14 @@ type Playchar struct {
 type Race struct {
 	Race_id int `orm:"pk" json:"race_id"`
 	Name string `json:"name"`
-	Ability_mods string `json:"ability_mods"`
+	AbilityMods string `json:"ability_mods"`
 }
 
 type SubRace struct {
 	SubRace_id int `orm:"pk" json:"sub_race_id"`
 	Race *Race `orm:"rel(fk)" json:"race"`
 	Name string `json:"name"`
-	Ability_mods string `json:"ability_mods"`
+	AbilityMods string `json:"ability_mods"`
 }
 
 type Class struct {
@@ -67,7 +67,6 @@ type ClassProficiency struct {
 	ClassProficiency_id int `orm:"pk" json:"class_proficiency_id"`
 	Proficiency *Proficiency `orm:"rel(fk)" json:"proficiency"`
 	Class *Class `orm:"rel(fk)" json:"class"`
-	Type string `json:"type"`
 }
 
 type CbChosenProficiency struct {
