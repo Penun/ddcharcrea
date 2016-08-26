@@ -7,6 +7,7 @@ import (
 	"crypto/sha1"
 	"encoding/base64"
 	"io"
+	"fmt"
 )
 
 type LoginController struct {
@@ -23,6 +24,11 @@ func (this *LoginController) Get() {
 	if user != nil {
 		this.Redirect("/main", 302)
 	}
+	hasher := sha1.New()
+	io.WriteString(hasher, "test")
+	io.WriteString(hasher, beego.AppConfig.String("salt"))
+	u_pass := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+	fmt.Println(u_pass)
 	this.TplName = "login.tpl"
 }
 

@@ -6,7 +6,7 @@ import (
 
 type User struct {
 	User_id int `orm:"pk" json:"user_id"`
-	UserName string `json:"userName"`
+	UserName string `json:"user_name"`
 	Password string `json:"password"`
 	Clearance int `json:"clearance"`
 }
