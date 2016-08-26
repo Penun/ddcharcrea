@@ -17,12 +17,12 @@ type Playchar struct {
 	Level int `json:"level"`
 	HitPoints int `json:"hit_points"`
 	Exp int `json:"exp"`
-	BStr int `json:"b_str"`
-	BDex int `json:"b_dex"`
-	BCon int `json:"b_con"`
-	BInt int `json:"b_int"`
-	BWis int `json:"b_wis"`
-	BCha int `json:"b_cha"`
+	B_str int `json:"b_str"`
+	B_dex int `json:"b_dex"`
+	B_con int `json:"b_con"`
+	B_int int `json:"b_int"`
+	B_wis int `json:"b_wis"`
+	B_cha int `json:"b_cha"`
 	Sex string `json:"sex"`
 	User *User `orm:"rel(fk)" json:"user"`
 	RaceBuild *RaceBuild `orm:"rel(one)" json:"race_build"`
@@ -47,7 +47,7 @@ type Class struct {
 	Class_id int `orm:"pk" json:"class_id"`
 	Name string `json:"name"`
 	HitDice int `json:"hit_dice"`
-	FLevelHpMod string `json:"f_level_hp_mod"`
+	F_LevelHpMod string `json:"f_level_hp_mod"`
 }
 
 type ClassPath struct {
@@ -60,7 +60,7 @@ type Proficiency struct {
 	Proficiency_id int `orm:"pk" json:"proficiency_id"`
 	Name string `json:"name"`
 	Type string `json:"type"`
-	SCode string `json:"s_code"`
+	S_Code string `json:"s_code"`
 }
 
 type ClassProficiency struct {
