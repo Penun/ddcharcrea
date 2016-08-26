@@ -60,3 +60,15 @@ func (this *LoginController) Post() {
 		this.ServeJSON()
 	}
 }
+
+func (this *LoginController) Logout() {
+	user := this.GetSession("user")
+	if user != nil {
+		this.DelSession("user")
+		response := UpdateResponse{Success: true, Error: ""}
+		this.Data["json"] = &response
+		this.ServeJSON()
+	} else {
+		this.Redirect("/", 302)
+	}
+}

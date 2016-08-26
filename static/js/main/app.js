@@ -1,7 +1,7 @@
 (function(){
 	var app = angular.module('ddchar', ['ddchar_main']);
 
-	app.controller('tabManager', ['$http', '$scope', function($http, $scope){
+	app.controller('tabManager', ['$http', '$scope', '$window', function($http, $scope, $window){
 		$scope.activeTab = 1;
 		$scope.loadedTabs = [1];
 
@@ -32,6 +32,12 @@
 				default:
 					break;
 			}
+		};
+
+		this.Logout = function(){
+			$http.get("/main/logout").then(function(data){
+					$window.location.href = '/';
+			});
 		};
 	}]);
 })();
