@@ -1,6 +1,7 @@
 {{template "includes/main/header.tpl"}}
 <body ng-controller="tabManager as tabM">
 	<div class="mainDiv" id="forwardMain">
+		<button type="button" ng-click="tabM.Logout()">Logout</button>
 		<div class="headNav">
 			<ul>
 				<li ng-click="tabM.selectTab(1)"><h1>Users</h1></li>
