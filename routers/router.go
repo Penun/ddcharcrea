@@ -9,9 +9,9 @@ import (
 func init() {
     beego.Router("/", &controllers.LoginController{})
     beego.Router("/main", &home.MainController{})
-    beego.Router("/characters", &home.CharacterController{})
+    beego.Router("/characters", &home.CharacterController{}, "post:GetCharList")
     beego.Router("/users", &home.UsersController{})
-    beego.Router("/classes/chosenprof", &home.ClassesController{}, "post:ChosenProficiencies");
-    beego.Router("/classes/givenprof", &home.ClassesController{}, "get:GivenProficiencies");
+    beego.Router("/classes/chosenprof", &home.ClassesController{}, "post:ChosenProficiencies")
+    beego.Router("/classes/givenprof", &home.ClassesController{}, "get:GivenProficiencies")
     beego.Router("/backgrounds/proficiencies/skills", &home.BackgroundsController{}, "post:GetSkillProficiency")
 }

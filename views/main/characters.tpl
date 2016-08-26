@@ -1,10 +1,13 @@
 <div ng-repeat="char in user.playchars">
 	<div class="d_list">
 		<div ng-click="mainCont.RevealDetails(user.User_id, char.playchar_id)">
-			<div class="d_list_i"><b><i>{{"{{char.name}}"}}</i></b></div><div class="d_list_i"><b>{{"{{char.class_build.class.name}}"}} <span ng-show="char.level >= 3">({{"{{char.class_build.class_path.name}}"}})</span></b></div><div class="d_list_i"><b>{{"{{char.raceRef}}"}}</b></div><div class="d_list_i"><b>Lvl {{"{{char.level}}"}}</b></div><br />
+			<div class="d_list_i"><b><i>{{"{{char.name}}"}}</i>  ---  Lvl: {{"{{char.level}}"}}</b></div>
 		</div>
 		<div ng-show="char.showDetails">
-			<div class="d_list_i"><b>HP</b>: {{"{{char.hit_points}}"}}</div><div class="d_list_i"><b>Exp</b>: {{"{{char.exp}}"}}</div>
+			<div class="d_list_i"><b>HP</b>: {{"{{char.hit_points}}"}}</div>
+			<div class="d_list_i"><b>Exp</b>: {{"{{char.exp}}"}}</div>
+			<div><b>{{"{{char.class_build.class.name}}"}} <span ng-show="char.level >= 3">({{"{{char.class_build.class_path.name}}"}})</span></b></div>
+			<div class="d_list_i"><b>{{"{{char.raceRef}}"}}</b></div>
 			<div ng-click="mainCont.RevealInfo(user.User_id, char.playchar_id)">
 				<h3>Info</h3>
 				<div ng-show="char.showInfo">

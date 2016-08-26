@@ -229,8 +229,27 @@
 			} 
 		};
 
-		this.RevealCharacters = function(user_id){
-
+		this.RevealCharacters = function(u_in){
+			if ($scope.users[u_in].showChars == null){
+				sendData = {
+					"user_id": $scope.users[u_in].User_id
+				}
+				$http.post("/characters", sendData).then(function(data){
+					if (data.data.success){
+						for (var i = 0; i < $scope.users.length; i++){
+							if ($scope.users[i].User_id == data.data.user_id){
+								$scope.users[i].playchars = data.data.playchars;
+								$scope.users[i].showChars = true;
+								break;
+							}
+						}
+					}
+				});
+			} else if ($scope.users[u_in].showChars) {
+				$scope.users[u_in].showChars = false;
+			} else {
+				$scope.users[u_in].showChars = true;
+			}
 		};
 	}]);
 })();
