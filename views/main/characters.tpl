@@ -14,7 +14,7 @@
 				<h3>Info</h3>
 				<div ng-show="char.showInfo">
 					<div class="d_list_i"><b>Sex</b>: {{"{{char.sex}}"}}</div><div class="d_list_i"><b>Age</b>: {{"{{char.race_build.age}}"}}</div><br />
-					<div class="d_list_i"><b>Height</b>: {{"{{char.race_build.height_ft}}' {{char.race_build.height_in}}\""}}</div><div class="d_list_i"><b>Weight</b>: {{"{{char.race_build.weight}}"}}</div><br />
+					<div class="d_list_i"><b>Height</b>: {{"{{(char.race_build.height_in - (char.race_build.height_in % 12)) / 12}}' {{char.race_build.height_in % 12}}\""}}</div><div class="d_list_i"><b>Weight</b>: {{"{{char.race_build.weight}}"}}</div><br />
 				</div>
 			</div>
 			<div class="d_list_i"><b>Proficiency Bonus:</b> {{"{{char.profBonus}}"}}</div><br />

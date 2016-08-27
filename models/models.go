@@ -33,6 +33,14 @@ type Playchar struct {
 type Race struct {
 	Race_id int `orm:"pk" json:"race_id"`
 	Name string `json:"name"`
+	Speed int `json:"speed"`
+	MaxAge int `json:"max_age"`
+	AdultAge int `json:"adult_age"`
+	MinHeightIn int `json:"min_height_in"` 
+	MaxHeightIn int `json:"max_height_in"`
+	MinWeight int `json:"min_weight"`
+	MaxWeight int `json:"max_weight"`	
+	Size string `json:"size"`
 	AbilityMods string `json:"ability_mods"`
 }
 
@@ -122,10 +130,9 @@ type Flaw struct {
 type RaceBuild struct {
 	RaceBuild_id int `orm:"pk" json:"race_build_id"`
 	Race *Race `orm:"rel(fk)" json:"race"`
-	SubRace *SubRace `orm:"rel(fk)" json:"sub_race"`
+	SubRace *SubRace `orm:"rel(fk);null" json:"sub_race"`
 	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
 	Alignment string `json:"alignment"`
-	HeightFt int `json:"height_ft"`
 	HeightIn int `json:"height_in"`
 	Weight int `json:"weight"`
 	Age int `json:"age"`
