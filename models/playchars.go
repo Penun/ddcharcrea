@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/astaxie/beego/orm"
+	"fmt"
 )
 
 func GetCharsList_UserId(userId int) []Playchar {
@@ -20,4 +21,17 @@ func GetCharDetails_PlayCharId(playcharId int) Playchar {
 	var playchar Playchar
 	o.QueryTable("playchar").Filter("playchar_id", playcharId).RelatedSel("raceBuild").RelatedSel("raceBuild__race").RelatedSel("raceBuild__subRace").RelatedSel("classBuild").RelatedSel("classBuild__class").RelatedSel("classBuild__classPath").RelatedSel("backgroundBuild").RelatedSel("backgroundBuild__background").RelatedSel("backgroundBuild__background__feature").RelatedSel("backgroundBuild__trait").RelatedSel("backgroundBuild__ideal").RelatedSel("backgroundBuild__bond").RelatedSel("backgroundBuild__flaw").One(&playchar)
 	return playchar
+}
+
+func InsertPlaychar(pc Playchar) bool {
+	o := orm.NewOrm()
+	
+	_, err := o.Insert(&pc)
+
+	if err == nil {
+		return true
+	} else {
+		fmt.Println(err)
+		return false
+	}
 }

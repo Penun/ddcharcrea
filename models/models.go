@@ -25,9 +25,10 @@ type Playchar struct {
 	B_cha int `json:"b_cha"`
 	Sex string `json:"sex"`
 	User *User `orm:"rel(fk)" json:"user"`
-	RaceBuild *RaceBuild `orm:"rel(one)" json:"race_build"`
-	ClassBuild *ClassBuild `orm:"rel(one)" json:"class_build"`
-	BackgroundBuild *BackgroundBuild `orm:"rel(one)" json:"background_build"`
+	IsPartial bool `json:"is_partial"`
+	RaceBuild *RaceBuild `orm:"rel(one);null" json:"race_build"`
+	ClassBuild *ClassBuild `orm:"rel(one);null" json:"class_build"`
+	BackgroundBuild *BackgroundBuild `orm:"rel(one);null" json:"background_build"`
 }
 
 type Race struct {

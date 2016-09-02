@@ -12,6 +12,8 @@ func init() {
     beego.Router("/main/logout", &controllers.LoginController{}, "get:Logout")
     beego.Router("/characters", &home.CharacterController{}, "post:GetCharList")
     beego.Router("/characters/details", &home.CharacterController{}, "post:GetCharDetails")
+    beego.Router("/characters/insert/details", &home.CharacterController{}, "post:InsertDetails")
+    beego.Router("/races/list", &home.RaceController{}, "get:GetRaces")
     beego.Router("/users", &home.UsersController{})
     beego.Router("/classes/chosenprof", &home.ClassesController{}, "post:ChosenProficiencies")
     beego.Router("/classes/givenprof", &home.ClassesController{}, "get:GivenProficiencies")

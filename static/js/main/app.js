@@ -1,33 +1,33 @@
 (function(){
 	var app = angular.module('ddchar', ['ddchar_main']);
 
-	app.controller('tabManager', ['$http', '$scope', '$window', function($http, $scope, $window){
-		$scope.activeTab = 1;
-		$scope.loadedTabs = [1];
+	app.controller('locManager', ['$http', '$scope', '$window', function($http, $scope, $window){
+		$scope.activeLoc = 1;
+		$scope.loadedTabs = [1, 2];
 
-		this.selectTab = function(newTab){
-			if ($scope.activeTab != newTab){
-				if ($scope.loadedTabs.indexOf(newTab) === -1){
-					this.loadTab(newTab);
+		this.selectLoc = function(newLoc){
+			if ($scope.activeLoc != newLoc){
+				if ($scope.loadedTabs.indexOf(newLoc) === -1){
+					this.loadTab(newLoc);
 				} else {
-					$scope.activeTab = newTab;
+					$scope.activeLoc = newLoc;
 				}
 			}
 		};
 
-		this.isSelected = function(checkT){
-			return $scope.activeTab === checkT;
+		this.isSelected = function(checkL){
+			return $scope.activeLoc === checkL;
 		};
 
-		this.loadTab = function(tabL){
-			switch (tabL) {
+		this.loadTab = function(loc){
+			switch (loc) {
 				case 1:
-					$scope.loadedTabs.push(tabL);
-					$scope.activeTab = tabL;
+					$scope.loadedTabs.push(loc);
+					$scope.activeLoc = loc;
 					break;
 				case 2:
-					$scope.loadedTabs.push(tabL);
-					$scope.activeTab = tabL;
+					$scope.loadedTabs.push(loc);
+					$scope.activeLoc = loc;
 					break;
 				default:
 					break;
@@ -36,7 +36,7 @@
 
 		this.Logout = function(){
 			$http.get("/main/logout").then(function(data){
-					$window.location.href = '/';
+				$window.location.href = '/';
 			});
 		};
 	}]);

@@ -1,11 +1,20 @@
 (function(){
-	var app = angular.module('ddchar_main', []);
+	var app = angular.module('ddchar_main', ['ddchar_characters']);
 	app.controller('mainController', ['$http', '$scope', function($http, $scope){
-		
+		this.overScreen = 0;
+		$scope.races = null;
+
 		angular.element(document).ready(function(){
 			$http.get("/users").then(function(data){
     			if (data.data.success){
     				$scope.users = data.data.users;
+    				for (var i = 0; i < $scope.users.length; i++){
+    					if ($scope.users[i].User_id == data.data.cur_us){
+    						$scope.users[i].isCur = true;
+    					} else {
+    						$scope.users[i].isCur = false;
+    					}
+    				}
     			}
     		});
 		});
@@ -249,6 +258,14 @@
 			} else {
 				$scope.users[u_i].showChars = true;
 			}
+		};
+
+		this.AddChar = function(){
+			this.overScreen = 1;
+		};
+
+		this.CurOverScreen = function(ovSc){
+			return this.overScreen === ovSc;
 		};
 	}]);
 })();

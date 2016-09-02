@@ -41,5 +41,10 @@ func (this *ClassesController)  ChosenProficiencies() {
 }
 
 func (this *ClassesController) GivenProficiencies() {
-	this.TplName = "main/main.tpl"
+	user := this.GetSession("user")
+	if user != nil {
+		this.Redirect("/main", 302)
+	} else {
+		this.Redirect("/", 302)		
+	}
 }

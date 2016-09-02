@@ -15,6 +15,17 @@ func GetPreRaceList() []orm.Params {
 	}
 }
 
+func GetAllRaces() []Race {
+	o := orm.NewOrm()
+	var races []Race
+	o.QueryTable("race").All(&races)
+	if len(races) > 0 {
+		return races
+	} else {
+		return []Race{} 
+	}
+}
+
 func GetPreSubRaceList() []orm.Params {
 	o := orm.NewOrm()
 	var subRaces []orm.Params
