@@ -29,7 +29,7 @@
 				$http.post("/characters/details", sendData).then(function(data){
 					if (data.data.success){
 						$scope.users[data.data.u_i].playchars[data.data.p_i] = data.data.playchar;
-						if (data.data.playchar.race_build.sub_race != null){
+						if (data.data.playchar.race_build != null && data.data.playchar.race_build.sub_race != null){
 							$scope.users[data.data.u_i].playchars[data.data.p_i].raceRef = data.data.playchar.race_build.sub_race.name;
 						} else {
 							$scope.users[data.data.u_i].playchars[data.data.p_i].raceRef = data.data.playchar.race_build.race.name;

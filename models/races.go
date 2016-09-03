@@ -36,3 +36,14 @@ func GetPreSubRaceList() []orm.Params {
 		return []orm.Params{} 
 	}
 }
+
+func GetSubRaces(r_id int) []SubRace {
+	o := orm.NewOrm()
+	var subRaces []SubRace
+	o.QueryTable("sub_race").Filter("race__race_id", r_id).All(&subRaces)
+	if len(subRaces) > 0 {
+		return subRaces
+	} else {
+		return []SubRace{} 
+	}
+}

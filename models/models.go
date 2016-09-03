@@ -56,7 +56,6 @@ type Class struct {
 	Class_id int `orm:"pk" json:"class_id"`
 	Name string `json:"name"`
 	HitDice int `json:"hit_dice"`
-	F_LevelHpMod string `json:"f_level_hp_mod"`
 }
 
 type ClassPath struct {
