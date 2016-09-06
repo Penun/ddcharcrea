@@ -11,7 +11,7 @@ type RaceController struct {
 }
 
 type SubRaceReq struct {
-	RaceId int `json:"r_id"`
+	RaceId int64 `json:"r_id"`
 }
 
 type RaceListResp struct {
@@ -23,7 +23,7 @@ type RaceListResp struct {
 type SubRaceResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
-	RaceId int `json:"r_id"`
+	RaceId int64 `json:"r_id"`
 	Data []models.SubRace `json:"sub_races"`	
 }
 

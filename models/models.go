@@ -5,14 +5,14 @@ import (
 )
 
 type User struct {
-	User_id int `orm:"pk" json:"user_id"`
+	User_id int64 `orm:"pk" json:"user_id"`
 	UserName string `json:"user_name"`
 	Password string `json:"password"`
 	Clearance int `json:"clearance"`
 }
 
 type Playchar struct {
-	Playchar_id int `orm:"pk" json:"playchar_id"`
+	Playchar_id int64 `orm:"pk" json:"playchar_id"`
 	Name string `json:"name"`
 	Level int `json:"level"`
 	HitPoints int `json:"hit_points"`
@@ -32,7 +32,7 @@ type Playchar struct {
 }
 
 type Race struct {
-	Race_id int `orm:"pk" json:"race_id"`
+	Race_id int64 `orm:"pk" json:"race_id"`
 	Name string `json:"name"`
 	Speed int `json:"speed"`
 	MaxAge int `json:"max_age"`
@@ -46,51 +46,51 @@ type Race struct {
 }
 
 type SubRace struct {
-	SubRace_id int `orm:"pk" json:"sub_race_id"`
+	SubRace_id int64 `orm:"pk" json:"sub_race_id"`
 	Race *Race `orm:"rel(fk)" json:"race"`
 	Name string `json:"name"`
 	AbilityMods string `json:"ability_mods"`
 }
 
 type Class struct {
-	Class_id int `orm:"pk" json:"class_id"`
+	Class_id int64 `orm:"pk" json:"class_id"`
 	Name string `json:"name"`
 	HitDice int `json:"hit_dice"`
 }
 
 type ClassPath struct {
-	ClassPath_id int `orm:"pk" json:"class_path_id"`
+	ClassPath_id int64 `orm:"pk" json:"class_path_id"`
 	Class *Class `orm:"rel(fk)" json:"class"`
 	Name string `json:"name"`
 }
 
 type Proficiency struct {
-	Proficiency_id int `orm:"pk" json:"proficiency_id"`
+	Proficiency_id int64 `orm:"pk" json:"proficiency_id"`
 	Name string `json:"name"`
 	Type string `json:"type"`
 	S_Code string `json:"s_code"`
 }
 
 type ClassProficiency struct {
-	ClassProficiency_id int `orm:"pk" json:"class_proficiency_id"`
+	ClassProficiency_id int64 `orm:"pk" json:"class_proficiency_id"`
 	Proficiency *Proficiency `orm:"rel(fk)" json:"proficiency"`
 	Class *Class `orm:"rel(fk)" json:"class"`
 }
 
 type CbChosenProficiency struct {
-	CbChosenProficiency_id int `orm:"pk" json:"cb_chosen_proficiency_id"`
+	CbChosenProficiency_id int64 `orm:"pk" json:"cb_chosen_proficiency_id"`
 	ClassProficiency *ClassProficiency `orm:"rel(fk)" json:"class_proficiency"`
 	ClassBuild *ClassBuild `orm:"rel(fk)" json:"class_build"`
 }
 
 type Feature struct {
-	Feature_id int `orm:"pk" json:"feature_id"`
+	Feature_id int64 `orm:"pk" json:"feature_id"`
 	Name string `json:"name"`
 	Description string `json:"description"`
 }
 
 type Background struct {
-	Background_id int `orm:"pk" json:"background_id"`
+	Background_id int64 `orm:"pk" json:"background_id"`
 	Name string `json:"name"`
 	Description string `json:"description"`
 	Feature *Feature `orm:"rel(fk)" json:"feature"`
@@ -98,37 +98,37 @@ type Background struct {
 }
 
 type BackgroundProficiency struct {
-	BackgroundProficiency_id int `orm:"pk" json:"background_proficiency_id"`
+	BackgroundProficiency_id int64 `orm:"pk" json:"background_proficiency_id"`
 	Background *Background `orm:"rel(fk)" json:"background"`
 	Proficiency *Proficiency `orm:"rel(fk)" json:"proficiency"`
 }
 
 type Trait struct {
-	Trait_id int `orm:"pk" json:"trait_id"`
+	Trait_id int64 `orm:"pk" json:"trait_id"`
 	Background *Background `orm:"rel(fk)" json:"background"`
 	Description string `json:"description"`
 }
 
 type Ideal struct {
-	Ideal_id int `orm:"pk" json:"ideal_id"`
+	Ideal_id int64 `orm:"pk" json:"ideal_id"`
 	Background *Background `orm:"rel(fk)" json:"background"`
 	Description string `json:"description"`
 }
 
 type Bond struct {
-	Bond_id int `orm:"pk" json:"bond_id"`
+	Bond_id int64 `orm:"pk" json:"bond_id"`
 	Background *Background `orm:"rel(fk)" json:"background"`
 	Description string `json:"description"`
 }
 
 type Flaw struct {
-	Flaw_id int `orm:"pk" json:"flaw_id"`
+	Flaw_id int64 `orm:"pk" json:"flaw_id"`
 	Background *Background `orm:"rel(fk)" json:"background"`
 	Description string `json:"description"`
 }
 
 type RaceBuild struct {
-	RaceBuild_id int `orm:"pk" json:"race_build_id"`
+	RaceBuild_id int64 `orm:"pk" json:"race_build_id"`
 	Race *Race `orm:"rel(fk)" json:"race"`
 	SubRace *SubRace `orm:"rel(fk);null" json:"sub_race"`
 	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
@@ -140,20 +140,20 @@ type RaceBuild struct {
 }
 
 type ClassBuild struct {
-	ClassBuild_id int `orm:"pk" json:"class_build_id"`
+	ClassBuild_id int64 `orm:"pk" json:"class_build_id"`
 	Class *Class `orm:"rel(fk)" json:"class"`
 	ClassPath *ClassPath `orm:"rel(fk)" json:"class_path"`
 	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
 }
 
 type BackgroundBuild struct {
-	BackgroundBuild_id int `orm:"pk" json:"background_build_id"`
+	BackgroundBuild_id int64 `orm:"pk" json:"background_build_id"`
 	Background *Background `orm:"rel(fk)" json:"background"`
 	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
-	Trait *Trait `orm:"rel(fk)" json:"trait"`
-	Ideal *Ideal `orm:"rel(fk)" json:"ideal"`
-	Bond *Bond `orm:"rel(fk)" json:"bond"`
-	Flaw *Flaw `orm:"rel(fk)" json:"flaw"`
+	Trait *Trait `orm:"rel(fk);null" json:"trait"`
+	Ideal *Ideal `orm:"rel(fk);null" json:"ideal"`
+	Bond *Bond `orm:"rel(fk);null" json:"bond"`
+	Flaw *Flaw `orm:"rel(fk);null" json:"flaw"`
 }
 
 func init() {

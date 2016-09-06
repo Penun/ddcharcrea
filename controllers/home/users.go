@@ -14,7 +14,7 @@ type UserGetResponse struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
 	Data []orm.Params `json:"users"`
-	UserId int `json:"cur_us"`
+	UserId int64 `json:"cur_us"`
 }
 
 func (this *UsersController) Get() {

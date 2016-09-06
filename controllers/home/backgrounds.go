@@ -13,7 +13,13 @@ type BackgroundsController struct {
 
 type BgProfSkillRequest struct {
 	P_in int `json:"p_in"`
-	Background_id int `json:"background_id"`
+	Background_id int64 `json:"background_id"`
+}
+
+type BgListResp struct {
+	Success bool `json:"success"`
+	Error string `json:"error"`
+	Data []models.Background `json:"backgrounds"`
 }
 
 type BgProfSkillResp struct {
@@ -21,6 +27,18 @@ type BgProfSkillResp struct {
 	Error string `json:"error"`
 	P_in int `json:"p_in"`
 	Data []models.BackgroundProficiency `json:"background_proficiencies"`
+}
+
+func (this *BackgroundsController) GetBackgrounds() {
+	user := this.GetSession("user")
+	if user != nil {
+		resp := BgListResp{Success: true, Error: ""}
+		resp.Data = models.GetBackgroundList()
+		this.Data["json"] = resp
+		this.ServeJSON()
+	} else {
+		this.Redirect("/", 302)
+	}
 }
 
 func (this *BackgroundsController)  GetSkillProficiency() {

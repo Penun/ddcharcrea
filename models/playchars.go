@@ -2,10 +2,9 @@ package models
 
 import (
 	"github.com/astaxie/beego/orm"
-	"fmt"
 )
 
-func GetCharsList_UserId(userId int) []Playchar {
+func GetCharsList_UserId(userId int64) []Playchar {
 	o := orm.NewOrm()
 	var playchars []Playchar
 	o.QueryTable("playchar").Filter("user_id", userId).All(&playchars)
@@ -16,22 +15,29 @@ func GetCharsList_UserId(userId int) []Playchar {
 	}
 }
 
-func GetCharDetails_PlayCharId(playcharId int) Playchar {
+func GetCharDetails_PlayCharId(playcharId int64) Playchar {
 	o := orm.NewOrm()
 	var playchar Playchar
 	o.QueryTable("playchar").Filter("playchar_id", playcharId).RelatedSel("raceBuild").RelatedSel("raceBuild__race").RelatedSel("raceBuild__subRace").RelatedSel("classBuild").RelatedSel("classBuild__class").RelatedSel("classBuild__classPath").RelatedSel("backgroundBuild").RelatedSel("backgroundBuild__background").RelatedSel("backgroundBuild__background__feature").RelatedSel("backgroundBuild__trait").RelatedSel("backgroundBuild__ideal").RelatedSel("backgroundBuild__bond").RelatedSel("backgroundBuild__flaw").One(&playchar)
 	return playchar
 }
 
-func InsertPlaychar(pc Playchar) bool {
+func InsertPlaychar(pc Playchar) int64 {
 	o := orm.NewOrm()
-	
-	_, err := o.Insert(&pc)
-
+	id, err := o.Insert(&pc)
 	if err == nil {
-		return true
+		return id
 	} else {
-		fmt.Println(err)
-		return false
+		return 0
+	}
+}
+
+func UpdatePlaychar(pc Playchar) int64 {
+	o := orm.NewOrm()
+	num, err := o.Update(&pc)
+	if err == nil {
+		return num
+	} else {
+		return 0
 	}
 }

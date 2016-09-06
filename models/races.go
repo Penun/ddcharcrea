@@ -37,7 +37,7 @@ func GetPreSubRaceList() []orm.Params {
 	}
 }
 
-func GetSubRaces(r_id int) []SubRace {
+func GetSubRaces(r_id int64) []SubRace {
 	o := orm.NewOrm()
 	var subRaces []SubRace
 	o.QueryTable("sub_race").Filter("race__race_id", r_id).All(&subRaces)
@@ -45,5 +45,15 @@ func GetSubRaces(r_id int) []SubRace {
 		return subRaces
 	} else {
 		return []SubRace{} 
+	}
+}
+
+func InsertRaceBuild(r_bd RaceBuild) int64 {
+	o := orm.NewOrm()
+	id, err := o.Insert(&r_bd)
+	if err == nil {
+		return id
+	} else {
+		return 0
 	}
 }
