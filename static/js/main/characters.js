@@ -117,6 +117,14 @@
 				} else {
 					$scope.InsStep++;
 				}
+
+				if ($scope.skProfs == null){
+					$http.get("/proficiencies/skills").then(function(data){
+						if (data.data.success){
+							$scope.skProfs = data.data.proficiencies;
+						}
+					});
+				}
 			} else {
 				alert("Oh @#$%#@!! I'm Broken!! YOU STUPID ASS MONKEY!!!");
 			}
@@ -189,6 +197,9 @@
 					}
 				}
 			});
+			this.char = {
+				"is_partial": true
+			};
 		};
 
 		this.RevealSubRace = function(r_i){

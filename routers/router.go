@@ -18,8 +18,9 @@ func init() {
     beego.Router("/users", &home.UsersController{})
     beego.Router("/classes/list", &home.ClassesController{}, "get:GetClasses")
     beego.Router("/classes/paths", &home.ClassesController{}, "post:GetClassPaths")
-    beego.Router("/classes/chosenprof", &home.ClassesController{}, "post:ChosenProficiencies")
     beego.Router("/classes/givenprof", &home.ClassesController{}, "get:GivenProficiencies")
     beego.Router("/backgrounds/list", &home.BackgroundsController{}, "get:GetBackgrounds")
-    beego.Router("/backgrounds/proficiencies/skills", &home.BackgroundsController{}, "post:GetSkillProficiency")
+    beego.Router("/proficiencies/chosen", &home.ProficienciesController{}, "post:ChosenProficiencies")
+    beego.Router("/proficiencies/background", &home.ProficienciesController{}, "post:BGProficiencies")
+    beego.Router("/proficiencies/skills", &home.ProficienciesController{}, "get:SkillProficiencies")
 }

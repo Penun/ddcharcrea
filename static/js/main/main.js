@@ -205,7 +205,7 @@
 					"p_in": p_i,
 					"class_build_id": $scope.users[u_i].playchars[p_i].class_build.class_build_id
 				};
-				$http.post("/classes/chosenprof", sendData).then(function(data){
+				$http.post("/proficiencies/chosen", sendData).then(function(data){
 					if (data.data.success){
 						var t_cp = data.data.cb_chosen_proficiencies;
 						var t_sb = Object.keys($scope.users[u_i].playchars[data.data.p_in].showBonuses);
@@ -224,7 +224,7 @@
 					"p_in": p_i,
 					"background_id": $scope.users[u_i].playchars[p_i].background_build.background.background_id
 				};
-				$http.post("/backgrounds/proficiencies/skills", sendData).then(function(data){
+				$http.post("/proficiencies/background", sendData).then(function(data){
 					if (data.data.success){
 						var t_bs = data.data.background_proficiencies;
 						var t_sb = Object.keys($scope.users[u_i].playchars[data.data.p_in].showBonuses);

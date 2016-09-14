@@ -26,17 +26,6 @@ func GetClassPathList(classId int64) []ClassPath {
 	}
 }
 
-func GetCbChosenProficiencies(classBuild_id int64) []CbChosenProficiency {
-	o := orm.NewOrm()
-	var chosProfs []CbChosenProficiency
-	o.QueryTable("cb_chosen_proficiency").Filter("class_build_id", classBuild_id).RelatedSel("classProficiency").RelatedSel("classProficiency__proficiency").All(&chosProfs)
-	if len(chosProfs) > 0 {
-		return chosProfs
-	} else {
-		return []CbChosenProficiency{} 
-	}
-}
-
 func InsertClassBuild(c_bd ClassBuild) int64 {
 	o := orm.NewOrm()
 	id, err := o.Insert(&c_bd)
