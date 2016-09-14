@@ -142,7 +142,7 @@ type RaceBuild struct {
 type ClassBuild struct {
 	ClassBuild_id int64 `orm:"pk" json:"class_build_id"`
 	Class *Class `orm:"rel(fk)" json:"class"`
-	ClassPath *ClassPath `orm:"rel(fk)" json:"class_path"`
+	ClassPath *ClassPath `orm:"rel(fk);null" json:"class_path"`
 	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
 }
 

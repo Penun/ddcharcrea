@@ -66,6 +66,30 @@
 			for (var i = 0; i < $scope.races.length; i++){
 				if ($scope.races[i].race_id == this.char.race_build.race.race_id){
 					this.char.race_build.race.race_id = Number(this.char.race_build.race.race_id);
+
+					this.char.race_build.age = Number(this.char.race_build.age);
+					if (this.char.race_build.age > $scope.races[i].max_age){
+						this.char.race_build.age = $scope.races[i].max_age;
+					} 
+
+					this.char.race_build.weight = Number(this.char.race_build.weight);
+					if (this.char.race_build.weight > $scope.races[i].max_weight){
+						this.char.race_build.weight = $scope.races[i].max_weight;
+					} else if (this.char.race_build.weight < $scope.races[i].min_weight){
+						this.char.race_build.weight = $scope.races[i].min_weight;
+					}
+
+					this.char.race_build.height_in = (this.chHeFe * 12) + Number(this.chHeIn);
+					if (this.char.race_build.height_in > $scope.races[i].max_height_in){
+						this.char.race_build.height_in = $scope.races[i].max_height_in;
+						this.chHeFe = Math.floor($scope.races[i].max_height_in / 12);
+						this.chHeIn = $scope.races[i].max_height_in % 12;
+					} else if (this.char.race_build.height_in < $scope.races[i].min_height_in){
+						this.char.race_build.height_in = $scope.races[i].min_height_in;
+						this.chHeFe = Math.floor($scope.races[i].min_height_in / 12);
+						this.chHeIn = $scope.races[i].min_height_in % 12;
+					}
+
 					if ($scope.races[i].sub_races != null){
 						for (var j = 0; j < $scope.races[i].sub_races.length; j++){
 							if ($scope.races[i].sub_races[j].sub_race_id == this.char.race_build.sub_race.sub_race_id){
@@ -113,7 +137,7 @@
 								}
 							}
 						} else {
-							this.char.class_build.class_path = null;
+							delete this.char.class_build.class_path;
 							allCheck = true;
 						}
 						break;
@@ -121,6 +145,7 @@
 				}
 			} else {
 				this.char.class_build.class.class_id = Number(this.char.class_build.class.class_id);
+				delete this.char.class_build.class_path;
 				allCheck = true;
 			}
 
@@ -209,6 +234,21 @@
 		this.CheckSubRace = function(r_i){
 			return $scope.races[r_i].showSubs;
 		};
+
+		this.UpdateSelRace = function(r_i){
+			this.aduAge = $scope.races[r_i].adult_age;
+			this.maxAge = $scope.races[r_i].max_age;
+			this.minWeight = $scope.races[r_i].min_weight;
+			this.maxWeight = $scope.races[r_i].max_weight;
+
+			var finFeet = Math.floor($scope.races[r_i].min_height_in / 12);
+			var finInch = $scope.races[r_i].min_height_in % 12;
+			this.minHeight = finFeet + "' " + finInch +"\"";
+			
+			finFeet = Math.floor($scope.races[r_i].max_height_in / 12);
+			finInch = $scope.races[r_i].max_height_in % 12;
+			this.maxHeight = finFeet + "' " + finInch +"\"";
+		}
 
 		this.RevealClassPath = function(c_i){
 			if (this.char.level > 3){
