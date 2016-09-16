@@ -47,3 +47,13 @@ func GetClassProficiencies(class_id int64) []ClassProficiency {
 		return []ClassProficiency{}	
 	}
 }
+
+func InsertCbChosenProficiency(cbChosen CbChosenProficiency) int64 {
+	o := orm.NewOrm()
+	id, err := o.Insert(&cbChosen)
+	if err == nil {
+		return id
+	} else {
+		return 0
+	}
+}

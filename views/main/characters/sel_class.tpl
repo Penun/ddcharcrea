@@ -8,8 +8,8 @@
 	</div>
 	<div ng-show="chInCont.char.class_build.class.class_id">
 		<p><label for="classProfs">Select ({{"{{chInCont.skillCap}}"}}): </label>
-			<select name="classProfs" id="classProfs" ng-model="this.chosenProfs" multiple>
-				<option ng-repeat="clasSkill in curClassProfs" value="clasSkill.proficiency_id">{{"{{clasSkill.name}}"}}</option>
+			<select name="classProfs" id="classProfs" ng-model="chInCont.chosenProfs" ng-change="chInCont.ClassProfsCheck()" multiple required>
+				<option ng-repeat="clasSkill in curClassProfs" value="{{"{{clasSkill.class_prof_id}}"}}">{{"{{clasSkill.name}}"}}</option>
 			</select>
 		</p>
 	</div>
