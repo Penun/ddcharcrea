@@ -99,7 +99,7 @@
 							}
 						}
 					} else {
-						this.char.race_build.sub_race = null;
+						delete this.char.race_build.sub_race;
 						allCheck = true;
 					}
 					break;
@@ -118,10 +118,10 @@
 					$scope.InsStep++;
 				}
 
-				if ($scope.skProfs == null){
+				if ($scope.skillProfs == null){
 					$http.get("/proficiencies/skills").then(function(data){
 						if (data.data.success){
-							$scope.skProfs = data.data.proficiencies;
+							$scope.skillProfs = data.data.proficiencies;
 						}
 					});
 				}
@@ -202,6 +202,24 @@
 			};
 		};
 
+		this.UpdateSelRace = function(r_i){
+			delete this.char.race_build.race.sub_race;
+			this.RevealSubRace(r_i);
+			this.HideOtherSubRaces(r_i);
+			this.aduAge = $scope.races[r_i].adult_age;
+			this.maxAge = $scope.races[r_i].max_age;
+			this.minWeight = $scope.races[r_i].min_weight;
+			this.maxWeight = $scope.races[r_i].max_weight;
+
+			var finFeet = Math.floor($scope.races[r_i].min_height_in / 12);
+			var finInch = $scope.races[r_i].min_height_in % 12;
+			this.minHeight = finFeet + "' " + finInch +"\"";
+			
+			finFeet = Math.floor($scope.races[r_i].max_height_in / 12);
+			finInch = $scope.races[r_i].max_height_in % 12;
+			this.maxHeight = finFeet + "' " + finInch +"\"";
+		}
+
 		this.RevealSubRace = function(r_i){
 			if ($scope.races[r_i].showSubs == null){
 				var sendData = {
@@ -223,12 +241,8 @@
 						}
 					}
 				});
-				this.HideOtherSubRaces(r_i);
-			} else if ($scope.races[r_i].showSubs) {
-				$scope.races[r_i].showSubs = false;
 			} else {
 				$scope.races[r_i].showSubs = true;
-				this.HideOtherSubRaces(r_i);
 			}
 		};
 
@@ -246,20 +260,45 @@
 			return $scope.races[r_i].showSubs;
 		};
 
-		this.UpdateSelRace = function(r_i){
-			this.aduAge = $scope.races[r_i].adult_age;
-			this.maxAge = $scope.races[r_i].max_age;
-			this.minWeight = $scope.races[r_i].min_weight;
-			this.maxWeight = $scope.races[r_i].max_weight;
+		this.UpdateSelClass = function(c_i){
+			delete this.char.class_build.class_path;
+			this.RevealClassPath(c_i);
+			this.HideOtherClassPaths(c_i);
+			this.skillCap = $scope.ch_classes[c_i].skill_profs;
 
-			var finFeet = Math.floor($scope.races[r_i].min_height_in / 12);
-			var finInch = $scope.races[r_i].min_height_in % 12;
-			this.minHeight = finFeet + "' " + finInch +"\"";
-			
-			finFeet = Math.floor($scope.races[r_i].max_height_in / 12);
-			finInch = $scope.races[r_i].max_height_in % 12;
-			this.maxHeight = finFeet + "' " + finInch +"\"";
-		}
+			if ($scope.ch_classes[c_i].skillProfs == null){
+				var sendData = {
+					"c_in": c_i,
+					"c_id": $scope.ch_classes[c_i].class_id
+				};
+				$http.post("/proficiencies/class", sendData).then(function(data){
+					if (data.data.success){
+						$scope.ch_classes[data.data.c_in].skillProfs = data.data.class_profs;
+
+						$scope.curClassProfs = [];
+						for (var i = 0; i < $scope.ch_classes[data.data.c_in].skillProfs.length; i++){
+							for (var j = 0; j < $scope.skillProfs.length; j++){
+								if ($scope.ch_classes[data.data.c_in].skillProfs[i].proficiency.proficiency_id == $scope.skillProfs[j].proficiency_id){
+									$scope.curClassProfs.push($scope.skillProfs[j]);
+									break;
+								}
+							}
+						}
+					}
+				});
+			} else {
+				$scope.curClassProfs = [];
+				for (var i = 0; i < $scope.ch_classes[c_i].skillProfs.length; i++){
+					for (var j = 0; j < $scope.skillProfs.length; j++){
+						if ($scope.ch_classes[c_i].skillProfs[i].proficiency.proficiency_id == $scope.skillProfs[j].proficiency_id){
+							$scope.curClassProfs.push($scope.skillProfs[j]);
+							break;
+						}
+					}
+				}
+			}
+
+		};
 
 		this.RevealClassPath = function(c_i){
 			if (this.char.level > 3){
@@ -283,12 +322,8 @@
 							}
 						}
 					});
-					this.HideOtherClassPaths(c_i);
-				} else if ($scope.ch_classes[c_i].showPaths) {
-					$scope.ch_classes[c_i].showPaths = false;
 				} else {
 					$scope.ch_classes[c_i].showPaths = true;
-					this.HideOtherClassPaths(c_i);
 				}
 			}
 		};

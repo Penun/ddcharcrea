@@ -36,3 +36,14 @@ func GetSkillProficiencies() []Proficiency {
 		return []Proficiency{} 
 	}
 }
+
+func GetClassProficiencies(class_id int64) []ClassProficiency {
+	o := orm.NewOrm()
+	var classProfs []ClassProficiency
+	o.QueryTable("class_proficiency").Filter("class_id", class_id).All(&classProfs)
+	if len(classProfs) > 0 {
+		return classProfs
+	} else {
+		return []ClassProficiency{}	
+	}
+}

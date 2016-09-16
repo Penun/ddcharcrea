@@ -21,6 +21,11 @@ type ClassGetRequest struct {
 	ClassBuild_id int64 `json:"class_build_id"`
 }
 
+type ClassProfReq struct {
+	C_in int `json:"c_in"`
+	Class_id int64 `json:"c_id"`
+}
+
 type BgProfSkillResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
@@ -39,6 +44,13 @@ type SkillProfResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
 	Data []models.Proficiency `json:"proficiencies"`
+}
+
+type ClassProfResp struct {
+	Success bool `json:"success"`
+	Error string `json:"error"`
+	C_in int `json:"c_in"`
+	Data []models.ClassProficiency `json:"class_profs"`
 }
 
 func (this *ProficienciesController) BGProficiencies() {
@@ -80,6 +92,23 @@ func (this *ProficienciesController) SkillProficiencies() {
 	if user != nil {
 		resp := SkillProfResp{Success: true, Error: ""}
 		resp.Data = models.GetSkillProficiencies()
+		this.Data["json"] = resp
+		this.ServeJSON()
+	} else {
+		this.Redirect("/", 302)
+	}
+}
+
+func (this *ProficienciesController) ClassProficiencies() {
+	user := this.GetSession("user")
+	if user != nil {
+		var cGetReq ClassProfReq
+		err := json.Unmarshal(this.Ctx.Input.RequestBody, &cGetReq)
+		resp := ClassProfResp{Success: false, Error: "", C_in: cGetReq.C_in}
+		if err == nil {
+			resp.Success = true
+			resp.Data = models.GetClassProficiencies(cGetReq.Class_id)
+		} 
 		this.Data["json"] = resp
 		this.ServeJSON()
 	} else {

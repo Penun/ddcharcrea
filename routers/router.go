@@ -23,4 +23,5 @@ func init() {
     beego.Router("/proficiencies/chosen", &home.ProficienciesController{}, "post:ChosenProficiencies")
     beego.Router("/proficiencies/background", &home.ProficienciesController{}, "post:BGProficiencies")
     beego.Router("/proficiencies/skills", &home.ProficienciesController{}, "get:SkillProficiencies")
+    beego.Router("/proficiencies/class", &home.ProficienciesController{}, "post:ClassProficiencies")
 }
