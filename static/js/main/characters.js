@@ -5,9 +5,8 @@
 			"is_partial": true
 		};
 		this.chosenProfs = {};
+		this.halfElfAbil = {};
 		$scope.InsStep = 1;
-
-
 
 		this.CurStep = function(cuSt){
 			return $scope.InsStep === cuSt;
@@ -106,6 +105,31 @@
 						allCheck = true;
 					}
 					break;
+				}
+			}
+
+			if (allCheck){
+				if (this.char.race_build.race.race_id == 7){
+					if (this.halfElfAbil.length != 2){
+						allCheck = false;
+					} else {
+						var options = [];
+
+						for (var i = 0; i < this.halfElfAbil.length; i++){
+							var abil_mod = {
+								"type": "ability_mod",
+								"option": {
+									"mod": this.halfElfAbil[i],
+									"mod_val": 1
+								}
+							};
+							options.push(abil_mod);
+						}
+
+						this.char.race_build.options = JSON.stringify(options);
+					}
+				} else {
+					delete this.char.race_build.options;
 				}
 			}
 
@@ -323,7 +347,6 @@
 					}
 				}
 			}
-
 		};
 
 		this.RevealClassPath = function(c_i){

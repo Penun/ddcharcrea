@@ -88,6 +88,16 @@
 				var sr_mods = JSON.parse($scope.users[u_i].playchars[p_i].race_build.sub_race.ability_mods);
 				$scope.ApplyAbilityBonus(u_i, p_i, sr_mods);			
 			}
+			if ($scope.users[u_i].playchars[p_i].race_build.options != null && $scope.users[u_i].playchars[p_i].race_build.options != ""){
+				var op_mods = [];
+				var tempOpts = JSON.parse($scope.users[u_i].playchars[p_i].race_build.options);
+				for (var i = 0; i < tempOpts.length; i++){
+					if (tempOpts[i].type == "ability_mod"){
+						op_mods.push(tempOpts[i].option);
+					}
+				}
+				$scope.ApplyAbilityBonus(u_i, p_i, op_mods);
+			}
 			$scope.users[u_i].playchars[p_i].t_str = $scope.users[u_i].playchars[p_i].b_str + $scope.users[u_i].playchars[p_i].bo_str;
 			$scope.users[u_i].playchars[p_i].t_dex = $scope.users[u_i].playchars[p_i].b_dex + $scope.users[u_i].playchars[p_i].bo_dex;
 			$scope.users[u_i].playchars[p_i].t_con = $scope.users[u_i].playchars[p_i].b_con + $scope.users[u_i].playchars[p_i].bo_con;
