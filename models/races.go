@@ -57,3 +57,14 @@ func InsertRaceBuild(r_bd RaceBuild) int64 {
 		return 0
 	}
 }
+
+func GetRaceFeatures(r_id int64) []RaceFeature {
+	o := orm.NewOrm()
+	var rFeats []RaceFeature
+	o.QueryTable("race_feature").RelatedSel("feature").Filter("race_id", r_id).All(&rFeats)
+	if len(rFeats) > 0 {
+		return rFeats
+	} else {
+		return []RaceFeature{}			
+	}
+}

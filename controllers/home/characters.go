@@ -33,7 +33,12 @@ type CharGetDetResp struct {
 	Error string `json:"error"`
 	Us_in int `json:"u_i"`
 	Pl_in int `json:"p_i"`
-	Data models.Playchar `json:"playchar"`
+	Data DetDataRespObj `json:"resp_obj"`
+}
+
+type DetDataRespObj struct {
+	Playchar models.Playchar `json:"playchar"`
+	RaceFeatures []models.RaceFeature `json:"race_features"`
 }
 
 type InsertReq struct {
@@ -86,7 +91,10 @@ func (this *CharacterController)  GetCharDetails() {
 		resp := CharGetDetResp{Success: false, Error: "", Us_in: cGetReq.Us_in, Pl_in: cGetReq.Pl_in}
 		if err == nil {
 			resp.Success = true
-			resp.Data = models.GetCharDetails_PlayCharId(cGetReq.Playchar_id)
+			var r_obj DetDataRespObj;
+			r_obj.Playchar = models.GetCharDetails_PlayCharId(cGetReq.Playchar_id)
+			r_obj.RaceFeatures = models.GetRaceFeatures(r_obj.Playchar.RaceBuild.Race.Race_id)
+			resp.Data = r_obj
 		} 
 		this.Data["json"] = resp
 		this.ServeJSON()

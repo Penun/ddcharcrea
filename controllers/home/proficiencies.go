@@ -13,11 +13,13 @@ type ProficienciesController struct {
 
 type BgProfSkillRequest struct {
 	P_in int `json:"p_in"`
+	U_in int `json:"u_in"`
 	Background_id int64 `json:"background_id"`
 }
 
 type ClassGetRequest struct {
 	P_in int `json:"p_in"`
+	U_in int `json:"u_in"`
 	ClassBuild_id int64 `json:"class_build_id"`
 }
 
@@ -30,6 +32,7 @@ type BgProfSkillResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
 	P_in int `json:"p_in"`
+	U_in int `json:"u_in"`
 	Data []models.BackgroundProficiency `json:"background_proficiencies"`
 }
 
@@ -37,6 +40,7 @@ type ClassGetChResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
 	P_in int `json:"p_in"`
+	U_in int `json:"u_in"`
 	Data []models.CbChosenProficiency `json:"cb_chosen_proficiencies"`
 }
 
@@ -58,7 +62,7 @@ func (this *ProficienciesController) BGProficiencies() {
 	if user != nil {
 		var bPrSkRe BgProfSkillRequest
 		err := json.Unmarshal(this.Ctx.Input.RequestBody, &bPrSkRe)
-		resp := BgProfSkillResp{Success: false, Error: "", P_in: bPrSkRe.P_in}
+		resp := BgProfSkillResp{Success: false, Error: "", P_in: bPrSkRe.P_in, U_in: bPrSkRe.U_in}
 		if err == nil {
 			resp.Success = true;
 			resp.Data = models.GetBackgroundProficiencies(bPrSkRe.Background_id)
@@ -75,7 +79,7 @@ func (this *ProficienciesController) ChosenProficiencies() {
 	if user != nil {
 		var cGetReq ClassGetRequest
 		err := json.Unmarshal(this.Ctx.Input.RequestBody, &cGetReq)
-		resp := ClassGetChResp{Success: false, Error: "", P_in: cGetReq.P_in}
+		resp := ClassGetChResp{Success: false, Error: "", P_in: cGetReq.P_in, U_in: cGetReq.U_in}
 		if err == nil {
 			resp.Success = true
 			resp.Data = models.GetCbChosenProficiencies(cGetReq.ClassBuild_id)

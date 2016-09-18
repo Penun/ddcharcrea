@@ -24,6 +24,12 @@
 			<div class="d_list_i"><b>Int</b>: {{"{{char.b_int}}"}}<span ng-show="char.bo_int > 0"> + {{"{{char.bo_int}}"}} :: {{"{{char.t_int}}"}}</span></div>
 			<div class="d_list_i"><b>Wis</b>: {{"{{char.b_wis}}"}}<span ng-show="char.bo_wis > 0"> + {{"{{char.bo_wis}}"}} :: {{"{{char.t_wis}}"}}</span></div>
 			<div class="d_list_i"><b>Cha</b>: {{"{{char.b_cha}}"}}<span ng-show="char.bo_cha > 0"> + {{"{{char.bo_cha}}"}} :: {{"{{char.t_cha}}"}}</span></div>
+			<div id="feat_panel" ng-click="mainCont.RevealFeatures(ind, c_ind)">
+				<h2>Features</h2>
+				<div ng-show="char.showFeatures">
+					<div ng-repeat="feat in char.race_build.race.features">{{"{{feat.feature.name}}"}}</div>
+				</div>
+			</div>
 			<div id="skill_panel" ng-click="mainCont.RevealSkills(ind, c_ind)">
 				<h2>Skills</h2>
 				<div ng-show="char.showSkills">

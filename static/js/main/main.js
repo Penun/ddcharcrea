@@ -28,13 +28,14 @@
 				};
 				$http.post("/characters/details", sendData).then(function(data){
 					if (data.data.success){
-						$scope.users[data.data.u_i].playchars[data.data.p_i] = data.data.playchar;
-						if (data.data.playchar.race_build != null && data.data.playchar.race_build.sub_race != null){
-							$scope.users[data.data.u_i].playchars[data.data.p_i].raceRef = data.data.playchar.race_build.sub_race.name;
+						$scope.users[data.data.u_i].playchars[data.data.p_i] = data.data.resp_obj.playchar;
+						if (data.data.resp_obj.playchar.race_build != null && data.data.resp_obj.playchar.race_build.sub_race != null){
+							$scope.users[data.data.u_i].playchars[data.data.p_i].raceRef = data.data.resp_obj.playchar.race_build.sub_race.name;
 						} else {
-							$scope.users[data.data.u_i].playchars[data.data.p_i].raceRef = data.data.playchar.race_build.race.name;
+							$scope.users[data.data.u_i].playchars[data.data.p_i].raceRef = data.data.resp_obj.playchar.race_build.race.name;
 						}
-						$scope.users[u_i].playchars[p_i].showDetails = true;
+						$scope.users[data.data.u_i].playchars[data.data.p_i].showDetails = true;
+						$scope.users[data.data.u_i].playchars[data.data.p_i].race_build.race.features = data.data.resp_obj.race_features;
 						$scope.CalculateAbilityBonuses(data.data.u_i, data.data.p_i);
 						$scope.CalculateAbilityMods(data.data.u_i, data.data.p_i);
 						$scope.CalculateProficiencyBonus(u_i, p_i);
@@ -64,6 +65,14 @@
 				$scope.users[u_i].playchars[p_i].showSkills = true;
 			} else {
 				$scope.users[u_i].playchars[p_i].showSkills = false;
+			}
+		};
+
+		this.RevealFeatures = function(u_i, p_i){
+			if ($scope.users[u_i].playchars[p_i].showFeatures == null || !$scope.users[u_i].playchars[p_i].showFeatures){
+				$scope.users[u_i].playchars[p_i].showFeatures = true;
+			} else {
+				$scope.users[u_i].playchars[p_i].showFeatures = false;
 			}
 		};
 
@@ -213,17 +222,18 @@
 				};
 				var sendData = {
 					"p_in": p_i,
+					"u_in": u_i,
 					"class_build_id": $scope.users[u_i].playchars[p_i].class_build.class_build_id
 				};
 				$http.post("/proficiencies/chosen", sendData).then(function(data){
 					if (data.data.success){
 						var t_cp = data.data.cb_chosen_proficiencies;
-						var t_sb = Object.keys($scope.users[u_i].playchars[data.data.p_in].showBonuses);
-						for (var i = 0; i < t_sb.length; i++){
-							for (var j = 0; j < t_cp.length; j++){
-								if (t_sb[i] == t_cp[j].class_proficiency.proficiency.s_code){
-									var n_stat = t_sb[i];
-									$scope.users[u_i].playchars[data.data.p_in].showBonuses[n_stat] = true;
+						var t_sb = Object.keys($scope.users[data.data.u_in].playchars[data.data.p_in].showBonuses);
+						for (var i = 0; i < t_cp.length; i++){
+							for (var j = 0; j < t_sb.length; j++){
+								if (t_sb[j] == t_cp[i].class_proficiency.proficiency.s_code){
+									var n_stat = t_sb[j];
+									$scope.users[data.data.u_in].playchars[data.data.p_in].showBonuses[n_stat] = true;
 									break;
 								}
 							}
@@ -232,23 +242,37 @@
 				});
 				sendData = {
 					"p_in": p_i,
+					"u_in": u_i,
 					"background_id": $scope.users[u_i].playchars[p_i].background_build.background.background_id
 				};
 				$http.post("/proficiencies/background", sendData).then(function(data){
 					if (data.data.success){
 						var t_bs = data.data.background_proficiencies;
-						var t_sb = Object.keys($scope.users[u_i].playchars[data.data.p_in].showBonuses);
-						for (var i = 0; i < t_sb.length; i++){
-							for (var j = 0; j < t_bs.length; j++){
-								if (t_sb[i] == t_bs[j].proficiency.s_code){
-									var n_stat = t_sb[i];
-									$scope.users[u_i].playchars[data.data.p_in].showBonuses[n_stat] = true;
+						var t_sb = Object.keys($scope.users[data.data.u_in].playchars[data.data.p_in].showBonuses);
+						for (var i = 0; i < t_bs.length; i++){
+							for (var j = 0; j < t_sb.length; j++){
+								if (t_sb[j] == t_bs[i].proficiency.s_code){
+									var n_stat = t_sb[j];
+									$scope.users[data.data.u_in].playchars[data.data.p_in].showBonuses[n_stat] = true;
 									break;
 								}
 							}
 						}
 					}
 				});
+				if ($scope.users[u_i].playchars[p_i].race_build.race.features != null) {
+					for (var i = 0; i < $scope.users[u_i].playchars[p_i].race_build.race.features.length; i++){
+						var feat = $scope.users[u_i].playchars[p_i].race_build.race.features[i];
+						if (feat.feature.options != null || feat.feature.options != ""){
+							var opts = JSON.parse(feat.feature.options);
+							for (var j = 0; j < opts.length; j++){
+								if (opts[j].type == "skill_prof"){
+									$scope.users[u_i].playchars[p_i].showBonuses[opts[j].option.prof] = true;
+								}
+							}
+						}
+					}
+				}
 			}
 		};
 

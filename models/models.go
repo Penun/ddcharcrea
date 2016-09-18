@@ -88,6 +88,13 @@ type Feature struct {
 	Feature_id int64 `orm:"pk" json:"feature_id"`
 	Name string `json:"name"`
 	Description string `json:"description"`
+	Options string `json:"options"`
+}
+
+type RaceFeature struct {
+	RaceFeature_id int64 `orm:"pk" json:"race_feature_id"`
+	Race *Race `orm:"rel(fk)" json:"race"`
+	Feature *Feature `orm:"rel(fk)" json:"feature"`
 }
 
 type Background struct {
@@ -160,6 +167,6 @@ type BackgroundBuild struct {
 func init() {
 	orm.RegisterModel(new(User), new(Playchar), new(Race), new(SubRace), new(Class), 
 		new(ClassPath), new(Proficiency), new(ClassProficiency), new(CbChosenProficiency), 
-		new(Feature), new(Background), new(BackgroundProficiency), new(Trait), new(Ideal),
-		new(Bond), new(Flaw), new(RaceBuild), new(ClassBuild), new(BackgroundBuild))
+		new(Feature), new(RaceFeature), new(Background), new(BackgroundProficiency), new(Trait), 
+		new(Ideal),	new(Bond), new(Flaw), new(RaceBuild), new(ClassBuild), new(BackgroundBuild))
 }
