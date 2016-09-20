@@ -65,8 +65,10 @@
 
 		this.SubmitRace = function(){
 			var allCheck = false;
+			var r_i = null;
 			for (var i = 0; i < $scope.races.length; i++){
 				if ($scope.races[i].race_id == this.char.race_build.race.race_id){
+					r_i = i;
 					this.char.race_build.race.race_id = Number(this.char.race_build.race.race_id);
 
 					this.char.race_build.age = Number(this.char.race_build.age);
@@ -141,8 +143,6 @@
 							$scope.InsStep++;
 						}
 					});
-				} else {
-					$scope.InsStep++;
 				}
 
 				if ($scope.skillProfs == null){
@@ -152,6 +152,20 @@
 						}
 					});
 				}
+
+				if ($scope.races[r_i].features == null){
+					var sendData = {
+						"r_in": r_i,
+						"r_id": $scope.races[r_i].race_id
+					};
+					$http.post("/races/features", sendData).then(function(data){
+						if (data.data.success){
+							$scope.races[data.data.r_in].features = data.data.features;
+						}
+					});
+				}
+
+				$scope.InsStep++;
 			} else {
 				alert("Oh @#$%#@!! I'm Broken!! YOU STUPID ASS MONKEY!!!");
 			}
@@ -185,12 +199,6 @@
 			}
 
 			if (allCheck){
-				if (this.chosenProfs.length	!= this.skillCap){
-					allCheck = false;
-				}
-			}
-
-			if (allCheck){
 				if ($scope.BGs == null){
 					$http.get("/backgrounds/list").then(function(data){
 						if (data.data.success){
@@ -208,17 +216,50 @@
 
 		this.SubmitBG = function(){
 			this.char.background_build.background.background_id = Number(this.char.background_build.background.background_id);
+
+			var c_i = null;
+
+			for (var i = 0; i < $scope.ch_classes.length; i++){
+				if ($scope.ch_classes[i].class_id == this.char.class_build.class.class_id){
+					c_i = i;
+					break;
+				}
+			}
+
+			this.skillCap = $scope.ch_classes[c_i].skill_profs;
+
+			if ($scope.ch_classes[c_i].skillProfs == null){
+				var sendData = {
+					"c_in": c_i,
+					"c_id": $scope.ch_classes[c_i].class_id
+				};
+				$http.post("/proficiencies/class", sendData).then(function(data){
+					if (data.data.success){
+						$scope.ch_classes[data.data.c_in].skillProfs = data.data.class_profs;
+						$scope.GenerateCurClassProfs(data.data.c_in);
+					}
+				});
+			} else {
+				$scope.GenerateCurClassProfs(c_i);
+			}
+
 			$scope.InsStep++;
 		};
 
-		this.SaveChar = function(step){
-			if (step == 5){
+		this.SaveChar = function(){
+			if ($scope.InsStep == 5){
 				this.char.is_partial = false;
 			}
 
 			for (var i = 0; i < this.chosenProfs.length; i++){
 				this.chosenProfs[i] = Number(this.chosenProfs[i]);
 			}
+
+//			if (allCheck){
+//				if (this.chosenProfs.length	!= this.skillCap){
+//					allCheck = false;
+//				}
+//			}
 
 			var sendData = {
 				"playchar": this.char,
@@ -305,48 +346,8 @@
 			delete this.char.class_build.class_path;
 			this.RevealClassPath(c_i);
 			this.HideOtherClassPaths(c_i);
-			this.skillCap = $scope.ch_classes[c_i].skill_profs;
 			this.curClassIndex = c_i;
 
-			if ($scope.ch_classes[c_i].skillProfs == null){
-				var sendData = {
-					"c_in": c_i,
-					"c_id": $scope.ch_classes[c_i].class_id
-				};
-				$http.post("/proficiencies/class", sendData).then(function(data){
-					if (data.data.success){
-						$scope.ch_classes[data.data.c_in].skillProfs = data.data.class_profs;
-
-						$scope.curClassProfs = [];
-						for (var i = 0; i < $scope.ch_classes[data.data.c_in].skillProfs.length; i++){
-							for (var j = 0; j < $scope.skillProfs.length; j++){
-								if ($scope.ch_classes[data.data.c_in].skillProfs[i].proficiency.proficiency_id == $scope.skillProfs[j].proficiency_id){
-									var tempClassProf = {
-										"class_prof_id": $scope.ch_classes[data.data.c_in].skillProfs[i].class_proficiency_id,
-										"name": $scope.skillProfs[j].name
-									};
-									$scope.curClassProfs.push(tempClassProf);
-									break;
-								}
-							}
-						}
-					}
-				});
-			} else {
-				$scope.curClassProfs = [];
-				for (var i = 0; i < $scope.ch_classes[c_i].skillProfs.length; i++){
-					for (var j = 0; j < $scope.skillProfs.length; j++){
-						if ($scope.ch_classes[c_i].skillProfs[i].proficiency.proficiency_id == $scope.skillProfs[j].proficiency_id){
-							var tempClassProf = {
-								"class_prof_id": $scope.ch_classes[c_i].skillProfs[i].class_proficiency_id,
-								"name": $scope.skillProfs[j].name
-							};
-							$scope.curClassProfs.push(tempClassProf);
-							break;
-						}
-					}
-				}
-			}
 		};
 
 		this.RevealClassPath = function(c_i){
@@ -422,6 +423,22 @@
 
 		this.BackStep = function() {
 			$scope.InsStep--;
+		};
+
+		$scope.GenerateCurClassProfs = function(c_i){
+			$scope.curClassProfs = [];
+			for (var i = 0; i < $scope.ch_classes[c_i].skillProfs.length; i++){
+				for (var j = 0; j < $scope.skillProfs.length; j++){
+					if ($scope.ch_classes[c_i].skillProfs[i].proficiency.proficiency_id == $scope.skillProfs[j].proficiency_id){
+						var tempClassProf = {
+							"class_prof_id": $scope.ch_classes[c_i].skillProfs[i].class_proficiency_id,
+							"name": $scope.skillProfs[j].name
+						};
+						$scope.curClassProfs.push(tempClassProf);
+						break;
+					}
+				}
+			}	
 		};
 	}]);
 })();
