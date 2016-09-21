@@ -21,5 +21,5 @@
 			<option value="wis">Wisdom</option>
 		</select></p>
 	</div>
-	<p><button type="button" name="backButton" ng-click="chInCont.BackStep()">Back</button> --- <button type="submit" name="submit">Next</button></p>
+	<p><button type="button" name="backButton" ng-click="chInCont.BackStep()">Back</button> --- <button type="submit" name="submit" ng-show="insCharRace.$valid">Next</button></p>
 </form>

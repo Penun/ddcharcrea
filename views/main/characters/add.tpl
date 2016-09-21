@@ -15,3 +15,4 @@
 		{{template "main/characters/rev_ins.tpl"}}
 	</div>
 </div>
+<button type="button" name="cancel" ng-click="mainCont.CloseOverScreen()">X</button>

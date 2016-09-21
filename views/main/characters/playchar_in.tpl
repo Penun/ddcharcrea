@@ -14,5 +14,5 @@
 	<option value="f">F</option>
 </select>
 </p>
-<p><button type="submit" name="submit">Next</button><p>
+<p><button type="submit" name="submit" ng-show="insCharDet.$valid">Next</button><p>
 </form>

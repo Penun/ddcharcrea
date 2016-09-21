@@ -1,7 +1,7 @@
 (function(){
 	var app = angular.module('ddchar_main', ['ddchar_characters']);
 	app.controller('mainController', ['$http', '$scope', function($http, $scope){
-		this.overScreen = 0;
+		$scope.overScreen = 0;
 		$scope.races = null;
 
 		angular.element(document).ready(function(){
@@ -300,11 +300,15 @@
 		};
 
 		this.AddChar = function(){
-			this.overScreen = 1;
+			$scope.overScreen = 1;
+		};
+
+		this.CloseOverScreen = function(){
+			$scope.overScreen = 0;
 		};
 
 		this.CurOverScreen = function(ovSc){
-			return this.overScreen === ovSc;
+			return $scope.overScreen === ovSc;
 		};
 	}]);
 })();
