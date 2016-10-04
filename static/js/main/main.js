@@ -20,6 +20,7 @@
 		});
 
 		this.RevealDetails = function(u_i, p_i){
+			this.overScreen = 1;
 			if ($scope.users[u_i].playchars[p_i].showDetails == null){
 				sendData = {
 					"playchar_id": $scope.users[u_i].playchars[p_i].playchar_id,
@@ -300,7 +301,7 @@
 		};
 
 		this.AddChar = function(){
-			$scope.overScreen = 1;
+			$scope.overScreen = 2;
 		};
 
 		this.CloseOverScreen = function(){

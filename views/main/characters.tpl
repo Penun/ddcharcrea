@@ -1,7 +1,10 @@
-<div ng-repeat="(c_ind, char) in user.playchars">
-	<div class="d_list">
+<ul>
+	<li ng-repeat="(c_ind, char) in user.playchars">
 		<div ng-click="mainCont.RevealDetails(ind, c_ind)">
-			<div class="d_list_i"><b><h3><i>{{"{{char.name}}"}}</i></h3>  ---  Lvl: {{"{{char.level}}"}}</b></div>
+			<span>
+				<h3><b><i>{{"{{char.name}}"}}<b/></i></h3>
+				<b>Lvl: {{"{{char.level}}"}}</b>
+			</span>
 		</div>
 		<br />
 		<div ng-show="char.showDetails">
@@ -68,5 +71,5 @@
 				</div>
 			</div><br />
 		</div>
-	</div>
-</div>
+	</li>
+</ul>

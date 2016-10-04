@@ -4,7 +4,7 @@
 		<button type="button" ng-click="locM.Logout()">Logout</button>
 		<div id="charTab" ng-show="locM.isSelected(1)" ng-controller="mainController as mainCont">
 			{{template "main/users.tpl"}}
-			<div ng-show="mainCont.CurOverScreen(1)">
+			<div ng-show="mainCont.CurOverScreen(2)">
 				{{template "main/characters/add.tpl"}}
 			</div>
 		</div>
