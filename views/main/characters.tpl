@@ -2,7 +2,7 @@
 	<li ng-repeat="(c_ind, char) in user.playchars">
 		<div ng-click="mainCont.RevealDetails(ind, c_ind)">
 			<span>
-				<h3><b><i>{{"{{char.name}}"}}<b/></i></h3>
+				<h3><b><i>{{"{{char.name}}"}}</b></i></h3>
 				<b>Lvl: {{"{{char.level}}"}}</b>
 			</span>
 		</div>

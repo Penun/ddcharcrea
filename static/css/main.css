@@ -7,10 +7,24 @@ body {
 }
 
 .mainDiv {
-	width: 90%;
-	max-width: 90vw;
-	margin: 13vw 5vw auto 5vw;
-	position: absolute;
+	
+}
+
+.headDiv {
+	padding: 1%;
+    position: relative;
+    height: 50px;
+}
+
+button {
+	color: #FFC22E;
+    background-color: #493E25;
+    border-style: ridge;
+    border-width: thick;
+    border-color: #FFC22E;
+    border-radius: 35%;
+    height: 50px;
+    width: 100px;
 }
 
 ul {
@@ -30,6 +44,11 @@ li {
 
 span {
 	width: 100%;
+}
+
+.fright {
+	position: absolute;
+    right: 5%;
 }
 
 .overScreen {

@@ -25,7 +25,7 @@ func (this *LoginController) Get() {
 		this.Redirect("/main", 302)
 	}
 	hasher := sha1.New()
-	io.WriteString(hasher, "test")
+	io.WriteString(hasher, "ddcharcrea")
 	io.WriteString(hasher, beego.AppConfig.String("salt"))
 	u_pass := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
 	fmt.Println(u_pass)
