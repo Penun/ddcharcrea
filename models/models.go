@@ -69,7 +69,7 @@ type Proficiency struct {
 	Proficiency_id int64 `orm:"pk" json:"proficiency_id"`
 	Name string `json:"name"`
 	Type string `json:"type"`
-	S_Code string `json:"s_code"`
+	S_code string `json:"s_code"`
 }
 
 type ClassProficiency struct {
