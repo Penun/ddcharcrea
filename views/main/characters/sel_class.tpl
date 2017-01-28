@@ -1,4 +1,4 @@
-<h3>Select Class:</h3>
+<h1>Select Class:</h1>
 <form id="insCharClass" name="insCharClass" ng-submit="insCharClass.$valid && chInCont.SubmitClass()" novalidate>
 	<div ng-repeat="(c_i, ch_class) in ch_classes">
 		<div><span><input type="radio" name="classSel" value="{{"{{ch_class.class_id}}"}}" ng-model="chInCont.char.class_build.class.class_id" ng-change="chInCont.UpdateSelClass(c_i)" required/>{{"{{ch_class.name}}"}}</span></div>

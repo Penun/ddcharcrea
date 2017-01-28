@@ -1,3 +1,4 @@
+<h1>Remaing Proficiencies</h1>
 <form name="savChar" id="savChar" ng-submit="chInCont.SaveChar()" novalidate>
 	<p><label for="classProfs">Select ({{"{{chInCont.skillCap}}"}}) Class Skill Proficiencies: </label><br />
 		<select name="classProfs" id="classProfs" ng-model="chInCont.chosenProfs" ng-change="chInCont.ClassProfsCheck()" multiple required>

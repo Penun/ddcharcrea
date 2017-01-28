@@ -27,7 +27,7 @@ body {
 
 .right_page_col {
 	float: right;
-	width: 45%;
+	width: 47%;
 }
 
 .right_page {
@@ -56,6 +56,8 @@ body {
 
 h2 {
 	padding-left: 1em;
+	margin-bottom: .2em;
+	font-family: 'Metamorphous', cursive;
 }
 
 hr {
@@ -67,6 +69,10 @@ hr {
 	border-style: inset;
     border-width: 1px;
     border-color: #796432;
+}
+
+.subOption {
+	padding-left: 2em;
 }
 
 button {
@@ -110,6 +116,101 @@ li {
 
 span {
 	width: 100%;
+}
+
+p {
+	width: 60%;
+	height: 30px;
+	text-align: center;
+}
+
+p.underline {
+	background-image: url("../img/pencil_underline.png");
+    background-repeat: no-repeat;
+    background-size: 70% 45%;
+    background-position: right bottom;
+}
+
+div.check{
+	display: block;
+	position: absolute;
+	border: 5px solid #493E25;
+	border-radius: 100%;
+	height: 25px;
+	width: 25px;
+	top: 45%;
+	left: 20px;
+	z-index: 5;
+	transition: border .25s linear;
+	-webkit-transition: border .25s linear;
+}
+
+div.check::before {
+	display: block;
+	position: absolute;
+	content: '';
+	border-radius: 100%;
+	height: 15px;
+	width: 15px;
+	top: 5px;
+	left: 5px;
+	margin: auto;
+	transition: background 0.25s linear;
+	-webkit-transition: background 0.25s linear;
+}
+
+label{
+	position: relative;
+	font-weight: 300;
+	font-size: 1.35em;
+	margin: 5px auto;
+	height: 20px;
+	z-index: 9;
+	cursor: pointer;
+	font-family: 'Architects Daughter', cursive;
+	-webkit-transition: all 0.25s linear;
+}
+
+div.radIO label {
+	display: block;
+	padding: 5px 0 5px 80px;
+}
+
+div.radIO {
+	position: relative;
+}
+
+div.radIO:hover .check {
+	border: 5px solid #AAA539;
+} 
+
+div.radIO:hover label{
+	color: #AAA539;
+}
+
+input {
+	background: transparent;
+	color: #493E25;
+	border: none;
+	text-align: center;
+	min-width: 150px;
+	font-family: 'Kalam', cursive;
+}
+
+input[type=radio]{
+	visibility: hidden;
+}
+
+input[type=radio]:checked ~ .check {
+	border: 5px solid #DB7237;
+}
+
+input[type=radio]:checked ~ .check::before{
+	background: #DB7237;
+}
+
+input[type=radio]:checked ~ label{
+	color: #DB7237;
 }
 
 .fright {

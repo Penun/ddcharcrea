@@ -1,4 +1,4 @@
-<h3>Select Background:</h3>
+<h1>Select Background:</h1>
 <form id="insCharBG" name="insCharBG" ng-submit="insCharBG.$valid && chInCont.SubmitBG()" novalidate>
 	<div ng-repeat="(b_i, BG) in BGs">
 		<div><span><input type="radio" name="BGSel" value="{{"{{BG.background_id}}"}}" ng-model="chInCont.char.background_build.background.background_id" ng-change="chInCont.UpdateSelBG(b_i)"required/>{{"{{BG.name}}"}}</span></div>

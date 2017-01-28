@@ -260,7 +260,7 @@
 						}
 					}
 				});
-				$scope.$parent.overScreen = 0;
+				$scope.$parent.overScreen = 1;
 				this.char = {
 					"is_partial": true
 				};
