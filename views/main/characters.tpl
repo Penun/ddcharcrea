@@ -1,5 +1,6 @@
 <div ng-show="mainCont.ShowCharDetails()" class="right_page">
 	<div><b>{{"{{chara.class_build.class.name}}"}} <span ng-show="chara.level >= 3">({{"{{chara.class_build.class_path.name}}"}})</span></b></div>
+	<br />
 	<div class="d_list_i"><b>{{"{{chara.raceRef}}"}}</b></div>
 	<br />
 	<div class="d_list_i"><b>HP</b>: {{"{{chara.hit_points}}"}}</div>

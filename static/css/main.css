@@ -1,13 +1,16 @@
 body {
 	background-color: #202020;
-	color: #AA8939;
+	color: #493E25;
 	width: 100vw;
 	max-width: 1366px;
 	margin: auto;
 }
 
 .mainDiv {
-	
+	background-image: url("../img/pages_1.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;	
+	height: 80vh;
 }
 
 .headDiv {
@@ -18,17 +21,37 @@ body {
 
 .left_page_col {
 	float: left;
-	width: 50%;
+	margin-left: 1em;
+	width: 40%;
 }
 
 .right_page_col {
 	float: right;
-	width: 50%;
+	width: 45%;
 }
 
 .right_page {
 	margin-top: 1.5em;
 	padding-left: 2em;
+	overflow: auto;
+	height: 60vh;
+}
+
+.page {
+	margin-left: 7em;
+	margin-right: 3em;
+}
+
+.top_space {
+	margin-top: 2em;
+}
+
+.sixty_he{
+	height: 65vh;
+    margin-top: 4vh;
+    float: left;
+    width: 100%;
+    position: relative;
 }
 
 h2 {
@@ -40,6 +63,10 @@ hr {
 	margin-bottom: 0.5em;
 	margin-left: 0.75em;
 	margin-right: 0.75em;
+	width: 68%;
+	border-style: inset;
+    border-width: 1px;
+    border-color: #796432;
 }
 
 button {
@@ -51,6 +78,19 @@ button {
     border-radius: 35%;
     height: 50px;
     width: 100px;
+}
+
+.char_add_butt{
+	height: 25px;
+    width: 40px;
+    float: right;
+    margin-top: 1.5em;
+    margin-right: 1em;
+}
+
+.cancel_butt{
+	position: absolute;
+	bottom: 0px;
 }
 
 ul {
