@@ -16,6 +16,32 @@ body {
     height: 50px;
 }
 
+.left_page_col {
+	float: left;
+	width: 50%;
+}
+
+.right_page_col {
+	float: right;
+	width: 50%;
+}
+
+.right_page {
+	margin-top: 1.5em;
+	padding-left: 2em;
+}
+
+h2 {
+	padding-left: 1em;
+}
+
+hr {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	margin-left: 0.75em;
+	margin-right: 0.75em;
+}
+
 button {
 	color: #FFC22E;
     background-color: #493E25;
@@ -37,7 +63,7 @@ ul {
 
 li {
 	width: 100%;
-	text-align: center;
+	padding-left: 2em;
     position: relative;
     display: inline-flex;
 }

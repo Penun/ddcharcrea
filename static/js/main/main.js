@@ -3,6 +3,11 @@
 	app.controller('mainController', ['$http', '$scope', function($http, $scope){
 		$scope.overScreen = 0;
 		$scope.races = null;
+		$scope.showChars = false;
+		$scope.showDetails = false;
+		$scope.chara = null;
+		this.set_u_id = -1;
+		this.set_p_id = -1;
 
 		angular.element(document).ready(function(){
 			$http.get("/users").then(function(data){
@@ -19,12 +24,12 @@
     		});
 		});
 
-		this.RevealDetails = function(u_i, p_i){
+		this.RevealDetails = function(p_i){
 			this.overScreen = 1;
-			if ($scope.users[u_i].playchars[p_i].showDetails == null){
+			if ($scope.users[this.set_u_id].playchars[p_i].fetchDetails == null){
 				sendData = {
-					"playchar_id": $scope.users[u_i].playchars[p_i].playchar_id,
-					"u_i": u_i,
+					"playchar_id": $scope.users[this.set_u_id].playchars[p_i].playchar_id,
+					"u_i": this.set_u_id,
 					"p_i": p_i
 				};
 				$http.post("/characters/details", sendData).then(function(data){
@@ -35,53 +40,66 @@
 						} else {
 							$scope.users[data.data.u_i].playchars[data.data.p_i].raceRef = data.data.resp_obj.playchar.race_build.race.name;
 						}
-						$scope.users[data.data.u_i].playchars[data.data.p_i].showDetails = true;
 						$scope.users[data.data.u_i].playchars[data.data.p_i].race_build.race.features = data.data.resp_obj.race_features;
+						$scope.users[data.data.u_i].playchars[data.data.p_i].fetchDetails = true;
 						$scope.CalculateAbilityBonuses(data.data.u_i, data.data.p_i);
 						$scope.CalculateAbilityMods(data.data.u_i, data.data.p_i);
-						$scope.CalculateProficiencyBonus(u_i, p_i);
-
+						$scope.CalculateProficiencyBonus(data.data.u_i, data.data.p_i);
+						$scope.showDetails = true;
+						$scope.chara = $scope.users[data.data.u_i].playchars[data.data.p_i];
 					}
 				});
-			} else  if ($scope.users[u_i].playchars[p_i].showDetails) {
-				$scope.users[u_i].playchars[p_i].showDetails = false;
+			} else if ($scope.showDetails) {
+				if ($scope.chara.playchar_id == $scope.users[this.set_u_id].playchars[p_i].playchar_id){
+					$scope.showDetails = false;
+				} else {
+					$scope.chara = $scope.users[this.set_u_id].playchars[p_i];
+				}
 			} else {
-				$scope.users[u_i].playchars[p_i].showDetails = true;				
+				$scope.showDetails = true;
+				$scope.chara = $scope.users[this.set_u_id].playchars[p_i];
 			}
+			this.set_p_id = p_i;
 		};
 
-		this.RevealInfo = function(u_i, p_i){
-			if ($scope.users[u_i].playchars[p_i].showInfo == null || !$scope.users[u_i].playchars[p_i].showInfo){
-				$scope.users[u_i].playchars[p_i].showInfo = true;
+		this.RevealInfo = function(){
+			if ($scope.users[this.set_u_id].playchars[this.set_p_id].showInfo == null || !$scope.users[this.set_u_id].playchars[this.set_p_id].showInfo){
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showInfo = true;
 			} else {
-				$scope.users[u_i].playchars[p_i].showInfo = false;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showInfo = false;
 			}
 		}; 
 
-		this.RevealSkills = function(u_i, p_i){
-			if ($scope.users[u_i].playchars[p_i].showDetails && ($scope.users[u_i].playchars[p_i].showSkills == null || !$scope.users[u_i].playchars[p_i].showSkills)){
-				if ($scope.users[u_i].playchars[p_i].showSkills == null){
-					this.ApplySkillBonuses(u_i, p_i);
+		this.RevealSkills = function(){
+			if ($scope.showDetails && ($scope.users[this.set_u_id].playchars[this.set_p_id].showSkills == null || !$scope.users[this.set_u_id].playchars[this.set_p_id].showSkills)){
+				if ($scope.users[this.set_u_id].playchars[this.set_p_id].showSkills == null){
+					this.ApplySkillBonuses(this.set_u_id, this.set_p_id);
 				}
-				$scope.users[u_i].playchars[p_i].showSkills = true;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showSkills = true;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showFeatures = false;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showBackground = false;
 			} else {
-				$scope.users[u_i].playchars[p_i].showSkills = false;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showSkills = false;
 			}
 		};
 
-		this.RevealFeatures = function(u_i, p_i){
-			if ($scope.users[u_i].playchars[p_i].showFeatures == null || !$scope.users[u_i].playchars[p_i].showFeatures){
-				$scope.users[u_i].playchars[p_i].showFeatures = true;
+		this.RevealFeatures = function(){
+			if ($scope.users[this.set_u_id].playchars[this.set_p_id].showFeatures == null || !$scope.users[this.set_u_id].playchars[this.set_p_id].showFeatures){
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showFeatures = true;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showSkills = false;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showBackground = false;
 			} else {
-				$scope.users[u_i].playchars[p_i].showFeatures = false;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showFeatures = false;
 			}
 		};
 
-		this.RevealBackground = function(u_i, p_i){
-			if ($scope.users[u_i].playchars[p_i].showBackground == null || !$scope.users[u_i].playchars[p_i].showBackground){
-				$scope.users[u_i].playchars[p_i].showBackground = true;
+		this.RevealBackground = function(){
+			if ($scope.users[this.set_u_id].playchars[this.set_p_id].showBackground == null || !$scope.users[this.set_u_id].playchars[this.set_p_id].showBackground){
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showBackground = true;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showSkills = false;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showFeatures = false;
 			} else {
-				$scope.users[u_i].playchars[p_i].showBackground = false;
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showBackground = false;
 			}
 		};
 
@@ -278,7 +296,8 @@
 		};
 
 		this.RevealCharacters = function(u_i){
-			if ($scope.users[u_i].showChars == null){
+			$scope.showDetails = false;
+			if ($scope.users[u_i].fetched == null){
 				sendData = {
 					"user_id": $scope.users[u_i].User_id
 				}
@@ -286,18 +305,33 @@
 					if (data.data.success){
 						for (var i = 0; i < $scope.users.length; i++){
 							if ($scope.users[i].User_id == data.data.user_id){
-								$scope.users[i].playchars = data.data.playchars;
-								$scope.users[i].showChars = true;
+								$scope.curChars = $scope.users[i].playchars = data.data.playchars;
+								$scope.users[i].fetched = true;
+								$scope.showChars = true;
 								break;
 							}
 						}
 					}
 				});
-			} else if ($scope.users[u_i].showChars) {
-				$scope.users[u_i].showChars = false;
+			} else if ($scope.showChars) {
+				if (this.set_u_id == u_i){
+					$scope.showChars = false;
+				} else {
+					$scope.curChars = $scope.users[u_i].playchars;
+				}
 			} else {
-				$scope.users[u_i].showChars = true;
+				$scope.showChars = true;
+				$scope.curChars = $scope.users[u_i].playchars;
 			}
+			this.set_u_id = u_i;
+		};
+
+		this.ShowChars = function(){
+			return $scope.showChars;
+		};
+
+		this.ShowCharDetails = function(){
+			return $scope.showDetails;
 		};
 
 		this.AddChar = function(){
