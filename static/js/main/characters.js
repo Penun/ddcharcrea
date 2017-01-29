@@ -7,6 +7,9 @@
 		this.chosenProfs = {};
 		this.halfElfAbil = {};
 		$scope.InsStep = 1;
+		this.submitText = "Next";
+		this.pages = {};
+		this.pages.insCharDet = {};
 
 		this.CurStep = function(cuSt){
 			return $scope.InsStep === cuSt;
@@ -66,28 +69,6 @@
 		this.SubmitRace = function(){
 			var allCheck = false;
 			this.char.race_build.race.race_id = Number(this.char.race_build.race.race_id);
-			this.char.race_build.age = Number(this.char.race_build.age);
-			if (this.char.race_build.age > $scope.races[this.curRaceIndex].max_age){
-				this.char.race_build.age = $scope.races[this.curRaceIndex].max_age;
-			} 
-
-			this.char.race_build.weight = Number(this.char.race_build.weight);
-			if (this.char.race_build.weight > $scope.races[this.curRaceIndex].max_weight){
-				this.char.race_build.weight = $scope.races[this.curRaceIndex].max_weight;
-			} else if (this.char.race_build.weight < $scope.races[this.curRaceIndex].min_weight){
-				this.char.race_build.weight = $scope.races[this.curRaceIndex].min_weight;
-			}
-
-			this.char.race_build.height_in = (this.chHeFe * 12) + Number(this.chHeIn);
-			if (this.char.race_build.height_in > $scope.races[this.curRaceIndex].max_height_in){
-				this.char.race_build.height_in = $scope.races[this.curRaceIndex].max_height_in;
-				this.chHeFe = Math.floor($scope.races[this.curRaceIndex].max_height_in / 12);
-				this.chHeIn = $scope.races[this.curRaceIndex].max_height_in % 12;
-			} else if (this.char.race_build.height_in < $scope.races[this.curRaceIndex].min_height_in){
-				this.char.race_build.height_in = $scope.races[this.curRaceIndex].min_height_in;
-				this.chHeFe = Math.floor($scope.races[this.curRaceIndex].min_height_in / 12);
-				this.chHeIn = $scope.races[this.curRaceIndex].min_height_in % 12;
-			}
 
 			if ($scope.races[this.curRaceIndex].sub_races != null){
 				for (var j = 0; j < $scope.races[this.curRaceIndex].sub_races.length; j++){
@@ -100,31 +81,6 @@
 			} else {
 				delete this.char.race_build.sub_race;
 				allCheck = true;
-			}
-
-			if (allCheck){
-				if (this.char.race_build.race.race_id == 7){
-					if (this.halfElfAbil.length != 2){
-						allCheck = false;
-					} else {
-						var options = [];
-
-						for (var i = 0; i < this.halfElfAbil.length; i++){
-							var abil_mod = {
-								"type": "ability_mod",
-								"option": {
-									"mod": this.halfElfAbil[i],
-									"mod_val": 1
-								}
-							};
-							options.push(abil_mod);
-						}
-
-						this.char.race_build.options = JSON.stringify(options);
-					}
-				} else {
-					delete this.char.race_build.options;
-				}
 			}
 
 			if (allCheck){
@@ -166,7 +122,62 @@
 			}
 		};
 
-		this.SubmitClass = function() {
+		this.SubmitRaceInfo = function(){
+			var allCheck = true;
+			this.char.race_build.age = Number(this.char.race_build.age);
+			if (this.char.race_build.age > $scope.races[this.curRaceIndex].max_age){
+				this.char.race_build.age = $scope.races[this.curRaceIndex].max_age;
+			} 
+
+			this.char.race_build.weight = Number(this.char.race_build.weight);
+			if (this.char.race_build.weight > $scope.races[this.curRaceIndex].max_weight){
+				this.char.race_build.weight = $scope.races[this.curRaceIndex].max_weight;
+			} else if (this.char.race_build.weight < $scope.races[this.curRaceIndex].min_weight){
+				this.char.race_build.weight = $scope.races[this.curRaceIndex].min_weight;
+			}
+
+			this.char.race_build.height_in = (this.chHeFe * 12) + Number(this.chHeIn);
+			if (this.char.race_build.height_in > $scope.races[this.curRaceIndex].max_height_in){
+				this.char.race_build.height_in = $scope.races[this.curRaceIndex].max_height_in;
+				this.chHeFe = Math.floor($scope.races[this.curRaceIndex].max_height_in / 12);
+				this.chHeIn = $scope.races[this.curRaceIndex].max_height_in % 12;
+			} else if (this.char.race_build.height_in < $scope.races[this.curRaceIndex].min_height_in){
+				this.char.race_build.height_in = $scope.races[this.curRaceIndex].min_height_in;
+				this.chHeFe = Math.floor($scope.races[this.curRaceIndex].min_height_in / 12);
+				this.chHeIn = $scope.races[this.curRaceIndex].min_height_in % 12;
+			}
+
+			if (allCheck){
+				if (this.char.race_build.race.race_id == 7){
+					if (this.halfElfAbil.length != 2){
+						allCheck = false;
+					} else {
+						var options = [];
+
+						for (var i = 0; i < this.halfElfAbil.length; i++){
+							var abil_mod = {
+								"type": "ability_mod",
+								"option": {
+									"mod": this.halfElfAbil[i],
+									"mod_val": 1
+								}
+							};
+							options.push(abil_mod);
+						}
+
+						this.char.race_build.options = JSON.stringify(options);
+					}
+				} else {
+					delete this.char.race_build.options;
+				}
+
+				if (allCheck){
+					$scope.InsStep++;
+				}
+			}
+		};
+
+		this.SubmitClass = function(){
 			var allCheck = false;
 			this.char.class_build.class.class_id = Number(this.char.class_build.class.class_id);
 			
@@ -313,7 +324,9 @@
 					}
 				});
 			} else {
-				$scope.races[r_i].showSubs = true;
+				if ($scope.races[r_i].sub_races != null && $scope.races[r_i].sub_races.length > 0){
+					$scope.races[r_i].showSubs = true;
+				}
 			}
 		};
 

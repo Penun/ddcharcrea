@@ -47,7 +47,7 @@ body {
 }
 
 .sixty_he{
-	height: 65vh;
+	height: 69vh;
     margin-top: 4vh;
     float: left;
     width: 100%;
@@ -86,7 +86,7 @@ button {
     width: 100px;
 }
 
-.char_add_butt{
+.char_add_butt {
 	height: 25px;
     width: 40px;
     float: right;
@@ -94,9 +94,21 @@ button {
     margin-right: 1em;
 }
 
-.cancel_butt{
+.cancel_butt {
 	position: absolute;
 	bottom: 0px;
+}
+
+.back_butt {
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+}
+
+.next_butt {
+	position: absolute;
+	right: 35px;
+	bottom: 0;
 }
 
 ul {
@@ -116,11 +128,11 @@ li {
 
 span {
 	width: 100%;
+	display: block;
 }
 
 p {
-	width: 60%;
-	height: 30px;
+	width: 75%;
 	text-align: center;
 }
 
@@ -128,7 +140,16 @@ p.underline {
 	background-image: url("../img/pencil_underline.png");
     background-repeat: no-repeat;
     background-size: 70% 45%;
+    height: 30px;
     background-position: right bottom;
+}
+
+p.underline_center {
+	background-image: url("../img/pencil_underline.png");
+    background-repeat: no-repeat;
+    background-size: 70% 20%;
+    background-position: center bottom;
+    padding-bottom: 8px;
 }
 
 div.check{
@@ -157,6 +178,19 @@ div.check::before {
 	margin: auto;
 	transition: background 0.25s linear;
 	-webkit-transition: background 0.25s linear;
+}
+
+span.left_label {
+	width: 33%;
+	display: block;
+	float: left;
+	text-align: right;
+}
+
+span.right_input {
+	width: 65%;
+	display: block;
+	float: right;
 }
 
 label{
@@ -188,13 +222,25 @@ div.radIO:hover label{
 	color: #AAA539;
 }
 
+select {
+	background: transparent;
+	color: #493E25;
+	border: none;
+	text-align: center;
+	min-width: 200px;
+	font-family: 'Kalam', cursive;
+}
+
 input {
 	background: transparent;
 	color: #493E25;
 	border: none;
 	text-align: center;
-	min-width: 150px;
 	font-family: 'Kalam', cursive;
+}
+
+input.charInf {
+	min-width: 200px;
 }
 
 input[type=radio]{
