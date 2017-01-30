@@ -131,6 +131,10 @@ span {
 	display: block;
 }
 
+span.top_pad {
+	padding-top: 15px
+}
+
 p {
 	width: 75%;
 	text-align: center;
@@ -229,6 +233,7 @@ select {
 	text-align: center;
 	min-width: 200px;
 	font-family: 'Kalam', cursive;
+	overflow: hidden;
 }
 
 input {

@@ -8,13 +8,17 @@
 		$scope.chara = null;
 		this.set_u_id = -1;
 		this.set_p_id = -1;
-		this.cur_us = -1;
 
 		angular.element(document).ready(function(){
 			$http.get("/users").then(function(data){
     			if (data.data.success){
     				$scope.users = data.data.users;
-    				this.cur_us = data.data.cur_us;
+    				for (var i = 0; i < $scope.users.length; i++){
+    					if ($scope.users[i].User_id == data.data.cur_us){	
+    						$scope.curUs_in = i;
+    						break;
+    					}
+    				}
     			}
     		});
 		});

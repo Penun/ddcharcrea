@@ -19,7 +19,7 @@
 	</div>
 	<div ng-show="chInCont.char.race_build.race.race_id == 7">
 		<p><span><label for="halfElfAbil">Select (2):</label></span><span>
-		<select name="halfElfAbil" id="halfElfAbil" ng-model="chInCont.halfElfAbil" multiple>
+		<select name="halfElfAbil" id="halfElfAbil" size="5" ng-model="chInCont.halfElfAbil" multiple>
 			<option value="str">Strength</option>
 			<option value="dex">Dexterity</option>
 			<option value="con">Constitution</option>

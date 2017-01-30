@@ -259,15 +259,10 @@
 				};
 				$http.post("/characters/insert", sendData).then(function(data){
 					if (data.data.success){
-						for (var i = 0; i < $scope.users.length; i++){
-							if ($scope.users[i].isCur){
-								if ($scope.users[i].playchars != null){
-									$scope.users[i].playchars.push(data.data.playchar)
-								} else {
-									$scope.users[i].playchars = [data.data.playchar];
-								}
-								break;
-							}
+						if ($scope.users[$scope.curUs_in].playchars != null){
+							$scope.users[$scope.curUs_in].playchars.push(data.data.playchar)
+						} else {
+							$scope.users[$scope.curUs_in].playchars = [data.data.playchar];
 						}
 					}
 				});
