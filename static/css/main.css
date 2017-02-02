@@ -19,22 +19,37 @@ body {
     height: 50px;
 }
 
+.left_page {
+	position: relative;
+}
+
 .left_page_col {
 	float: left;
 	margin-left: 1em;
 	width: 40%;
+	overflow: auto;
 }
 
-.right_page_col {
+.left_page_colr {
 	float: right;
 	width: 47%;
 }
 
+.left_page_colr_in {
+	overflow: auto;
+	height: 60vh;
+}
+
 .right_page {
+	float: right;
+	width: 47%;
+}
+
+.right_page_in {
 	margin-top: 1.5em;
 	padding-left: 2em;
 	overflow: auto;
-	height: 60vh;
+	height: 54vh;
 }
 
 .page {
@@ -60,17 +75,6 @@ h2 {
 	font-family: 'Metamorphous', cursive;
 }
 
-hr {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-	margin-left: 0.75em;
-	margin-right: 0.75em;
-	width: 68%;
-	border-style: inset;
-    border-width: 1px;
-    border-color: #796432;
-}
-
 .subOption {
 	padding-left: 2em;
 }
@@ -89,9 +93,9 @@ button {
 .char_add_butt {
 	height: 25px;
     width: 40px;
-    float: right;
     margin-top: 1.5em;
-    margin-right: 1em;
+    position: absolute;
+    right: 0;
 }
 
 .cancel_butt {
@@ -121,7 +125,6 @@ ul {
 
 li {
 	width: 100%;
-	padding-left: 2em;
     position: relative;
     display: inline-flex;
 }
@@ -133,6 +136,11 @@ span {
 
 span.top_pad {
 	padding-top: 15px
+}
+
+span.char_right {
+	float: right;
+	padding-right: 16%;
 }
 
 p {
@@ -154,6 +162,15 @@ p.underline_center {
     background-size: 70% 20%;
     background-position: center bottom;
     padding-bottom: 8px;
+}
+
+img.p_underline {
+	width: 100%;
+}
+
+img.p_underline_f {
+	width: 100%;
+	height: 50%;
 }
 
 div.check{
@@ -195,6 +212,11 @@ span.right_input {
 	width: 65%;
 	display: block;
 	float: right;
+}
+
+span.reset {
+	display: initial;
+	width: auto;
 }
 
 label{
