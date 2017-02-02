@@ -21,7 +21,7 @@
 					<img src="static/img/pencil_underline.png" class="p_underline" />
 					</span>
 				</li>
-			<ul>
+			</ul>
 		</div>
 		<button class="char_add_butt" ng-click="mainCont.AddChar()">+</button>
 	</div>
