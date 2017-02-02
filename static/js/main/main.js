@@ -6,6 +6,8 @@
 		$scope.showChars = false;
 		$scope.showDetails = false;
 		$scope.chara = null;
+
+		// Both are actually indexes not ids
 		this.set_u_id = -1;
 		this.set_p_id = -1;
 
@@ -339,6 +341,21 @@
 		this.AddChar = function(){
 			$scope.overScreen = 2;
 		};
+
+		this.DeleteChar = function(){
+			$scope.delCharIn = this.set_p_id;
+			$scope.delCharUIn = this.set_u_id;
+			$scope.delChar = $scope.users[this.set_u_id].playchars[this.set_p_id];
+			$scope.overScreen = 3;
+		};
+
+		this.DeletableChar = function(us_id){
+			if ($scope.users != null && typeof($scope.users) != 'undefined'){
+				return $scope.users[$scope.curUs_in].User_id == us_id;
+			} else {
+				return false;
+			}
+		}
 
 		this.CloseOverScreen = function(){
 			$scope.overScreen = 1;

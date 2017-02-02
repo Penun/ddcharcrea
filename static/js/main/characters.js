@@ -434,7 +434,7 @@
 			}
 		};
 
-		this.BackStep = function() {
+		this.BackStep = function(){
 			$scope.InsStep--;
 		};
 
@@ -485,6 +485,33 @@
 					}
 				}
 			}
+		};
+	}]);
+
+	app.controller('charDeleteController', ['$http', '$scope', function($http, $scope){
+		this.DeleteChar = function(){
+			var sendData = {
+				"playchar_id": $scope.$parent.delChar.playchar_id,
+				"u_i": $scope.$parent.delCharUIn,
+				"p_i": $scope.$parent.delCharIn
+			};
+			$http.post("/characters/delete", sendData).then(function(data){
+				if (data.data.success){
+					$scope.users[data.data.u_i].playchars.splice(data.data.p_i, 1);
+					$scope.$parent.showDetails = false;
+				}
+			});
+			$scope.$parent.delCharIn = -1;
+			$scope.$parent.delCharUIn = -1;
+			$scope.$parent.delChar = {};
+			$scope.$parent.overScreen = 1;
+		};
+
+		this.Cancel = function(){
+			$scope.$parent.delCharIn = -1;
+			$scope.$parent.delCharUIn = -1;
+			$scope.$parent.delChar = {};
+			$scope.$parent.overScreen = 1;
 		};
 	}]);
 })();

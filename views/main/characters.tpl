@@ -61,4 +61,5 @@
 			<div><b>Flaw</b><span class="reset"> - {{"{{chara.background_build.flaw.description}}"}}</span></div>
 		</div>
 	</div><br />
+	<button type="button" name="delButton" ng-click="mainCont.DeleteChar()" ng-show="mainCont.DeletableChar(chara.user.user_id)" class="next_butt">Delete Character</button>
 </div>

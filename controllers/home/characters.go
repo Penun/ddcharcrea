@@ -4,7 +4,6 @@ import (
 	"github.com/Penun/ddcharcrea/models"
 	"github.com/astaxie/beego"
 	"encoding/json"
-	"fmt"
 )
 
 type CharacterController struct {
@@ -66,6 +65,13 @@ type InsDetResp struct {
 	Data models.Playchar `json:"playchar"`
 }
 
+type DelCharResp struct {
+	Success bool `json:"success"`
+	Error string `json:"error"`
+	Us_in int `json:"u_i"`
+	Pl_in int `json:"p_i"`
+}
+
 func (this *CharacterController)  GetCharList() {
 	user := this.GetSession("user")
 	if user != nil {
@@ -93,8 +99,12 @@ func (this *CharacterController)  GetCharDetails() {
 			resp.Success = true
 			var r_obj DetDataRespObj;
 			r_obj.Playchar = models.GetCharDetails_PlayCharId(cGetReq.Playchar_id)
-			r_obj.RaceFeatures = models.GetRaceFeatures(r_obj.Playchar.RaceBuild.Race.Race_id)
-			resp.Data = r_obj
+			if r_obj.Playchar.Playchar_id != 0 {
+				r_obj.RaceFeatures = models.GetRaceFeatures(r_obj.Playchar.RaceBuild.Race.Race_id)	
+				resp.Data = r_obj
+			} else {
+				resp.Success = false
+			}
 		} 
 		this.Data["json"] = resp
 		this.ServeJSON()
@@ -128,8 +138,6 @@ func (this *CharacterController) Insert() {
 				p_bb.Playchar = new(models.Playchar)
 				p_bb.Playchar.Playchar_id = n_id
 
-				fmt.Printf("%+v\n", p_bb.Background)
-
 				if n_rb_id := models.InsertRaceBuild(p_rb); n_rb_id > 0 {
 					insReq.Playchar.RaceBuild.RaceBuild_id = n_rb_id
 				}
@@ -157,6 +165,33 @@ func (this *CharacterController) Insert() {
 			}
 		} else {
 			resp.Error = err.Error()
+		}
+		this.Data["json"] = resp
+		this.ServeJSON()
+	} else {
+		this.Redirect("/", 302)
+	}
+}
+
+func (this *CharacterController) Delete() {
+	user := this.GetSession("user")
+	if user != nil {
+		var delReq CharGetDetReq
+		err := json.Unmarshal(this.Ctx.Input.RequestBody, &delReq)
+		resp := DelCharResp{Success: false, Error: "", Us_in: delReq.Us_in, Pl_in: delReq.Pl_in}
+		if err == nil {
+			char := models.GetBaseCharWUser(delReq.Playchar_id)
+			if char.Playchar_id != 0 {
+				if char.User.User_id == user.(models.User).User_id {
+					resp.Success = models.DeletePlaychar(delReq.Playchar_id)
+				} else {
+					resp.Error = "Not permitted."
+				}
+			} else {
+				resp.Error = "No characeter."
+			}
+		} else {
+			resp.Error = "Parse error."
 		}
 		this.Data["json"] = resp
 		this.ServeJSON()

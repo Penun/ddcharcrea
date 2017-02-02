@@ -41,3 +41,21 @@ func UpdatePlaychar(pc Playchar) int64 {
 		return 0
 	}
 }
+
+func DeletePlaychar(playcharId int64) bool {
+	o := orm.NewOrm()
+	p_char := Playchar{Playchar_id:playcharId}
+	num, err := o.Delete(&p_char)
+	if err == nil && num > 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func GetBaseCharWUser(playcharId int64) Playchar {
+	o := orm.NewOrm()
+	var playchar Playchar
+	o.QueryTable("playchar").Filter("playchar_id", playcharId).RelatedSel("user").One(&playchar)
+	return playchar
+}

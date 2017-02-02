@@ -7,6 +7,7 @@
 		<div id="charTab" class="page" ng-show="locM.isSelected(1)" ng-controller="mainController as mainCont">
 			{{template "main/users.tpl"}}
 			{{template "main/characters/add.tpl"}}
+			{{template "main/characters/delete.tpl"}}
 		</div>
 	</div>
 </body>
