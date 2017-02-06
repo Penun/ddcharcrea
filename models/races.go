@@ -58,6 +58,16 @@ func InsertRaceBuild(r_bd RaceBuild) int64 {
 	}
 }
 
+func UpdateRaceBuild(r_bd RaceBuild) int64 {
+	o := orm.NewOrm()
+	num, err := o.Update(&r_bd)
+	if err == nil {
+		return num
+	} else {
+		return -1
+	}
+}
+
 func GetRaceFeatures(r_id int64) []RaceFeature {
 	o := orm.NewOrm()
 	var rFeats []RaceFeature

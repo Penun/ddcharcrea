@@ -6,6 +6,9 @@
 		$scope.showChars = false;
 		$scope.showDetails = false;
 		$scope.chara = null;
+		$scope.addChar = {
+			"is_partial": true
+		};
 
 		// Both are actually indexes not ids
 		this.set_u_id = -1;
@@ -73,7 +76,7 @@
 		this.RevealSkills = function(){
 			if ($scope.showDetails && ($scope.users[this.set_u_id].playchars[this.set_p_id].showSkills == null || !$scope.users[this.set_u_id].playchars[this.set_p_id].showSkills)){
 				if ($scope.users[this.set_u_id].playchars[this.set_p_id].showSkills == null){
-					this.ApplySkillBonuses(this.set_u_id, this.set_p_id);
+					this.ApplySkillBonuses();
 				}
 				$scope.users[this.set_u_id].playchars[this.set_p_id].showSkills = true;
 				$scope.users[this.set_u_id].playchars[this.set_p_id].showFeatures = false;
@@ -221,9 +224,9 @@
 			} 
 		};
 
-		this.ApplySkillBonuses = function(u_i, p_i){
-			if ($scope.users[u_i].playchars[p_i].showBonuses == null){
-				$scope.users[u_i].playchars[p_i].showBonuses = {
+		this.ApplySkillBonuses = function(){
+			if ($scope.users[this.set_u_id].playchars[this.set_p_id].showBonuses == null){
+				$scope.users[this.set_u_id].playchars[this.set_p_id].showBonuses = {
 					"acro" : false,
 					"anim" : false,
 					"arca" : false,
@@ -244,9 +247,9 @@
 					"surv" : false			
 				};
 				var sendData = {
-					"p_in": p_i,
-					"u_in": u_i,
-					"class_build_id": $scope.users[u_i].playchars[p_i].class_build.class_build_id
+					"p_in": this.set_p_id,
+					"u_in": this.set_u_id,
+					"class_build_id": $scope.users[this.set_u_id].playchars[this.set_p_id].class_build.class_build_id
 				};
 				$http.post("/proficiencies/chosen", sendData).then(function(data){
 					if (data.data.success){
@@ -264,9 +267,9 @@
 					}
 				});
 				sendData = {
-					"p_in": p_i,
-					"u_in": u_i,
-					"background_id": $scope.users[u_i].playchars[p_i].background_build.background.background_id
+					"p_in": this.set_p_id,
+					"u_in": this.set_u_id,
+					"background_id": $scope.users[this.set_u_id].playchars[this.set_p_id].background_build.background.background_id
 				};
 				$http.post("/proficiencies/background", sendData).then(function(data){
 					if (data.data.success){
@@ -283,14 +286,14 @@
 						}
 					}
 				});
-				if ($scope.users[u_i].playchars[p_i].race_build.race.features != null) {
-					for (var i = 0; i < $scope.users[u_i].playchars[p_i].race_build.race.features.length; i++){
-						var feat = $scope.users[u_i].playchars[p_i].race_build.race.features[i];
+				if ($scope.users[this.set_u_id].playchars[this.set_p_id].race_build.race.features != null) {
+					for (var i = 0; i < $scope.users[this.set_u_id].playchars[this.set_p_id].race_build.race.features.length; i++){
+						var feat = $scope.users[this.set_u_id].playchars[this.set_p_id].race_build.race.features[i];
 						if (feat.feature.options != null || feat.feature.options != ""){
 							var opts = JSON.parse(feat.feature.options);
 							for (var j = 0; j < opts.length; j++){
 								if (opts[j].type == "skill_prof"){
-									$scope.users[u_i].playchars[p_i].showBonuses[opts[j].option.prof] = true;
+									$scope.users[this.set_u_id].playchars[this.set_p_id].showBonuses[opts[j].option.prof] = true;
 								}
 							}
 						}
@@ -340,6 +343,31 @@
 
 		this.AddChar = function(){
 			$scope.overScreen = 2;
+			$scope.chara = {};
+			$scope.showDetails = false;
+			$scope.addChar = {
+				"is_partial": true
+			};
+			this.CheckRaces();
+		};
+
+		this.EditChar = function(){
+			$scope.chara = {};
+			$scope.showDetails = false;
+			$scope.addChar = $scope.users[this.set_u_id].playchars[this.set_p_id];
+			$scope.addChar.is_partial = false;
+			$scope.overScreen = 2;
+			var sendData = {
+				"p_in": this.set_p_id,
+				"u_in": this.set_u_id,
+				"class_build_id": $scope.users[this.set_u_id].playchars[this.set_p_id].class_build.class_build_id
+			};
+			$http.post("/proficiencies/chosen", sendData).then(function(data){
+				if (data.data.success){
+					$scope.addChar.cb_chosen = data.data.cb_chosen_proficiencies;
+				}
+			});
+			this.CheckRaces();
 		};
 
 		this.DeleteChar = function(){
@@ -357,8 +385,35 @@
 			}
 		}
 
-		this.CloseOverScreen = function(){
-			$scope.overScreen = 1;
+		this.CheckRaces = function(){
+			if ($scope.races == null){
+				$http.get("/races/list").then(function(data){
+					if (data.data.success){
+						$scope.races = data.data.races;
+						if (!$scope.addChar.is_partial){
+							var sendData = {
+								"r_id": $scope.addChar.race_build.race.race_id
+							};
+							$http.post("/races/subs", sendData).then(function(data){
+								if (data.data.success){
+									for (var i = 0; i < $scope.races.length; i++){
+										if ($scope.races[i].race_id == data.data.r_id){
+											if (data.data.sub_races.length > 0){
+												$scope.races[i].sub_races = data.data.sub_races;
+												$scope.races[i].showSubs = true;
+											} else {
+												$scope.races[i].sub_races = null;
+												$scope.races[i].showSubs = false;								
+											}
+											break;
+										}
+									}
+								}
+							});
+						}
+					}
+				});
+			}
 		};
 
 		this.CurOverScreen = function(ovSc){

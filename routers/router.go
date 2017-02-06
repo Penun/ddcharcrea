@@ -14,6 +14,7 @@ func init() {
     beego.Router("/characters/details", &home.CharacterController{}, "post:GetCharDetails")
     beego.Router("/characters/insert", &home.CharacterController{}, "post:Insert")
     beego.Router("/characters/delete", &home.CharacterController{}, "post:Delete")
+    beego.Router("/characters/update", &home.CharacterController{}, "post:Update")
     beego.Router("/races/list", &home.RaceController{}, "get:GetRaces")
     beego.Router("/races/subs", &home.RaceController{}, "post:GetSubRaces")
     beego.Router("/races/features", &home.RaceController{}, "post:GetRaceFeatures")

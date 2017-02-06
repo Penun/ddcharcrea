@@ -1,10 +1,7 @@
 (function(){
 	var app = angular.module('ddchar_characters', []);
 	app.controller('charInsertController', ['$http', '$scope', function($http, $scope){
-		this.char = {
-			"is_partial": true
-		};
-		this.chosenProfs = {};
+		this.chosenProfs = [];
 		this.halfElfAbil = {};
 		$scope.InsStep = 1;
 		this.submitText = "Next";
@@ -16,48 +13,48 @@
 		};
 
 		this.SubmitBasic = function(){
-			if (this.char.level > 20){
-				this.char.level = 20
+			if ($scope.$parent.addChar.level > 20){
+				$scope.$parent.addChar.level = 20
 			} else {
-				this.char.level = Number(this.char.level);
+				$scope.$parent.addChar.level = Number($scope.$parent.addChar.level);
 			}
-			this.char.hit_points = Number(this.char.hit_points);
-			this.char.exp = Number(this.char.exp);
-			if (this.char.b_str > 30){
-				this.char.b_str = 30;
+			$scope.$parent.addChar.hit_points = Number($scope.$parent.addChar.hit_points);
+			$scope.$parent.addChar.exp = Number($scope.$parent.addChar.exp);
+			if ($scope.$parent.addChar.b_str > 30){
+				$scope.$parent.addChar.b_str = 30;
 			} else {
-				this.char.b_str = Number(this.char.b_str);
+				$scope.$parent.addChar.b_str = Number($scope.$parent.addChar.b_str);
 			}
-			if (this.char.b_dex > 30){
-				this.char.b_dex = 30;
+			if ($scope.$parent.addChar.b_dex > 30){
+				$scope.$parent.addChar.b_dex = 30;
 			} else {
-				this.char.b_dex = Number(this.char.b_dex);
+				$scope.$parent.addChar.b_dex = Number($scope.$parent.addChar.b_dex);
 			}
-			if (this.char.b_con > 30){
-				this.char.b_con = 30;
+			if ($scope.$parent.addChar.b_con > 30){
+				$scope.$parent.addChar.b_con = 30;
 			} else {
-				this.char.b_con = Number(this.char.b_con);
+				$scope.$parent.addChar.b_con = Number($scope.$parent.addChar.b_con);
 			}
-			if (this.char.b_int > 30){
-				this.char.b_int = 30;
+			if ($scope.$parent.addChar.b_int > 30){
+				$scope.$parent.addChar.b_int = 30;
 			} else {
-				this.char.b_int = Number(this.char.b_int);
+				$scope.$parent.addChar.b_int = Number($scope.$parent.addChar.b_int);
 			}
-			if (this.char.b_wis > 30){
-				this.char.b_wis = 30;
+			if ($scope.$parent.addChar.b_wis > 30){
+				$scope.$parent.addChar.b_wis = 30;
 			} else {
-				this.char.b_wis = Number(this.char.b_wis);
+				$scope.$parent.addChar.b_wis = Number($scope.$parent.addChar.b_wis);
 			}
-			if (this.char.b_cha > 30){
-				this.char.b_cha = 30;
+			if ($scope.$parent.addChar.b_cha > 30){
+				$scope.$parent.addChar.b_cha = 30;
 			} else {
-				this.char.b_cha = Number(this.char.b_cha);
+				$scope.$parent.addChar.b_cha = Number($scope.$parent.addChar.b_cha);
 			}
 
-			if ($scope.races == null){
-				$http.get("/races/list").then(function(data){
+			if ($scope.ch_classes == null){
+				$http.get("/classes/list").then(function(data){
 					if (data.data.success){
-						$scope.races = data.data.races;
+						$scope.ch_classes = data.data.classes;
 						$scope.InsStep++;
 					}
 				});
@@ -68,18 +65,29 @@
 
 		this.SubmitRace = function(){
 			var allCheck = false;
-			this.char.race_build.race.race_id = Number(this.char.race_build.race.race_id);
+			$scope.$parent.addChar.race_build.race.race_id = Number($scope.$parent.addChar.race_build.race.race_id);
+
+			if (!$scope.$parent.addChar.is_partial && (this.curRaceIndex == null || typeof(this.curRaceIndex) == 'undefined')){
+				for (var i = 0; i < $scope.races.length; i++){
+					if ($scope.races[i].race_id == $scope.$parent.addChar.race_build.race.race_id){
+						this.UpdateSelRace(i);
+						this.chHeFe = Math.floor($scope.$parent.addChar.race_build.height_in / 12);
+						this.chHeIn = $scope.$parent.addChar.race_build.height_in % 12;
+						break;
+					}
+				}
+			}
 
 			if ($scope.races[this.curRaceIndex].sub_races != null){
 				for (var j = 0; j < $scope.races[this.curRaceIndex].sub_races.length; j++){
-					if ($scope.races[this.curRaceIndex].sub_races[j].sub_race_id == this.char.race_build.sub_race.sub_race_id){
-						this.char.race_build.sub_race.sub_race_id = Number(this.char.race_build.sub_race.sub_race_id);
+					if ($scope.races[this.curRaceIndex].sub_races[j].sub_race_id == $scope.$parent.addChar.race_build.sub_race.sub_race_id){
+						$scope.$parent.addChar.race_build.sub_race.sub_race_id = Number($scope.$parent.addChar.race_build.sub_race.sub_race_id);
 						allCheck = true;
 						break;
 					}
 				}
 			} else {
-				delete this.char.race_build.sub_race;
+				delete $scope.$parent.addChar.race_build.sub_race;
 				allCheck = true;
 			}
 
@@ -107,10 +115,10 @@
 					});
 				}
 
-				if ($scope.ch_classes == null){
-					$http.get("/classes/list").then(function(data){
+				if ($scope.BGs == null){
+					$http.get("/backgrounds/list").then(function(data){
 						if (data.data.success){
-							$scope.ch_classes = data.data.classes;
+							$scope.BGs = data.data.backgrounds;
 							$scope.InsStep++;
 						}
 					});
@@ -124,31 +132,31 @@
 
 		this.SubmitRaceInfo = function(){
 			var allCheck = true;
-			this.char.race_build.age = Number(this.char.race_build.age);
-			if (this.char.race_build.age > $scope.races[this.curRaceIndex].max_age){
-				this.char.race_build.age = $scope.races[this.curRaceIndex].max_age;
+			$scope.$parent.addChar.race_build.age = Number($scope.$parent.addChar.race_build.age);
+			if ($scope.$parent.addChar.race_build.age > $scope.races[this.curRaceIndex].max_age){
+				$scope.$parent.addChar.race_build.age = $scope.races[this.curRaceIndex].max_age;
 			} 
 
-			this.char.race_build.weight = Number(this.char.race_build.weight);
-			if (this.char.race_build.weight > $scope.races[this.curRaceIndex].max_weight){
-				this.char.race_build.weight = $scope.races[this.curRaceIndex].max_weight;
-			} else if (this.char.race_build.weight < $scope.races[this.curRaceIndex].min_weight){
-				this.char.race_build.weight = $scope.races[this.curRaceIndex].min_weight;
+			$scope.$parent.addChar.race_build.weight = Number($scope.$parent.addChar.race_build.weight);
+			if ($scope.$parent.addChar.race_build.weight > $scope.races[this.curRaceIndex].max_weight){
+				$scope.$parent.addChar.race_build.weight = $scope.races[this.curRaceIndex].max_weight;
+			} else if ($scope.$parent.addChar.race_build.weight < $scope.races[this.curRaceIndex].min_weight){
+				$scope.$parent.addChar.race_build.weight = $scope.races[this.curRaceIndex].min_weight;
 			}
 
-			this.char.race_build.height_in = (this.chHeFe * 12) + Number(this.chHeIn);
-			if (this.char.race_build.height_in > $scope.races[this.curRaceIndex].max_height_in){
-				this.char.race_build.height_in = $scope.races[this.curRaceIndex].max_height_in;
+			$scope.$parent.addChar.race_build.height_in = (this.chHeFe * 12) + Number(this.chHeIn);
+			if ($scope.$parent.addChar.race_build.height_in > $scope.races[this.curRaceIndex].max_height_in){
+				$scope.$parent.addChar.race_build.height_in = $scope.races[this.curRaceIndex].max_height_in;
 				this.chHeFe = Math.floor($scope.races[this.curRaceIndex].max_height_in / 12);
 				this.chHeIn = $scope.races[this.curRaceIndex].max_height_in % 12;
-			} else if (this.char.race_build.height_in < $scope.races[this.curRaceIndex].min_height_in){
-				this.char.race_build.height_in = $scope.races[this.curRaceIndex].min_height_in;
+			} else if ($scope.$parent.addChar.race_build.height_in < $scope.races[this.curRaceIndex].min_height_in){
+				$scope.$parent.addChar.race_build.height_in = $scope.races[this.curRaceIndex].min_height_in;
 				this.chHeFe = Math.floor($scope.races[this.curRaceIndex].min_height_in / 12);
 				this.chHeIn = $scope.races[this.curRaceIndex].min_height_in % 12;
 			}
 
 			if (allCheck){
-				if (this.char.race_build.race.race_id == 7){
+				if ($scope.$parent.addChar.race_build.race.race_id == 7){
 					if (this.halfElfAbil.length != 2){
 						allCheck = false;
 					} else {
@@ -165,10 +173,21 @@
 							options.push(abil_mod);
 						}
 
-						this.char.race_build.options = JSON.stringify(options);
+						$scope.$parent.addChar.race_build.options = JSON.stringify(options);
 					}
 				} else {
-					delete this.char.race_build.options;
+					delete $scope.$parent.addChar.race_build.options;
+				}
+
+				if (!$scope.$parent.addChar.is_partial){
+					for (var i = 0; i < $scope.ch_classes.length; i++){
+						if ($scope.ch_classes[i].class_id == $scope.$parent.addChar.class_build.class.class_id){
+							this.RevealClassPath(i);
+							this.HideOtherClassPaths(i);
+							this.curClassIndex = i;
+							break;
+						}
+					}
 				}
 
 				if (allCheck){
@@ -179,23 +198,23 @@
 
 		this.SubmitClass = function(){
 			var allCheck = false;
-			this.char.class_build.class.class_id = Number(this.char.class_build.class.class_id);
+			$scope.$parent.addChar.class_build.class.class_id = Number($scope.$parent.addChar.class_build.class.class_id);
 			
-			if (this.char.level >= 3){	
+			if ($scope.$parent.addChar.level >= 3){	
 				if ($scope.ch_classes[this.curClassIndex].class_paths != null){
 					for (var j = 0; j < $scope.ch_classes[this.curClassIndex].class_paths.length; j++){
-						if ($scope.ch_classes[this.curClassIndex].class_paths[j].class_path_id == this.char.class_build.class_path.class_path_id){
-							this.char.class_build.class_path.class_path_id = Number(this.char.class_build.class_path.class_path_id);
+						if ($scope.ch_classes[this.curClassIndex].class_paths[j].class_path_id == $scope.$parent.addChar.class_build.class_path.class_path_id){
+							$scope.$parent.addChar.class_build.class_path.class_path_id = Number($scope.$parent.addChar.class_build.class_path.class_path_id);
 							allCheck = true;
 							break;
 						}
 					}
 				} else {
-					delete this.char.class_build.class_path;
+					delete $scope.$parent.addChar.class_build.class_path;
 					allCheck = true;
 				}
 			} else {
-				delete this.char.class_build.class_path;
+				delete $scope.$parent.addChar.class_build.class_path;
 				allCheck = true;
 			}
 
@@ -214,36 +233,41 @@
 					});
 				}
 
-				if ($scope.BGs == null){
-					$http.get("/backgrounds/list").then(function(data){
-						if (data.data.success){
-							$scope.BGs = data.data.backgrounds;
-							$scope.InsStep++;
+				if (!$scope.$parent.addChar.is_partial){
+					for (var i = 0; i < $scope.BGs.length; i++){
+						if ($scope.BGs[i].background_id == $scope.$parent.addChar.background_build.background.background_id){
+							this.UpdateSelBG(i);
+							break;
 						}
-					});
-				} else {
-					$scope.InsStep++;
+					}
 				}
+
+				$scope.InsStep++;
 			} else {
 				alert("Oh @#$%#@!! I'm Broken!! YOU STUPID ASS MONKEY!!!");
 			}
 		};
 
 		this.SubmitBG = function(){
-			this.char.background_build.background.background_id = Number(this.char.background_build.background.background_id);
+			$scope.$parent.addChar.background_build.background.background_id = Number($scope.$parent.addChar.background_build.background.background_id);
 			this.GenerateCurClassProfs();
+			if (!$scope.$parent.addChar.is_partial){
+				var tempProf = [];
+				for (var i = 0; i < $scope.$parent.addChar.cb_chosen.length; i++){
+					this.chosenProfs.push({
+						"class_prof_id": $scope.$parent.addChar.cb_chosen[i].class_proficiency.class_proficiency_id,
+						"name": $scope.$parent.addChar.cb_chosen[i].class_proficiency.proficiency.name
+					});
+				}
+			}
 			$scope.InsStep++;
 		};
 
 		this.SaveChar = function(){
 			var allCheck = true;
 
-			if ($scope.InsStep == 5){
-				this.char.is_partial = false;
-			}
-
 			for (var i = 0; i < this.chosenProfs.length; i++){
-				this.chosenProfs[i] = Number(this.chosenProfs[i]);
+				this.chosenProfs[i] = Number(this.chosenProfs[i].class_prof_id);
 			}
 
 			if (allCheck){
@@ -254,32 +278,79 @@
 
 			if (allCheck){
 				var sendData = {
-					"playchar": this.char,
-					"chosen_profs": this.chosenProfs
+					"playchar": $scope.$parent.addChar
 				};
-				$http.post("/characters/insert", sendData).then(function(data){
-					if (data.data.success){
-						if ($scope.users[$scope.curUs_in].playchars != null){
-							$scope.users[$scope.curUs_in].playchars.push(data.data.playchar)
-						} else {
-							$scope.users[$scope.curUs_in].playchars = [data.data.playchar];
+				if ($scope.$parent.addChar.is_partial){
+					sendData.chosen_profs = this.chosenProfs;
+					$http.post("/characters/insert", sendData).then(function(data){
+						if (data.data.success){
+							if ($scope.users[$scope.curUs_in].playchars != null){
+								$scope.users[$scope.curUs_in].playchars.push(data.data.playchar);
+							} else {
+								$scope.users[$scope.curUs_in].playchars = [data.data.playchar];
+							}
+							$scope.chara = data.data.playchar;
 						}
+					});
+					$scope.$parent.addChar.is_partial = false;
+				} else {
+					var cb_chosen = $scope.$parent.addChar.cb_chosen;
+					delete $scope.$parent.addChar.cb_chosen;
+
+					sendData.update_chosen = [];
+					var lo_coun = 0;
+
+					if (cb_chosen.length >= this.chosenProfs.length){
+						lo_coun = cb_chosen.length;
+					} else {
+						lo_coun = this.chosenProfs.length;
 					}
-				});
+
+					for (var i = 0; i < lo_coun; i++){
+						var up_chos = {};
+
+						if (cb_chosen[i] != null && typeof(cb_chosen[i]) != 'undefined'){
+							up_chos.cb_chosen_proficiency_id = cb_chosen[i].cb_chosen_proficiency_id;
+						} else {
+							up_chos.cb_chosen_proficiency_id = 0;
+						}
+
+						if (this.chosenProfs[i] != null && typeof(this.chosenProfs[i])){
+							up_chos.class_proficiency_id = this.chosenProfs[i];
+						} else {
+							up_chos.class_proficiency_id = 0;
+						}
+
+						sendData.update_chosen.push(up_chos);
+					}
+
+					$http.post("/characters/update", sendData).then(function(data){
+						if (data.data.success){
+							for (var i = 0; i < $scope.users[$scope.curUs_in].playchars.length; i++){
+								if ($scope.users[$scope.curUs_in].playchars[i].playchar_id == data.data.playchar.playchar_id){
+									$scope.users[$scope.curUs_in].playchars[i] = data.data.playchar;
+								}
+								break;
+							}
+							$scope.chara = data.data.playchar;
+						}
+					});
+				}
 				$scope.$parent.overScreen = 1;
-				this.char = {
+				$scope.$parent.addChar = {
 					"is_partial": true
 				};
 				$scope.InsStep = 1;
 				this.chHeIn = "";
 				this.chHeFe = "";
+
 			} else {
 				alert("Oh @#$%#@!! I'm Broken!! YOU STUPID ASS MONKEY!!!");
 			}
 		};
 
 		this.UpdateSelRace = function(r_i){
-			delete this.char.race_build.race.sub_race;
+			delete $scope.$parent.addChar.race_build.race.sub_race;
 			this.RevealSubRace(r_i);
 			this.HideOtherSubRaces(r_i);
 			this.aduAge = $scope.races[r_i].adult_age;
@@ -340,14 +411,14 @@
 		};
 
 		this.UpdateSelClass = function(c_i){
-			delete this.char.class_build.class_path;
+			delete $scope.$parent.addChar.class_build.class_path;
 			this.RevealClassPath(c_i);
 			this.HideOtherClassPaths(c_i);
 			this.curClassIndex = c_i;
 		};
 
 		this.RevealClassPath = function(c_i){
-			if (this.char.level >= 3){
+			if ($scope.$parent.addChar.level >= 3){
 				if ($scope.ch_classes[c_i].showPaths == null){
 					var sendData = {
 						"c_id": $scope.ch_classes[c_i].class_id
@@ -485,6 +556,14 @@
 					}
 				}
 			}
+		};
+
+		this.Cancel = function(){
+			$scope.$parent.overScreen = 1;
+			$scope.$parent.addChar = {};
+			this.chHeIn = "";
+			this.chHeFe = "";
+			$scope.InsStep = 1;
 		};
 	}]);
 

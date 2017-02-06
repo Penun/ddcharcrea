@@ -10,6 +10,11 @@ type CharacterController struct {
 	beego.Controller
 }
 
+type UpdateChosen struct {
+	CbChosenProficiency_id int64 `json:"cb_chosen_proficiency_id"`
+	ClassProficiency_id int64 `json:"class_proficiency_id"`
+}
+
 type CharGetListReq struct {
 	User_id int64 `json: "user_id"`
 }
@@ -43,6 +48,11 @@ type DetDataRespObj struct {
 type InsertReq struct {
 	Playchar models.Playchar `json:"playchar"`
 	ChosenProfs []int64 `json:"chosen_profs"`
+}
+
+type UpdateReq struct {
+	Playchar models.Playchar `json:"playchar"`
+	UpdateChosen []UpdateChosen `json:"update_chosen"`
 }
 
 //type InsDetReq struct {
@@ -170,6 +180,47 @@ func (this *CharacterController) Insert() {
 		this.ServeJSON()
 	} else {
 		this.Redirect("/", 302)
+	}
+}
+
+func (this *CharacterController) Update() {
+	user := this.GetSession("user")
+	if user != nil {
+		var updReq UpdateReq
+		err := json.Unmarshal(this.Ctx.Input.RequestBody, &updReq)
+		resp := InsDetResp{Success: false, Error: ""}
+		if err == nil {
+			suc_up := models.UpdatePlaychar(updReq.Playchar)
+			if suc_up >= 0 {
+				_ = models.UpdateRaceBuild(*updReq.Playchar.RaceBuild)
+				_ = models.UpdateClassBuild(*updReq.Playchar.ClassBuild)
+				_ = models.UpdateBackgroundBuild(*updReq.Playchar.BackgroundBuild)
+				var cb_chosen models.CbChosenProficiency
+				cb_chosen.ClassProficiency = new(models.ClassProficiency)
+				cb_chosen.ClassBuild = updReq.Playchar.ClassBuild
+				for i := 0; i < len(updReq.UpdateChosen); i++ {
+					cb_chosen.CbChosenProficiency_id = updReq.UpdateChosen[i].CbChosenProficiency_id
+					cb_chosen.ClassProficiency.ClassProficiency_id = updReq.UpdateChosen[i].ClassProficiency_id
+					
+					if cb_chosen.CbChosenProficiency_id != 0 {
+						if cb_chosen.ClassProficiency.ClassProficiency_id != 0 {
+							_ = models.UpdateCbChosenProficiency(cb_chosen)
+						} else {
+							_ = models.DeleteCbChosenProficiency(cb_chosen)			
+						}
+					} else {
+						_ = models.InsertCbChosenProficiency(cb_chosen)
+					}
+				}
+
+				resp.Success = true
+				resp.Data = updReq.Playchar
+			}
+		}
+		this.Data["json"] = resp
+		this.ServeJSON()
+	} else {
+		this.Redirect("/", 302)			
 	}
 }
 

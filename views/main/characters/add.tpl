@@ -20,6 +20,6 @@
 		<div ng-show="chInCont.CurStep(6)" class="right_page">
 			{{template "main/characters/add/rev_ins.tpl"}}
 		</div>
+		<button type="button" name="cancel" ng-click="chInCont.Cancel()" class="cancel_butt">X</button>
 	</div>
-<button type="button" name="cancel" ng-click="mainCont.CloseOverScreen()" class="cancel_butt">X</button>
 </div>

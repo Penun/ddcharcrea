@@ -38,7 +38,7 @@ func UpdatePlaychar(pc Playchar) int64 {
 	if err == nil {
 		return num
 	} else {
-		return 0
+		return -1
 	}
 }
 

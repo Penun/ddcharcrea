@@ -35,3 +35,13 @@ func InsertClassBuild(c_bd ClassBuild) int64 {
 		return 0
 	}
 }
+
+func UpdateClassBuild(c_bd ClassBuild) int64 {
+	o := orm.NewOrm()
+	num, err := o.Update(&c_bd)
+	if err == nil {
+		return num
+	} else {
+		return -1
+	}
+}

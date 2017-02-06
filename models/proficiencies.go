@@ -57,3 +57,23 @@ func InsertCbChosenProficiency(cbChosen CbChosenProficiency) int64 {
 		return 0
 	}
 }
+
+func UpdateCbChosenProficiency(cbChosen CbChosenProficiency) int64 {
+	o := orm.NewOrm()
+	num, err := o.Update(&cbChosen)
+	if err == nil {
+		return num
+	} else {
+		return -1
+	}
+}
+
+func DeleteCbChosenProficiency(cbChosen CbChosenProficiency) bool {
+	o := orm.NewOrm()
+	num, err := o.Delete(&cbChosen)
+	if err == nil && num > 0 {
+		return true
+	} else {
+		return false
+	}
+}
