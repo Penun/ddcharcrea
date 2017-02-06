@@ -1,7 +1,7 @@
 <div ng-show="mainCont.ShowCharDetails()" class="right_page_in">
 	<div><b>{{"{{chara.name}}"}}</b> <span class="char_right reset"><b>Level</b>: <b>{{"{{chara.level}}"}}</b></span></div>
 	<br />
-	<div><b>Class</b>: <b>{{"{{chara.class_build.class.name}}"}} <span class="reset" ng-show="chara.level >= 3">({{"{{chara.class_build.class_path.name}}"}})</span></b><span class="char_right reset"><b>Race</b>: <b>{{"{{chara.raceRef}}"}}</b></span></div>
+	<div><b>Race</b>: <b>{{"{{chara.raceRef}}"}}</b><span class="char_right reset"><b>Class</b>: <b>{{"{{chara.class_build.class.name}}"}} <span class="reset" ng-show="chara.level >= 3">({{"{{chara.class_build.class_path.name}}"}})</span></b></span></div>
 	<br />
 	<div><b>HP</b>: {{"{{chara.hit_points}}"}}<span class="char_right reset"><b>Exp</b>: {{"{{chara.exp}}"}}</span></div>
 	<div ng-click="mainCont.RevealInfo()">
@@ -61,6 +61,6 @@
 			<div><b>Flaw</b><span class="reset"> - {{"{{chara.background_build.flaw.description}}"}}</span></div>
 		</div>
 	</div><br />
-	<button type="button" name="editButton" ng-click="mainCont.EditChar()" ng-show="mainCont.DeletableChar(chara.user.user_id)" class="back_butt">Edit Character</button>
-	<button type="button" name="delButton" ng-click="mainCont.DeleteChar()" ng-show="mainCont.DeletableChar(chara.user.user_id)" class="next_butt">Delete Character</button>
+	<div ng-click="mainCont.EditChar()" ng-show="mainCont.DeletableChar(chara.user.user_id)" class="back_butt button"><span class="button_text">Edit Character</span></div>
+	<div ng-click="mainCont.DeleteChar()" ng-show="mainCont.DeletableChar(chara.user.user_id)" class="next_butt button"><span class="button_text">Delete Character</span></div>
 </div>

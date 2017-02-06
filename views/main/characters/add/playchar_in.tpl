@@ -1,5 +1,5 @@
 <h1>Character Info</h1>
-<form id="insCharDet" name="insCharDet" ng-submit="insCharDet.$valid && chInCont.SubmitBasic()" novalidate>
+<form id="insCharDet" name="insCharDet" novalidate>
 <p class="underline"><span class="left_label"><label for="charName">Name</label> :</span><span class="right_input"><input type="text" name="charName" id="charName" ng-model="addChar.name" required/><span></p>
 <p class="underline"><span class="left_label"><label for="charLevel">Level</label> :</span><span class="right_input"><input type="text" name="charLevel" id="charLevel" ng-model="addChar.level" maxlength="2" size="2" pattern="^[0-9]+$" required/><span></p>
 <p class="underline"><span class="left_label"><label for="charHP">Hit Points</label> :</span><span class="right_input"><input type="text" name="charHP" id="charHP" ng-model="addChar.hit_points" maxlength="4" size="4" pattern="^[0-9]+$" required/><span></p>
@@ -15,5 +15,5 @@
 	<option value="f">F</option>
 </select></span>
 </p>
-<button type="submit" name="submit" ng-show="insCharDet.$valid" class="next_butt">Next</button>
+<div ng-show="insCharDet.$valid" ng-click="chInCont.SubmitBasic()" class="next_butt button"><span class="button_text">Next</span></div>
 </form>

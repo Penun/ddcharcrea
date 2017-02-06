@@ -1,5 +1,5 @@
 <h1>Racial Characteristics:</h1>
-<form id="insRaceInfo" name="insRaceInfo" ng-submit="insRaceInfo.$valid && chInCont.SubmitRaceInfo()" novalidate>
+<form id="insRaceInfo" name="insRaceInfo" novalidate>
 	<div ng-show="addChar.race_build.race.race_id">
 		<p class="underline_center">
 			<span><label for="charAge">Character Age:</label></span>
@@ -27,5 +27,5 @@
 			<option value="wis">Wisdom</option>
 		</select></span></p>
 	</div>
-	<p><button type="button" name="backButton" ng-click="chInCont.BackStep()" class="back_butt">Back</button> --- <button type="submit" name="submit" ng-show="insRaceInfo.$valid" class="next_butt">Next</button></p>
+	<p><div ng-click="chInCont.BackStep()" class="back_butt button"><span class="button_text">Back</span></div> --- <div ng-show="insRaceInfo.$valid" ng-click="chInCont.SubmitRaceInfo()" class="next_butt button"><span class="button_text">Next</span></div></p>
 </form>

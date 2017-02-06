@@ -11,6 +11,7 @@ body {
 	background-size: 100% 100%;
 	background-repeat: no-repeat;	
 	height: 80vh;
+	position: relative;
 }
 
 .headDiv {
@@ -79,15 +80,34 @@ h2 {
 	padding-left: 2em;
 }
 
-button {
-	color: #FFC22E;
-    background-color: #493E25;
-    border-style: ridge;
-    border-width: thick;
-    border-color: #FFC22E;
-    border-radius: 35%;
-    height: 50px;
-    width: 100px;
+/* Buttons */
+
+.button {
+    background-image: url("../img/stain.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border: none;
+    height: 60px;
+    width: 120px;
+    cursor: pointer;
+    text-align: center;
+    display: table;
+    z-index: 5; 
+}
+
+.button:hover {
+	background-image: url("../img/stain_b.png");
+}
+
+span.button_text {
+	display: table-cell;
+	vertical-align: middle;
+	color: #30170B;
+}
+
+span.button_text:hover {
+	color: #443515;
+	font-weight: bold;
 }
 
 .char_add_butt {
@@ -286,9 +306,28 @@ input[type=radio]:checked ~ label{
 	color: #DB7237;
 }
 
+.clickable {
+	background-image: url("../img/pencil_underline.png");
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: 100%;
+	cursor: pointer;
+	text-align: center;
+	font-size: 150%;
+	height: 50px;
+	padding-top: 3%;
+}
+
+.clickable:hover {
+	background-image: url("../img/pencil_underline_splotch_back.png");
+	color: #30170B;
+	font-weight: bold;
+}
+
 .fright {
 	position: absolute;
-    right: 5%;
+    right: 6%;
+    top: 5%;
 }
 
 .overScreen {
@@ -310,6 +349,8 @@ Palette
 .color-primary-2 { color: #DBAB37 }
 .color-primary-3 { color: #796432 }
 .color-primary-4 { color: #493E25 }
+
+E86016
 
 .color-secondary-1-0 { color: #AA6239 }	
 .color-secondary-1-1 { color: #FF7A2E }
