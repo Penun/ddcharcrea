@@ -4,6 +4,9 @@ body {
 	width: 100vw;
 	max-width: 1366px;
 	margin: auto;
+	perspective: 1000px;
+	-moz-perspective: 1000px;
+	-webkit-perspective: 1000px;
 }
 
 .mainDiv {
@@ -12,6 +15,9 @@ body {
 	background-repeat: no-repeat;	
 	height: 80vh;
 	position: relative;
+	transform: rotateX(34deg);
+	-moz-transform: rotateX(34deg);
+	-webkit-transform: rotateX(34deg);
 }
 
 .headDiv {
