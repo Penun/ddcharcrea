@@ -4,6 +4,8 @@
 	app.controller('locManager', ['$http', '$scope', '$window', function($http, $scope, $window){
 		$scope.activeLoc = 1;
 		$scope.loadedTabs = [1, 2];
+		this.mouseY = 0;
+		this.rotateDeg = 20;
 
 		this.selectLoc = function(newLoc){
 			if ($scope.activeLoc != newLoc){
@@ -32,6 +34,31 @@
 				default:
 					break;
 			}
+		};
+
+		this.MoveBook = function(mouseEvent){
+			var resY = 0;
+
+		 	if (!mouseEvent)
+		 	{
+		   		mouseEvent = window.event;
+		 	}
+
+		 	if (mouseEvent.pageY)
+		 	{
+		   		resY = mouseEvent.pageY;
+		 	}
+		 	else if (mouseEvent.clientY)
+		 	{
+		   		resY = mouseEvent.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+		 	}
+
+		 	if (mouseEvent.target)
+		 	{
+				this.rotateDeg = ((resY - 100) * 10 / mouseEvent.currentTarget.scrollHeight) + 20;
+	 		}
+
+	 		this.mouseY = resY;
 		};
 
 		this.Logout = function(){

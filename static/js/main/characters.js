@@ -135,7 +135,7 @@
 			$scope.$parent.addChar.race_build.age = Number($scope.$parent.addChar.race_build.age);
 			if ($scope.$parent.addChar.race_build.age > $scope.races[this.curRaceIndex].max_age){
 				$scope.$parent.addChar.race_build.age = $scope.races[this.curRaceIndex].max_age;
-			} 
+			}
 
 			$scope.$parent.addChar.race_build.weight = Number($scope.$parent.addChar.race_build.weight);
 			if ($scope.$parent.addChar.race_build.weight > $scope.races[this.curRaceIndex].max_weight){
@@ -199,8 +199,8 @@
 		this.SubmitClass = function(){
 			var allCheck = false;
 			$scope.$parent.addChar.class_build.class.class_id = Number($scope.$parent.addChar.class_build.class.class_id);
-			
-			if ($scope.$parent.addChar.level >= 3){	
+
+			if ($scope.$parent.addChar.level >= 3){
 				if ($scope.ch_classes[this.curClassIndex].class_paths != null){
 					for (var j = 0; j < $scope.ch_classes[this.curClassIndex].class_paths.length; j++){
 						if ($scope.ch_classes[this.curClassIndex].class_paths[j].class_path_id == $scope.$parent.addChar.class_build.class_path.class_path_id){
@@ -362,7 +362,7 @@
 			var finFeet = Math.floor($scope.races[r_i].min_height_in / 12);
 			var finInch = $scope.races[r_i].min_height_in % 12;
 			this.minHeight = finFeet + "' " + finInch +"\"";
-			
+
 			finFeet = Math.floor($scope.races[r_i].max_height_in / 12);
 			finInch = $scope.races[r_i].max_height_in % 12;
 			this.maxHeight = finFeet + "' " + finInch +"\"";
@@ -382,7 +382,7 @@
 									$scope.races[i].showSubs = true;
 								} else {
 									$scope.races[i].sub_races = null;
-									$scope.races[i].showSubs = false;								
+									$scope.races[i].showSubs = false;
 								}
 								break;
 							}
@@ -432,7 +432,7 @@
 										$scope.ch_classes[i].showPaths = true;
 									} else {
 										$scope.ch_classes[i].class_paths = null;
-										$scope.ch_classes[i].showPaths = false;								
+										$scope.ch_classes[i].showPaths = false;
 									}
 									break;
 								}
@@ -565,6 +565,10 @@
 			this.chHeFe = "";
 			$scope.InsStep = 1;
 		};
+	}]);
+
+	app.controller('charBuildController', ['$http', '$scope', function($http, $scope){
+		
 	}]);
 
 	app.controller('charDeleteController', ['$http', '$scope', function($http, $scope){
