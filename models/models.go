@@ -37,10 +37,10 @@ type Race struct {
 	Speed int `json:"speed"`
 	MaxAge int `json:"max_age"`
 	AdultAge int `json:"adult_age"`
-	MinHeightIn int `json:"min_height_in"` 
+	MinHeightIn int `json:"min_height_in"`
 	MaxHeightIn int `json:"max_height_in"`
 	MinWeight int `json:"min_weight"`
-	MaxWeight int `json:"max_weight"`	
+	MaxWeight int `json:"max_weight"`
 	Size string `json:"size"`
 	AbilityMods string `json:"ability_mods"`
 }
@@ -164,9 +164,58 @@ type BackgroundBuild struct {
 	Flaw *Flaw `orm:"rel(fk);null" json:"flaw"`
 }
 
+// Temp monster Table
+type Monster struct {
+	Monster_id int64 `orm:"pk" json:"monster_id"`
+	Name string `json:"name"`
+}
+
+// Campaign Related Tables
+
+type Campaign struct {
+	Campaign_id int64 `orm:"pk" json:"campaign_id"`
+	Owner *Playchar `orm:"rel(fk)" json:"owner"`
+	Name string `json:"name"`
+	Description string `json:"description"`
+}
+
+type Region struct {
+	Region_id int64 `orm:"pk" json:"region_id"`
+	Campaign *Campaign `orm:"rel(fk)" json:"cmapaign"`
+	Name string `json:"name"`
+	Description string `json:"description"`
+}
+
+type Encounter struct {
+	Encounter_id int64 `orm:"pk" json:"encounter_id"`
+	Region *Region `orm:"rel(fk)" json:"region"`
+	Name string `json:"name"`
+	Description string `json:"description"`
+}
+
+type EncPlaychar struct {
+	EncPlaychar_id int64 `orm:"pk" json:"enc_playchar_id"`
+	Encounter *Encounter `orm:"rel(fk)" json:"encounter"`
+	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
+}
+
+type EncMonster struct {
+	EncMonster_id int64 `orm:"pk" json:"enc_monster_id"`
+	Encounter *Encounter `orm:"rel(fk)" json:"encounter"`
+	Monster *Monster `orm:"rel(fk)" json:"monster"`
+}
+
+type CampSub struct {
+	CampSub_id int64 `orm:"pk" json:"camp_sub_id"`
+	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
+	Campaign *Campaign `orm:"rel(fk)" json:"campaign"`
+}
+
 func init() {
-	orm.RegisterModel(new(User), new(Playchar), new(Race), new(SubRace), new(Class), 
-		new(ClassPath), new(Proficiency), new(ClassProficiency), new(CbChosenProficiency), 
-		new(Feature), new(RaceFeature), new(Background), new(BackgroundProficiency), new(Trait), 
-		new(Ideal),	new(Bond), new(Flaw), new(RaceBuild), new(ClassBuild), new(BackgroundBuild))
+	orm.RegisterModel(new(User), new(Playchar), new(Race), new(SubRace), new(Class),
+		new(ClassPath), new(Proficiency), new(ClassProficiency), new(CbChosenProficiency),
+		new(Feature), new(RaceFeature), new(Background), new(BackgroundProficiency), new(Trait),
+		new(Ideal),	new(Bond), new(Flaw), new(RaceBuild), new(ClassBuild), new(BackgroundBuild),
+		new(Campaign), new(Region), new(Encounter), new(EncPlaychar), new(EncMonster),
+		new(CampSub), new(Monster))
 }

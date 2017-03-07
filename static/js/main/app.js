@@ -1,10 +1,9 @@
 (function(){
-	var app = angular.module('ddchar', ['ddchar_main']);
+	var app = angular.module('ddchar', ['ddchar_characters', 'ddchar_campaigns']);
 
 	app.controller('locManager', ['$http', '$scope', '$window', function($http, $scope, $window){
 		$scope.activeLoc = 1;
-		$scope.loadedTabs = [1, 2];
-		this.mouseY = 0;
+		$scope.loadedTabs = [1];
 		this.rotateDeg = 20;
 
 		this.selectLoc = function(newLoc){
@@ -29,6 +28,7 @@
 					break;
 				case 2:
 					$scope.loadedTabs.push(loc);
+					$scope.$broadcast('tab2_go');
 					$scope.activeLoc = loc;
 					break;
 				default:
@@ -39,26 +39,19 @@
 		this.MoveBook = function(mouseEvent){
 			var resY = 0;
 
-		 	if (!mouseEvent)
-		 	{
+		 	if (!mouseEvent){
 		   		mouseEvent = window.event;
 		 	}
 
-		 	if (mouseEvent.pageY)
-		 	{
+		 	if (mouseEvent.pageY){
 		   		resY = mouseEvent.pageY;
-		 	}
-		 	else if (mouseEvent.clientY)
-		 	{
+		 	} else if (mouseEvent.clientY){
 		   		resY = mouseEvent.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 		 	}
 
-		 	if (mouseEvent.target)
-		 	{
+		 	if (mouseEvent.target){
 				this.rotateDeg = ((resY - 100) * 10 / mouseEvent.currentTarget.scrollHeight) + 20;
 	 		}
-
-	 		this.mouseY = resY;
 		};
 
 		this.Logout = function(){
