@@ -17,7 +17,7 @@
 			{{template "main/characters/delete.tpl"}}
 		</div>
 		<div id="campTab" class="page" ng-show="locM.isSelected(2)" ng-controller="mainCampController as campCont">
-			
+			{{template "main/campaigns.tpl"}}
 		</div>
 	</div>
 </body>
