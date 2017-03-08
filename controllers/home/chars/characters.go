@@ -1,4 +1,4 @@
-package home
+package chars
 
 import (
 	"github.com/Penun/ddcharcrea/models"
@@ -63,7 +63,7 @@ type UpdateReq struct {
 //	B_str string `json:"b_str"`
 //	B_dex string `json:"b_dex"`
 //	B_con string `json:"b_con"`
-//	B_int string `json:"b_int"` 
+//	B_int string `json:"b_int"`
 //	B_wis string `json:"b_wis"`
 //	B_cha string `json:"b_cha"`
 //	Sex string `json:"sex"`
@@ -91,7 +91,7 @@ func (this *CharacterController)  GetCharList() {
 		if err == nil {
 			resp.Success = true
 			resp.Data = models.GetCharsList_UserId(cGetReq.User_id)
-		} 
+		}
 		this.Data["json"] = resp
 		this.ServeJSON()
 	} else {
@@ -110,12 +110,12 @@ func (this *CharacterController)  GetCharDetails() {
 			var r_obj DetDataRespObj;
 			r_obj.Playchar = models.GetCharDetails_PlayCharId(cGetReq.Playchar_id)
 			if r_obj.Playchar.Playchar_id != 0 {
-				r_obj.RaceFeatures = models.GetRaceFeatures(r_obj.Playchar.RaceBuild.Race.Race_id)	
+				r_obj.RaceFeatures = models.GetRaceFeatures(r_obj.Playchar.RaceBuild.Race.Race_id)
 				resp.Data = r_obj
 			} else {
 				resp.Success = false
 			}
-		} 
+		}
 		this.Data["json"] = resp
 		this.ServeJSON()
 	} else {
@@ -160,8 +160,8 @@ func (this *CharacterController) Insert() {
 							ClassBuild: new(models.ClassBuild)}
 						chProf.ClassProficiency.ClassProficiency_id = insReq.ChosenProfs[i]
 						chProf.ClassBuild.ClassBuild_id = n_cb_id
-						_ = models.InsertCbChosenProficiency(chProf) 
-					} 
+						_ = models.InsertCbChosenProficiency(chProf)
+					}
 				}
 
 				if n_bb_id := models.InsertBackgroundBuild(p_bb); n_bb_id > 0 {
@@ -201,12 +201,12 @@ func (this *CharacterController) Update() {
 				for i := 0; i < len(updReq.UpdateChosen); i++ {
 					cb_chosen.CbChosenProficiency_id = updReq.UpdateChosen[i].CbChosenProficiency_id
 					cb_chosen.ClassProficiency.ClassProficiency_id = updReq.UpdateChosen[i].ClassProficiency_id
-					
+
 					if cb_chosen.CbChosenProficiency_id != 0 {
 						if cb_chosen.ClassProficiency.ClassProficiency_id != 0 {
 							_ = models.UpdateCbChosenProficiency(cb_chosen)
 						} else {
-							_ = models.DeleteCbChosenProficiency(cb_chosen)			
+							_ = models.DeleteCbChosenProficiency(cb_chosen)
 						}
 					} else {
 						_ = models.InsertCbChosenProficiency(cb_chosen)
@@ -220,7 +220,7 @@ func (this *CharacterController) Update() {
 		this.Data["json"] = resp
 		this.ServeJSON()
 	} else {
-		this.Redirect("/", 302)			
+		this.Redirect("/", 302)
 	}
 }
 

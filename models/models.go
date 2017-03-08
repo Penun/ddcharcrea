@@ -174,7 +174,7 @@ type Monster struct {
 
 type Campaign struct {
 	Campaign_id int64 `orm:"pk" json:"campaign_id"`
-	Owner *Playchar `orm:"rel(fk)" json:"owner"`
+	Owner *User `orm:"rel(fk)" json:"owner"`
 	Name string `json:"name"`
 	Description string `json:"description"`
 }

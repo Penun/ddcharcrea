@@ -1,12 +1,7 @@
 package home
 
 import (
-//	"github.com/Penun/DDCharCrea/models"
 	"github.com/astaxie/beego"
-//	"encoding/json"
-//	"crypto/sha1"
-//	"encoding/base64"
-//	"io"
 )
 
 type MainController struct {

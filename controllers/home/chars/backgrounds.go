@@ -1,10 +1,8 @@
-package home
+package chars
 
 import (
 	"github.com/Penun/ddcharcrea/models"
 	"github.com/astaxie/beego"
-//	"encoding/json"
-//	"fmt"
 )
 
 type BackgroundsController struct {

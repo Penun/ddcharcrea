@@ -24,7 +24,6 @@
     						break;
     					}
     				}
-					$rootScope.$broadcast('tab1_load');
     			}
     		});
 		});

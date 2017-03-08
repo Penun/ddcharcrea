@@ -1,10 +1,9 @@
-package home
+package chars
 
 import (
 	"github.com/Penun/ddcharcrea/models"
 	"github.com/astaxie/beego"
 	"encoding/json"
-//	"fmt"
 )
 
 type ProficienciesController struct {
@@ -66,7 +65,7 @@ func (this *ProficienciesController) BGProficiencies() {
 		if err == nil {
 			resp.Success = true;
 			resp.Data = models.GetBackgroundProficiencies(bPrSkRe.Background_id)
-		} 
+		}
 		this.Data["json"] = resp
 		this.ServeJSON()
 	} else {
@@ -83,7 +82,7 @@ func (this *ProficienciesController) ChosenProficiencies() {
 		if err == nil {
 			resp.Success = true
 			resp.Data = models.GetCbChosenProficiencies(cGetReq.ClassBuild_id)
-		} 
+		}
 		this.Data["json"] = resp
 		this.ServeJSON()
 	} else {
@@ -112,7 +111,7 @@ func (this *ProficienciesController) ClassProficiencies() {
 		if err == nil {
 			resp.Success = true
 			resp.Data = models.GetClassProficiencies(cGetReq.Class_id)
-		} 
+		}
 		this.Data["json"] = resp
 		this.ServeJSON()
 	} else {

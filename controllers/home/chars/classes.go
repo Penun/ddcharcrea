@@ -1,10 +1,9 @@
-package home
+package chars
 
 import (
 	"github.com/Penun/ddcharcrea/models"
 	"github.com/astaxie/beego"
 	"encoding/json"
-//	"fmt"
 )
 
 type ClassesController struct {
@@ -25,7 +24,7 @@ type ClPaListResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
 	ClassId int64 `json:"c_id"`
-	Data []models.ClassPath `json:"class_paths"`	
+	Data []models.ClassPath `json:"class_paths"`
 }
 
 func (this *ClassesController) GetClasses() {
@@ -63,6 +62,6 @@ func (this *ClassesController) GivenProficiencies() {
 	if user != nil {
 		this.Redirect("/main", 302)
 	} else {
-		this.Redirect("/", 302)		
+		this.Redirect("/", 302)
 	}
 }

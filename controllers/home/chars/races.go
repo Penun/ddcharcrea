@@ -1,4 +1,4 @@
-package home
+package chars
 
 import (
 	"github.com/Penun/ddcharcrea/models"
@@ -29,14 +29,14 @@ type SubRaceResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
 	RaceId int64 `json:"r_id"`
-	Data []models.SubRace `json:"sub_races"`	
+	Data []models.SubRace `json:"sub_races"`
 }
 
 type RaceFeatResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
 	R_in int `json:"r_in"`
-	Data []models.RaceFeature `json:"race_features"`	
+	Data []models.RaceFeature `json:"race_features"`
 }
 
 func (this *RaceController) GetRaces() {
