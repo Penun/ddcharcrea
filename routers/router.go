@@ -31,4 +31,5 @@ func init() {
     beego.Router("/proficiencies/class", &chars.ProficienciesController{}, "post:ClassProficiencies")
 	beego.Router("/campaigns", &camps.CampaignController{}, "get:GetCampaigns")
 	beego.Router("/regions", &camps.RegionController{}, "post:GetRegions")
+	beego.Router("/encounters", &camps.EncounterController{}, "post:GetEncounters")
 }

@@ -3,6 +3,7 @@
 	app.controller('mainCampController', ['$http', '$scope', function($http, $scope){
 		$scope.showCamps = false;
 		$scope.showRegs = false;
+		$scope.showEncs = false;
 
 		$scope.$on('tab2_go', function(){
 			$http.get("/campaigns").then(function(result){
@@ -40,7 +41,39 @@
         };
 
         this.RevealEncounters = function(ind){
-
+			var c_ind = null;
+			for (var i = 0; i < $scope.campaigns.length; i++){
+				if ($scope.campaigns[i].campaign_id == $scope.curRegions.campaign_id){
+					c_ind = i;
+					break;
+				}
+			}
+			if (c_ind != null){
+				if ($scope.campaigns[c_ind].regions[ind].fetched == null){
+					var sendData = {
+						"r_id": $scope.curRegions[ind].region_id,
+						"r_ind": ind,
+						"c_ind": c_ind
+					};
+					$http.post("/encounters", sendData).then(function(data){
+						if (data.data.success){
+							$scope.campaigns[data.data.c_ind].regions[data.data.r_ind].fetched = true;
+							$scope.campaigns[data.data.c_ind].regions[data.data.r_ind].encounters = $scope.curEncounters = data.data.encounters;
+							$scope.curEncounters.region_id = $scope.campaigns[data.data.c_ind].regions[data.data.r_ind].region_id;
+							$scope.showEncs = true;
+						}
+					});
+				} else if ($scope.showEncs){
+					if ($scope.curEncounters.region_id == $scope.campaigns[c_ind].regions[ind].region_id){
+						$scope.showEncs = false;
+					} else {
+						$scope.curEncounters = $scope.campaigns[c_ind].regions[ind].encounters;
+					}
+				} else {
+					$scope.showEncs = true;
+					$scope.curEncounters = $scope.campaigns[c_ind].regions[ind].encounters;
+				}
+			}
         };
 
         this.RevealDetails = function(ind){
@@ -56,7 +89,7 @@
         };
 
         this.ShowEncounters = function(){
-            return false;
+            return $scope.showEncs;
         };
 
         this.AddElement = function(){
