@@ -12,13 +12,14 @@ type RegionController struct {
 
 type GetRegionsReq struct {
     Campaign_id int64 `json:"c_id"`
+	C_ind int64 `json:"c_ind"`
 }
 
 type GetRegionsResp struct {
     Success bool `json:"success"`
 	Error string `json:"error"`
-    Campaign_id int64 `json:"c_id"`
 	Data []models.Region `json:"regions"`
+	C_ind int64 `json:"c_ind"`
 }
 
 func (this *RegionController) GetRegions() {
@@ -29,7 +30,7 @@ func (this *RegionController) GetRegions() {
         resp := GetRegionsResp{Success: false, Error: ""}
         if err == nil {
             resp.Data = models.GetRegions(regionsReq.Campaign_id)
-            resp.Campaign_id = regionsReq.Campaign_id
+			resp.C_ind = regionsReq.C_ind
             resp.Success = true;
         }
         this.Data["json"] = resp
