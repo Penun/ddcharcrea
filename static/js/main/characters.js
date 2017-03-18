@@ -7,7 +7,8 @@
 		$scope.showDetails = false;
 		$scope.chara = null;
 		$scope.addChar = {
-			"is_partial": true
+			"is_partial": true,
+			"is_npc": false
 		};
 
 		// Both are actually indexes not ids

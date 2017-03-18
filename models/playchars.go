@@ -4,14 +4,14 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
-func GetCharsList_UserId(userId int64) []Playchar {
+func GetCharsList_NonNPC(userId int64) []Playchar {
 	o := orm.NewOrm()
 	var playchars []Playchar
-	o.QueryTable("playchar").Filter("user_id", userId).All(&playchars)
+	o.QueryTable("playchar").Filter("user_id", userId).Filter("is_npc", 0).All(&playchars)
 	if len(playchars) > 0 {
 		return playchars
 	} else {
-		return []Playchar{} 
+		return []Playchar{}
 	}
 }
 

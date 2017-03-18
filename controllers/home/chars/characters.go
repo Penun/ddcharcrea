@@ -90,7 +90,7 @@ func (this *CharacterController)  GetCharList() {
 		resp := CharGetListResp{Success: false, Error: "", User_id: cGetReq.User_id}
 		if err == nil {
 			resp.Success = true
-			resp.Data = models.GetCharsList_UserId(cGetReq.User_id)
+			resp.Data = models.GetCharsList_NonNPC(cGetReq.User_id)
 		}
 		this.Data["json"] = resp
 		this.ServeJSON()
@@ -132,46 +132,8 @@ func (this *CharacterController) Insert() {
 		if err == nil {
 			insReq.Playchar.User = new(models.User)
 			insReq.Playchar.User.User_id = user.(models.User).User_id
-			n_id := models.InsertPlaychar(insReq.Playchar)
-			if n_id > 0 {
-				insReq.Playchar.Playchar_id = n_id
-
-				p_rb := *insReq.Playchar.RaceBuild
-				p_rb.Playchar = new(models.Playchar)
-				p_rb.Playchar.Playchar_id = n_id
-
-				p_cb := *insReq.Playchar.ClassBuild
-				p_cb.Playchar = new(models.Playchar)
-				p_cb.Playchar.Playchar_id = n_id
-
-				p_bb := *insReq.Playchar.BackgroundBuild
-				p_bb.Playchar = new(models.Playchar)
-				p_bb.Playchar.Playchar_id = n_id
-
-				if n_rb_id := models.InsertRaceBuild(p_rb); n_rb_id > 0 {
-					insReq.Playchar.RaceBuild.RaceBuild_id = n_rb_id
-				}
-
-				if n_cb_id := models.InsertClassBuild(p_cb); n_cb_id > 0 {
-					insReq.Playchar.ClassBuild.ClassBuild_id = n_cb_id
-					for i := 0; i < len(insReq.ChosenProfs); i++ {
-						chProf := models.CbChosenProficiency{
-							ClassProficiency: new(models.ClassProficiency),
-							ClassBuild: new(models.ClassBuild)}
-						chProf.ClassProficiency.ClassProficiency_id = insReq.ChosenProfs[i]
-						chProf.ClassBuild.ClassBuild_id = n_cb_id
-						_ = models.InsertCbChosenProficiency(chProf)
-					}
-				}
-
-				if n_bb_id := models.InsertBackgroundBuild(p_bb); n_bb_id > 0 {
-					insReq.Playchar.BackgroundBuild.BackgroundBuild_id = n_bb_id
-				}
-
-				if suc_up := models.UpdatePlaychar(insReq.Playchar); suc_up > 0 {
-					resp.Success = true
-					resp.Data = insReq.Playchar
-				}
+			if resp.Success = InsertPlaychar(&insReq.Playchar, insReq.ChosenProfs); resp.Success {
+				resp.Data = insReq.Playchar
 			}
 		} else {
 			resp.Error = err.Error()
@@ -249,6 +211,60 @@ func (this *CharacterController) Delete() {
 	} else {
 		this.Redirect("/", 302)
 	}
+}
+
+func (this *CharacterController) GenerateRandom() {
+	user := this.GetSession("user")
+	if user != nil {
+		//resp := InsDetResp{Success: false, Error: ""}
+
+	} else {
+		this.Redirect("/", 302)
+	}
+}
+
+func InsertPlaychar(char *models.Playchar, ch_profs []int64) bool {
+	n_id := models.InsertPlaychar(*char)
+	if n_id > 0 {
+		char.Playchar_id = n_id
+
+		p_rb := *char.RaceBuild
+		p_rb.Playchar = new(models.Playchar)
+		p_rb.Playchar.Playchar_id = n_id
+
+		p_cb := *char.ClassBuild
+		p_cb.Playchar = new(models.Playchar)
+		p_cb.Playchar.Playchar_id = n_id
+
+		p_bb := *char.BackgroundBuild
+		p_bb.Playchar = new(models.Playchar)
+		p_bb.Playchar.Playchar_id = n_id
+
+		if n_rb_id := models.InsertRaceBuild(p_rb); n_rb_id > 0 {
+			char.RaceBuild.RaceBuild_id = n_rb_id
+		}
+
+		if n_cb_id := models.InsertClassBuild(p_cb); n_cb_id > 0 {
+			char.ClassBuild.ClassBuild_id = n_cb_id
+			for i := 0; i < len(ch_profs); i++ {
+				chProf := models.CbChosenProficiency{
+					ClassProficiency: new(models.ClassProficiency),
+					ClassBuild: new(models.ClassBuild)}
+				chProf.ClassProficiency.ClassProficiency_id = ch_profs[i]
+				chProf.ClassBuild.ClassBuild_id = n_cb_id
+				_ = models.InsertCbChosenProficiency(chProf)
+			}
+		}
+
+		if n_bb_id := models.InsertBackgroundBuild(p_bb); n_bb_id > 0 {
+			char.BackgroundBuild.BackgroundBuild_id = n_bb_id
+		}
+
+		if suc_up := models.UpdatePlaychar(*char); suc_up > 0 {
+			return true
+		}
+	}
+	return false
 }
 
 //func (this *CharacterController) InsertDetails() {

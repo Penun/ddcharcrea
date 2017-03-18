@@ -29,6 +29,7 @@ type Playchar struct {
 	RaceBuild *RaceBuild `orm:"rel(one);null" json:"race_build"`
 	ClassBuild *ClassBuild `orm:"rel(one);null" json:"class_build"`
 	BackgroundBuild *BackgroundBuild `orm:"rel(one);null" json:"background_build"`
+	IsNpc bool `json:"is_npc"`
 }
 
 type Race struct {
