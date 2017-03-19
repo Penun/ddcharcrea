@@ -59,3 +59,19 @@ func GetBaseCharWUser(playcharId int64) Playchar {
 	o.QueryTable("playchar").Filter("playchar_id", playcharId).RelatedSel("user").One(&playchar)
 	return playchar
 }
+
+func GetCharNames() []Playchar {
+	o := orm.NewOrm()
+	var pchars []orm.Params
+	o.QueryTable("playchar").Values(&pchars, "name")
+	quant := len(pchars)
+	if quant > 0 {
+		playchars := make([]Playchar, quant)
+		for i, row := range pchars {
+			playchars[i].Name = row["name"].(string)
+		}
+		return playchars
+	} else {
+		return []Playchar{}
+	}
+}
