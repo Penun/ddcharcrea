@@ -4,6 +4,17 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
+func GetPreClassList() []orm.Params {
+	o := orm.NewOrm()
+	var classes []orm.Params
+	num, _ := o.QueryTable("class").Values(&classes, "class_id", "name")
+	if num > 0 {
+		return classes
+	} else {
+		return []orm.Params{}
+	}
+}
+
 func GetClassList() []Class {
 	o := orm.NewOrm()
 	var classes []Class
@@ -11,7 +22,18 @@ func GetClassList() []Class {
 	if len(classes) > 0 {
 		return classes
 	} else {
-		return []Class{} 
+		return []Class{}
+	}
+}
+
+func GetPreClassPathList(c_id int64) []orm.Params {
+	o := orm.NewOrm()
+	var classPaths []orm.Params
+	num, _ := o.QueryTable("class_path").Filter("class_id", c_id).Values(&classPaths, "class_path_id", "name")
+	if num > 0 {
+		return classPaths
+	} else {
+		return []orm.Params{}
 	}
 }
 
@@ -22,7 +44,7 @@ func GetClassPathList(classId int64) []ClassPath {
 	if len(classPaths) > 0 {
 		return classPaths
 	} else {
-		return []ClassPath{} 
+		return []ClassPath{}
 	}
 }
 

@@ -226,9 +226,11 @@ func (this *CharacterController) GenerateRandom() {
 		resp := InsDetResp{Success: false, Error: ""}
 		if err == nil {
 			resp.Data.Level = genReq.Level
+			resp.Data.IsNpc = true
+			//resp.Data.User := new(models.User)
+			//resp.Data.User = user.(models.User)
 
 			races := models.GetPreRaceList()
-
 			n_rb := new(models.RaceBuild)
 			n_rb.Race = new(models.Race)
 			randInt := rand.Intn(len(races))
@@ -239,8 +241,27 @@ func (this *CharacterController) GenerateRandom() {
 				n_rb.SubRace = new(models.SubRace)
 				n_rb.SubRace.SubRace_id = subRaces[randInt]["SubRace_id"].(int64)
 			}
-
 			resp.Data.RaceBuild = n_rb
+
+			classes := models.GetPreClassList()
+			n_cb := new(models.ClassBuild)
+			n_cb.Class = new(models.Class)
+			randInt = rand.Intn(len(classes))
+			n_cb.Class.Class_id = classes[randInt]["Class_id"].(int64)
+			if resp.Data.Level >= 3 {
+				classPaths := models.GetPreClassPathList(n_cb.Class.Class_id)
+				n_cb.ClassPath = new(models.ClassPath)
+				randInt = rand.Intn(len(classPaths))
+				n_cb.ClassPath.ClassPath_id = classPaths[randInt]["ClassPath_id"].(int64)
+			}
+			resp.Data.ClassBuild = n_cb
+
+			resp.Data.B_str = GetAbilityScore()
+			resp.Data.B_dex = GetAbilityScore()
+			resp.Data.B_con = GetAbilityScore()
+			resp.Data.B_int = GetAbilityScore()
+			resp.Data.B_wis = GetAbilityScore()
+			resp.Data.B_cha = GetAbilityScore()
 
 			resp.Success = true
 		} else {
@@ -295,6 +316,29 @@ func InsertPlaychar(char *models.Playchar, ch_profs []int64) bool {
 		}
 	}
 	return false
+}
+
+func GetAbilityScore() int {
+	temp_scores := make([]int, 4)
+	for j := 0; j < 4; j++ {
+		randInt := rand.Intn(6) + 1
+		if j > 0 && temp_scores[j - 1] < randInt {
+			temp := temp_scores[j -1]
+			temp_scores[j - 1] = randInt
+			temp_scores[j] = temp
+		} else {
+			temp_scores[j] = randInt
+		}
+	}
+
+	var abil_total int
+	abil_total = 0
+
+	for j := 0; j < 3; j++ {
+		abil_total += temp_scores[j]
+	}
+
+	return abil_total
 }
 
 //func (this *CharacterController) InsertDetails() {
