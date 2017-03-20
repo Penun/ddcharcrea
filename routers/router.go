@@ -17,6 +17,7 @@ func init() {
     beego.Router("/characters/insert", &chars.CharacterController{}, "post:Insert")
     beego.Router("/characters/delete", &chars.CharacterController{}, "post:Delete")
     beego.Router("/characters/update", &chars.CharacterController{}, "post:Update")
+    beego.Router("/characters/random", &chars.CharacterController{}, "post:GenerateRandom")
     beego.Router("/races/list", &chars.RaceController{}, "get:GetRaces")
     beego.Router("/races/subs", &chars.RaceController{}, "post:GetSubRaces")
     beego.Router("/races/features", &chars.RaceController{}, "post:GetRaceFeatures")

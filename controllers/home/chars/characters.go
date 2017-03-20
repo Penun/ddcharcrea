@@ -3,6 +3,7 @@ package chars
 import (
 	"github.com/Penun/ddcharcrea/models"
 	"github.com/astaxie/beego"
+	"math/rand"
 	"encoding/json"
 )
 
@@ -53,6 +54,10 @@ type InsertReq struct {
 type UpdateReq struct {
 	Playchar models.Playchar `json:"playchar"`
 	UpdateChosen []UpdateChosen `json:"update_chosen"`
+}
+
+type GenCharReq struct {
+	Level int `json:"level"`
 }
 
 //type InsDetReq struct {
@@ -216,8 +221,33 @@ func (this *CharacterController) Delete() {
 func (this *CharacterController) GenerateRandom() {
 	user := this.GetSession("user")
 	if user != nil {
-		//resp := InsDetResp{Success: false, Error: ""}
+		var genReq GenCharReq
+		err := json.Unmarshal(this.Ctx.Input.RequestBody, &genReq)
+		resp := InsDetResp{Success: false, Error: ""}
+		if err == nil {
+			resp.Data.Level = genReq.Level
 
+			races := models.GetPreRaceList()
+
+			n_rb := new(models.RaceBuild)
+			n_rb.Race = new(models.Race)
+			randInt := rand.Intn(len(races))
+			n_rb.Race.Race_id = races[randInt]["Race_id"].(int64)
+			subRaces := models.GetPreSubRaceList(n_rb.Race.Race_id)
+			if len(subRaces) > 0 {
+				randInt = rand.Intn(len(subRaces))
+				n_rb.SubRace = new(models.SubRace)
+				n_rb.SubRace.SubRace_id = subRaces[randInt]["SubRace_id"].(int64)
+			}
+
+			resp.Data.RaceBuild = n_rb
+
+			resp.Success = true
+		} else {
+			resp.Error = "parse error"
+		}
+		this.Data["json"] = resp
+		this.ServeJSON()
 	} else {
 		this.Redirect("/", 302)
 	}

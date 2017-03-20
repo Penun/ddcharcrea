@@ -60,18 +60,18 @@ func GetBaseCharWUser(playcharId int64) Playchar {
 	return playchar
 }
 
-func GetCharNames() []Playchar {
+func GetCharNames() []string {
 	o := orm.NewOrm()
 	var pchars []orm.Params
 	o.QueryTable("playchar").Values(&pchars, "name")
 	quant := len(pchars)
 	if quant > 0 {
-		playchars := make([]Playchar, quant)
+		playchars := make([]string, quant)
 		for i, row := range pchars {
-			playchars[i].Name = row["name"].(string)
+			playchars[i] = row["name"].(string)
 		}
 		return playchars
 	} else {
-		return []Playchar{}
+		return []string{}
 	}
 }

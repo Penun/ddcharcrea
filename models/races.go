@@ -11,7 +11,7 @@ func GetPreRaceList() []orm.Params {
 	if num > 0 {
 		return races
 	} else {
-		return []orm.Params{} 
+		return []orm.Params{}
 	}
 }
 
@@ -22,18 +22,18 @@ func GetAllRaces() []Race {
 	if len(races) > 0 {
 		return races
 	} else {
-		return []Race{} 
+		return []Race{}
 	}
 }
 
-func GetPreSubRaceList() []orm.Params {
+func GetPreSubRaceList(r_id int64) []orm.Params {
 	o := orm.NewOrm()
 	var subRaces []orm.Params
-	num, _ := o.QueryTable("sub_race").Values(&subRaces, "sub_race_id", "name")
+	num, _ := o.QueryTable("sub_race").Filter("race_id", r_id).Values(&subRaces, "sub_race_id", "name")
 	if num > 0 {
 		return subRaces
 	} else {
-		return []orm.Params{} 
+		return []orm.Params{}
 	}
 }
 
@@ -44,7 +44,7 @@ func GetSubRaces(r_id int64) []SubRace {
 	if len(subRaces) > 0 {
 		return subRaces
 	} else {
-		return []SubRace{} 
+		return []SubRace{}
 	}
 }
 
@@ -75,6 +75,6 @@ func GetRaceFeatures(r_id int64) []RaceFeature {
 	if len(rFeats) > 0 {
 		return rFeats
 	} else {
-		return []RaceFeature{}			
+		return []RaceFeature{}
 	}
 }
