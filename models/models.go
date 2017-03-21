@@ -58,6 +58,7 @@ type Class struct {
 	Name string `json:"name"`
 	HitDice int `json:"hit_dice"`
 	SkillProfs int `json:"skill_profs"`
+	AbilPrefs string `json:"abil_prefs"`
 }
 
 type ClassPath struct {

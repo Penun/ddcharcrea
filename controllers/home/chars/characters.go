@@ -87,6 +87,15 @@ type DelCharResp struct {
 	Pl_in int `json:"p_i"`
 }
 
+type AbilPrefs struct {
+	Abils []AbilityPref `json:"abil_prefs"`
+}
+
+type AbilityPref struct {
+	Attribute string `json:"att"`
+	Rank int `json:"rank"`
+}
+
 func (this *CharacterController)  GetCharList() {
 	user := this.GetSession("user")
 	if user != nil {
@@ -225,43 +234,126 @@ func (this *CharacterController) GenerateRandom() {
 		err := json.Unmarshal(this.Ctx.Input.RequestBody, &genReq)
 		resp := InsDetResp{Success: false, Error: ""}
 		if err == nil {
+			var randInt int
 			resp.Data.Level = genReq.Level
 			resp.Data.IsNpc = true
-			//resp.Data.User := new(models.User)
-			//resp.Data.User = user.(models.User)
+			resp.Data.User = new(models.User)
+			resp.Data.User.User_id = user.(models.User).User_id
+			if sex := rand.Intn(2); sex > 0 {
+				resp.Data.Sex = "m"
+			} else {
+				resp.Data.Sex = "f"
+			}
 
-			races := models.GetPreRaceList()
+			races := models.GetAllRaces()
 			n_rb := new(models.RaceBuild)
-			n_rb.Race = new(models.Race)
-			randInt := rand.Intn(len(races))
-			n_rb.Race.Race_id = races[randInt]["Race_id"].(int64)
-			subRaces := models.GetPreSubRaceList(n_rb.Race.Race_id)
-			if len(subRaces) > 0 {
-				randInt = rand.Intn(len(subRaces))
-				n_rb.SubRace = new(models.SubRace)
-				n_rb.SubRace.SubRace_id = subRaces[randInt]["SubRace_id"].(int64)
+			if splLen := len(races); splLen > 0 {
+				randInt = rand.Intn(splLen)
+				n_rb.Race = new(models.Race)
+				n_rb.Race.Race_id = races[randInt].Race_id
+
+				scaleDif := races[randInt].MaxHeightIn - races[randInt].MinHeightIn + 1
+				scaleDif = rand.Intn(scaleDif) + races[randInt].MinHeightIn
+				n_rb.HeightIn = scaleDif
+
+				scaleDif = races[randInt].MaxWeight - races[randInt].MinWeight + 1
+				scaleDif = rand.Intn(scaleDif) + races[randInt].MinWeight
+				n_rb.Weight = scaleDif
+
+				scaleDif = races[randInt].MaxAge - races[randInt].AdultAge + 1
+				scaleDif = rand.Intn(scaleDif) + races[randInt].AdultAge
+				n_rb.Age = scaleDif
+
+				subRaces := models.GetPreSubRaceList(n_rb.Race.Race_id)
+				if splLen = len(subRaces); splLen > 0 {
+					randInt = rand.Intn(splLen)
+					n_rb.SubRace = new(models.SubRace)
+					n_rb.SubRace.SubRace_id = subRaces[randInt]["SubRace_id"].(int64)
+				}
 			}
 			resp.Data.RaceBuild = n_rb
 
-			classes := models.GetPreClassList()
+			classes := models.GetClassList()
 			n_cb := new(models.ClassBuild)
-			n_cb.Class = new(models.Class)
-			randInt = rand.Intn(len(classes))
-			n_cb.Class.Class_id = classes[randInt]["Class_id"].(int64)
-			if resp.Data.Level >= 3 {
-				classPaths := models.GetPreClassPathList(n_cb.Class.Class_id)
-				n_cb.ClassPath = new(models.ClassPath)
-				randInt = rand.Intn(len(classPaths))
-				n_cb.ClassPath.ClassPath_id = classPaths[randInt]["ClassPath_id"].(int64)
+			abil_prefs := new(AbilPrefs)
+			if splLen := len(classes); splLen > 0 {
+				randInt = rand.Intn(splLen)
+				n_cb.Class = new(models.Class)
+				n_cb.Class.Class_id = classes[randInt].Class_id
+				ap_bytes := []byte(classes[randInt].AbilPrefs)
+				json.Unmarshal(ap_bytes, &abil_prefs)
+				if resp.Data.Level >= 3 {
+					classPaths := models.GetPreClassPathList(n_cb.Class.Class_id)
+					if splLen = len(classPaths); splLen > 0 {
+						randInt = rand.Intn(splLen)
+						n_cb.ClassPath = new(models.ClassPath)
+						n_cb.ClassPath.ClassPath_id = classPaths[randInt]["ClassPath_id"].(int64)
+					}
+				}
 			}
 			resp.Data.ClassBuild = n_cb
 
-			resp.Data.B_str = GetAbilityScore()
-			resp.Data.B_dex = GetAbilityScore()
-			resp.Data.B_con = GetAbilityScore()
-			resp.Data.B_int = GetAbilityScore()
-			resp.Data.B_wis = GetAbilityScore()
-			resp.Data.B_cha = GetAbilityScore()
+			abils := make([]int, 6)
+			for i := 0; i < 6; i++ {
+				abils[i] = GetAbilityScore()
+				abils = SortDown(abils, i)
+			}
+
+			if splLen := len(abil_prefs.Abils); splLen > 0 {
+				var i int
+				for i = 0; i < splLen; i++ {
+					switch abil_prefs.Abils[i].Attribute {
+						case "str":
+							resp.Data.B_str = abils[abil_prefs.Abils[i].Rank - 1]
+						case "dex":
+							resp.Data.B_dex = abils[abil_prefs.Abils[i].Rank - 1]
+						case "con":
+							resp.Data.B_con = abils[abil_prefs.Abils[i].Rank - 1]
+						case "int":
+							resp.Data.B_int = abils[abil_prefs.Abils[i].Rank - 1]
+						case "wis":
+							resp.Data.B_wis = abils[abil_prefs.Abils[i].Rank - 1]
+						case "cha":
+							resp.Data.B_cha = abils[abil_prefs.Abils[i].Rank - 1]
+					}
+				}
+
+				abils = abils[i:]
+
+				for len(abils) > 0 {
+					randInt = rand.Intn(len(abils))
+					if resp.Data.B_str == 0 {
+						resp.Data.B_str = abils[randInt]
+					} else if resp.Data.B_dex == 0 {
+						resp.Data.B_dex = abils[randInt]
+					} else if resp.Data.B_con == 0 {
+						resp.Data.B_con = abils[randInt]
+					} else if resp.Data.B_int == 0 {
+						resp.Data.B_int = abils[randInt]
+					} else if resp.Data.B_wis == 0 {
+						resp.Data.B_wis = abils[randInt]
+					} else {
+						resp.Data.B_cha = abils[randInt]
+					}
+					abils = append(abils[:randInt], abils[randInt + 1:]...)
+				}
+			} else {
+				resp.Data.B_str = abils[0]
+				resp.Data.B_dex = abils[1]
+				resp.Data.B_con = abils[2]
+				resp.Data.B_int = abils[3]
+				resp.Data.B_wis = abils[4]
+				resp.Data.B_cha = abils[5]
+			}
+
+			backs := models.GetPreBackgroundList()
+			n_bb := new(models.BackgroundBuild)
+			if splLen := len(backs); splLen > 0 {
+				randInt = rand.Intn(splLen)
+				n_bb.Background = new(models.Background)
+				n_bb.Background.Background_id = backs[randInt]["Background_id"].(int64)
+			}
+			resp.Data.BackgroundBuild = n_bb
 
 			resp.Success = true
 		} else {
@@ -320,25 +412,30 @@ func InsertPlaychar(char *models.Playchar, ch_profs []int64) bool {
 
 func GetAbilityScore() int {
 	temp_scores := make([]int, 4)
-	for j := 0; j < 4; j++ {
+	for i := 0; i < 4; i++ {
 		randInt := rand.Intn(6) + 1
-		if j > 0 && temp_scores[j - 1] < randInt {
-			temp := temp_scores[j -1]
-			temp_scores[j - 1] = randInt
-			temp_scores[j] = temp
-		} else {
-			temp_scores[j] = randInt
-		}
+		temp_scores[i] = randInt
+		temp_scores = SortDown(temp_scores, i)
 	}
 
 	var abil_total int
 	abil_total = 0
 
-	for j := 0; j < 3; j++ {
-		abil_total += temp_scores[j]
+	for i := 0; i < 3; i++ {
+		abil_total += temp_scores[i]
 	}
 
 	return abil_total
+}
+
+func SortDown(list []int, st_ind int) []int {
+	if st_ind - 1 >= 0 && list[st_ind - 1] < list[st_ind] {
+		temp := list[st_ind - 1]
+		list[st_ind - 1] = list[st_ind]
+		list[st_ind] = temp
+		list = SortDown(list, st_ind - 1)
+	}
+	return list
 }
 
 //func (this *CharacterController) InsertDetails() {

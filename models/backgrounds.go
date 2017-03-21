@@ -4,6 +4,17 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
+func GetPreBackgroundList() []orm.Params {
+	o := orm.NewOrm()
+	var backgrounds []orm.Params
+	num, _ := o.QueryTable("background").Values(&backgrounds, "background_id", "name")
+	if num > 0 {
+		return backgrounds
+	} else {
+		return []orm.Params{}
+	}
+}
+
 func GetBackgroundList() []Background {
 	o := orm.NewOrm()
 	var backgrounds []Background
@@ -11,7 +22,7 @@ func GetBackgroundList() []Background {
 	if len(backgrounds) > 0 {
 		return backgrounds
 	} else {
-		return []Background{} 
+		return []Background{}
 	}
 }
 
