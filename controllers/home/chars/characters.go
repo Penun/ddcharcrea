@@ -382,11 +382,52 @@ func (this *CharacterController) GenerateRandom() {
 
 			if genReq.Level > 1 {
 				for i := 1; i < genReq.Level; i++ {
-					totalHP += rand.Intn(classes[classInt].HitDice) + 1
+					totalHP += rand.Intn(classes[classInt].HitDice) + 1 + addCon
 				}
 			}
 
 			resp.Data.HitPoints = totalHP
+
+			switch genReq.Level {
+				case 2:
+					resp.Data.Exp = 300
+				case 3:
+					resp.Data.Exp = 900
+				case 4:
+					resp.Data.Exp = 2700
+				case 5:
+					resp.Data.Exp = 6500
+				case 6:
+					resp.Data.Exp = 14000
+				case 7:
+					resp.Data.Exp = 23000
+				case 8:
+					resp.Data.Exp = 34000
+				case 9:
+					resp.Data.Exp = 48000
+				case 10:
+					resp.Data.Exp = 64000
+				case 11:
+					resp.Data.Exp = 85000
+				case 12:
+					resp.Data.Exp = 100000
+				case 13:
+					resp.Data.Exp = 120000
+				case 14:
+					resp.Data.Exp = 140000
+				case 15:
+					resp.Data.Exp = 165000
+				case 16:
+					resp.Data.Exp = 195000
+				case 17:
+					resp.Data.Exp = 225000
+				case 18:
+					resp.Data.Exp = 265000
+				case 19:
+					resp.Data.Exp = 305000
+				case 20:
+					resp.Data.Exp = 355000
+			}
 
 			backs := models.GetPreBackgroundList()
 			n_bb := new(models.BackgroundBuild)

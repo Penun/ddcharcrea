@@ -94,7 +94,7 @@
 
         this.AddElement = function(){
 			var sendData = {
-				"level": 7
+				"level": Math.floor(Math.random() * 20 + 1)
 			};
 			$http.post("/characters/random", sendData).then(function(data){
 				if (data.data.success){
