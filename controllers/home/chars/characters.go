@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"time"
 	"encoding/json"
+	"fmt"
 )
 
 type CharacterController struct {
@@ -300,9 +301,10 @@ func (this *CharacterController) GenerateRandom() {
 				abils = SortDown(abils, i)
 			}
 
-			if splLen := len(abil_prefs.Abils); splLen > 0 {
+			abPrefLen := len(abil_prefs.Abils)
+			if abPrefLen > 0 {
 				var i int
-				for i = 0; i < splLen; i++ {
+				for i = 0; i < abPrefLen; i++ {
 					switch abil_prefs.Abils[i].Attribute {
 						case "str":
 							resp.Data.B_str = abils[abil_prefs.Abils[i].Rank - 1]
@@ -370,6 +372,7 @@ func (this *CharacterController) GenerateRandom() {
 						break
 					}
 				}
+				r_mods.Mods = append(r_mods.Mods, sr_mods.Mods...)
 			}
 
 			if addCon < 10 {
@@ -378,15 +381,29 @@ func (this *CharacterController) GenerateRandom() {
 				addCon = (addCon - 10) / 2
 			}
 
-			totalHP := classes[classInt].HitDice + addCon
+			resp.Data.HitPoints = classes[classInt].HitDice + addCon
 
 			if genReq.Level > 1 {
 				for i := 1; i < genReq.Level; i++ {
-					totalHP += rand.Intn(classes[classInt].HitDice) + 1 + addCon
+					resp.Data.HitPoints += rand.Intn(classes[classInt].HitDice) + 1 + addCon
+					if abPrefLen > 0 {
+						actLev := i + 1
+						fmt.Println("Level", actLev)
+						switch actLev {
+							case 4:
+								ApplyPrefAbility(&resp.Data, abil_prefs, i + 1, &addCon, r_mods)
+							case 8:
+								ApplyPrefAbility(&resp.Data, abil_prefs, i + 1, &addCon, r_mods)
+							case 12:
+								ApplyPrefAbility(&resp.Data, abil_prefs, i + 1, &addCon, r_mods)
+							case 16:
+								ApplyPrefAbility(&resp.Data, abil_prefs, i + 1, &addCon, r_mods)
+							case 19:
+								ApplyPrefAbility(&resp.Data, abil_prefs, i + 1, &addCon, r_mods)
+						}
+					}
 				}
 			}
-
-			resp.Data.HitPoints = totalHP
 
 			switch genReq.Level {
 				case 2:
@@ -516,6 +533,247 @@ func GetAbilityScore() int {
 	}
 
 	return abil_total
+}
+
+func ApplyPrefAbility(chara *models.Playchar, prefs *AbilPrefs, lev int, addCon *int, mods *AbilityMods) {
+	changed := false
+	t_str := chara.B_str
+	t_dex := chara.B_dex
+	t_con := chara.B_con
+	t_int := chara.B_int
+	t_wis := chara.B_wis
+	t_cha := chara.B_cha
+	fmt.Println("t_str", t_str)
+	fmt.Println("t_dex", t_dex)
+	fmt.Println("t_con", t_con)
+	fmt.Println("t_int", t_int)
+	fmt.Println("t_wis", t_wis)
+	fmt.Println("t_cha", t_cha)
+
+	for _, mod := range mods.Mods {
+		switch mod.Mod {
+			case "str":
+				t_str += mod.ModVal
+				fmt.Println("t_str", t_str)
+			case "dex":
+				t_dex += mod.ModVal
+				fmt.Println("t_dex", t_dex)
+			case "con":
+				t_con += mod.ModVal
+				fmt.Println("t_con", t_con)
+			case "int":
+				t_int += mod.ModVal
+				fmt.Println("t_int", t_int)
+			case "wis":
+				t_wis += mod.ModVal
+				fmt.Println("t_wis", t_wis)
+			case "cha":
+				t_cha += mod.ModVal
+				fmt.Println("t_cha", t_cha)
+		}
+	}
+
+	for _, abil := range prefs.Abils {
+		switch abil.Attribute {
+			case "str":
+				if (t_str + 1) % 2 == 0 && t_str + 1 <= 20 {
+					fmt.Println("Str", chara.B_str)
+					chara.B_str += 1
+					changed = true
+					fmt.Println("Str", chara.B_str)
+				}
+			case "dex":
+				if (t_dex + 1) % 2 == 0 && t_dex + 1 <= 20 {
+					fmt.Println("Dex", chara.B_dex)
+					chara.B_dex += 1
+					changed = true
+					fmt.Println("Dex", chara.B_dex)
+				}
+			case "con":
+				if (t_con + 1) % 2 == 0 && t_con + 1 <= 20 {
+					fmt.Println("Con", chara.B_con)
+					chara.B_con += 1
+					fmt.Println("HP", chara.HitPoints)
+					chara.HitPoints += lev
+					fmt.Println("HP", chara.HitPoints)
+					fmt.Println("add", *addCon)
+					*addCon += 1
+					fmt.Println("add", *addCon)
+					changed = true
+					fmt.Println("Con", chara.B_con)
+				}
+			case "int":
+				if (t_int + 1) % 2 == 0 && t_int + 1 <= 20 {
+					fmt.Println("Int", chara.B_int)
+					chara.B_int += 1
+					changed = true
+					fmt.Println("Int", chara.B_int)
+				}
+			case "wis":
+				if (t_wis + 1) % 2 == 0 && t_wis + 1 <= 20 {
+					fmt.Println("Wis", chara.B_wis)
+					chara.B_wis += 1
+					changed = true
+					fmt.Println("Wis", chara.B_wis)
+				}
+			case "cha":
+				if (t_cha + 1) % 2 == 0 && t_cha + 1 <= 20 {
+					fmt.Println("Cha", chara.B_cha)
+					chara.B_cha += 1
+					changed = true
+					fmt.Println("Cha", chara.B_cha)
+				}
+		}
+
+		if changed {
+			break
+		}
+	}
+
+	if !changed {
+		if rand.Intn(2) > 0 {
+			r_ind := rand.Intn(len(prefs.Abils))
+			switch prefs.Abils[r_ind].Attribute {
+				case "str":
+					fmt.Println("Str 1.5", chara.B_str)
+					if t_str + 1 <= 20 {
+						chara.B_str += 1
+						changed = true
+					}
+					fmt.Println("Str 1.5", chara.B_str)
+				case "dex":
+					fmt.Println("Dex 1.5", chara.B_dex)
+					if t_dex + 1 <= 20 {
+						chara.B_dex += 1
+						changed = true
+					}
+					fmt.Println("Dex 1.5", chara.B_dex)
+				case "con":
+					fmt.Println("Con 1.5", chara.B_con)
+					if t_con + 1 <= 20 {
+						chara.B_con += 1
+						changed = true
+					}
+					fmt.Println("Con 1.5", chara.B_con)
+				case "int":
+					fmt.Println("Int 1.5", chara.B_int)
+					if t_int + 1 <= 20 {
+						chara.B_int += 1
+						changed = true
+					}
+					fmt.Println("Int 1.5", chara.B_int)
+				case "wis":
+					fmt.Println("Wis 1.5", chara.B_wis)
+					if t_wis + 1 <= 20 {
+						chara.B_wis += 1
+						changed = true
+					}
+					fmt.Println("Wis 1.5", chara.B_wis)
+				case "cha":
+					fmt.Println("Cha 1.5", chara.B_cha)
+					if t_cha + 1 <= 20 {
+						chara.B_cha += 1
+						changed = true
+					}
+					fmt.Println("Cha 1.5", chara.B_cha)
+			}
+		} else {
+			if (t_str + 1) % 2 == 0 && t_str + 1 <= 20 {
+				fmt.Println("Str 2", chara.B_str)
+				chara.B_str += 1
+				changed = true
+				fmt.Println("Str 2", chara.B_str)
+			} else if (t_dex + 1) % 2 == 0 && t_dex + 1 <= 20 {
+				fmt.Println("Dex 2", chara.B_dex)
+				chara.B_dex += 1
+				changed = true
+				fmt.Println("Dex 2", chara.B_dex)
+			} else if (t_con + 1) % 2 == 0 && t_con + 1 <= 20 {
+				fmt.Println("Con 2", chara.B_con)
+				chara.B_con += 1
+				fmt.Println("HP 2", chara.HitPoints)
+				chara.HitPoints += lev
+				fmt.Println("HP 2", chara.HitPoints)
+				fmt.Println("add 2", *addCon)
+				*addCon += 1
+				fmt.Println("add 2", *addCon)
+				changed = true
+				fmt.Println("Con 2", chara.B_con)
+			} else if (t_int + 1) % 2 == 0 && t_int + 1 <= 20 {
+				fmt.Println("Int 2", chara.B_int)
+				chara.B_int += 1
+				changed = true
+				fmt.Println("Int 2", chara.B_int)
+			} else if (t_wis + 1) % 2 == 0 && t_wis + 1 <= 20 {
+				fmt.Println("Wis 2", chara.B_wis)
+				chara.B_wis += 1
+				changed = true
+				fmt.Println("Wis 2", chara.B_wis)
+			} else if (chara.B_cha + 1) % 2 == 0 && t_cha + 1 <= 20 {
+				fmt.Println("Cha 2", chara.B_cha)
+				chara.B_cha += 1
+				changed = true
+				fmt.Println("Cha 2", chara.B_cha)
+			}
+		}
+
+		for !changed {
+			r_ind := rand.Intn(6)
+			switch r_ind {
+				case 0 :
+					fmt.Println("Str 3", chara.B_str)
+					if t_str + 1 <= 20 {
+						chara.B_str += 1
+						changed = true
+					}
+					fmt.Println("Str 3", chara.B_str)
+				case 1:
+					fmt.Println("Dex 3", chara.B_dex)
+					if t_dex + 1 <= 20 {
+						chara.B_dex += 1
+						changed = true
+					}
+					fmt.Println("Dex 3", chara.B_dex)
+				case 2:
+					fmt.Println("Con 3", chara.B_con)
+					if t_con + 1 <= 20 {
+						chara.B_con += 1
+						t_con += 1
+						if t_con % 2 == 0 {
+							fmt.Println("HP 3", chara.HitPoints)
+							chara.HitPoints += lev
+							fmt.Println("HP 3", chara.HitPoints)
+							fmt.Println("add 3", *addCon)
+							*addCon += 1
+							fmt.Println("add 3", *addCon)
+						}
+						changed = true
+					}
+					fmt.Println("Con 3", chara.B_con)
+				case 3:
+					fmt.Println("Int 3", chara.B_int)
+					if t_int + 1 <= 20 {
+						chara.B_int += 1
+						changed = true
+					}
+					fmt.Println("Int 3", chara.B_int)
+				case 4:
+					fmt.Println("Wis 3", chara.B_wis)
+					if t_wis + 1 <= 20 {
+						chara.B_wis += 1
+						changed = true
+					}
+					fmt.Println("Wis 3", chara.B_wis)
+				case 5:
+					fmt.Println("Cha 3", chara.B_cha)
+					if t_cha + 1 <= 20 {
+						chara.B_cha += 1
+						changed = true
+					}
+					fmt.Println("Cha 3", chara.B_cha)
+			}
+		}
+	}
 }
 
 func SortDown(list []int, st_ind int) []int {
