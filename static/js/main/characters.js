@@ -119,10 +119,10 @@
 			$scope.users[u_i].playchars[p_i].bo_wis = 0;
 			$scope.users[u_i].playchars[p_i].bo_cha = 0;
 			var r_mods = JSON.parse($scope.users[u_i].playchars[p_i].race_build.race.ability_mods);
-			$scope.ApplyAbilityBonus(u_i, p_i, r_mods);
+			$scope.ApplyAbilityBonus(u_i, p_i, r_mods.abil_mods);
 			if ($scope.users[u_i].playchars[p_i].race_build.sub_race != null){
 				var sr_mods = JSON.parse($scope.users[u_i].playchars[p_i].race_build.sub_race.ability_mods);
-				$scope.ApplyAbilityBonus(u_i, p_i, sr_mods);
+				$scope.ApplyAbilityBonus(u_i, p_i, sr_mods.abil_mods);
 			}
 			if ($scope.users[u_i].playchars[p_i].race_build.options != null && $scope.users[u_i].playchars[p_i].race_build.options != ""){
 				var op_mods = [];
@@ -173,35 +173,35 @@
 			var m_int = 0;
 			var m_wis = 0;
 			var m_cha = 0;
-			if ($scope.users[u_i].playchars[p_i].b_str < 10){
+			if ($scope.users[u_i].playchars[p_i].t_str < 10){
 				m_str = ($scope.users[u_i].playchars[p_i].t_str - 11) / 2;
 				$scope.users[u_i].playchars[p_i].m_str = Math.ceil(m_str);
 			} else {
 				m_str = ($scope.users[u_i].playchars[p_i].t_str - 10) / 2;
 				$scope.users[u_i].playchars[p_i].m_str = Math.floor(m_str);
 			}
-			if ($scope.users[u_i].playchars[p_i].b_dex < 10){
+			if ($scope.users[u_i].playchars[p_i].t_dex < 10){
 				m_dex = ($scope.users[u_i].playchars[p_i].t_dex - 11) / 2;
 				$scope.users[u_i].playchars[p_i].m_dex = Math.ceil(m_dex);
 			} else {
 				m_dex = ($scope.users[u_i].playchars[p_i].t_dex - 10) / 2;
 				$scope.users[u_i].playchars[p_i].m_dex = Math.floor(m_dex);
 			}
-			if ($scope.users[u_i].playchars[p_i].b_int < 10){
+			if ($scope.users[u_i].playchars[p_i].t_int < 10){
 				m_int = ($scope.users[u_i].playchars[p_i].t_int - 11) / 2;
 				$scope.users[u_i].playchars[p_i].m_int = Math.ceil(m_int);
 			} else {
 				m_int = ($scope.users[u_i].playchars[p_i].t_int - 10) / 2;
 				$scope.users[u_i].playchars[p_i].m_int = Math.floor(m_int);
 			}
-			if ($scope.users[u_i].playchars[p_i].b_wis < 10){
+			if ($scope.users[u_i].playchars[p_i].t_wis < 10){
 				m_wis = ($scope.users[u_i].playchars[p_i].t_wis - 11) / 2;
 				$scope.users[u_i].playchars[p_i].m_wis = Math.ceil(m_wis);
 			} else {
 				m_wis = ($scope.users[u_i].playchars[p_i].t_wis - 10) / 2;
 				$scope.users[u_i].playchars[p_i].m_wis = Math.floor(m_wis);
 			}
-			if ($scope.users[u_i].playchars[p_i].b_cha < 10){
+			if ($scope.users[u_i].playchars[p_i].t_cha < 10){
 				m_cha = ($scope.users[u_i].playchars[p_i].t_cha - 11) / 2;
 				$scope.users[u_i].playchars[p_i].m_cha = Math.ceil(m_cha);
 			} else {

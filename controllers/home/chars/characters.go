@@ -4,6 +4,7 @@ import (
 	"github.com/Penun/ddcharcrea/models"
 	"github.com/astaxie/beego"
 	"math/rand"
+	"time"
 	"encoding/json"
 )
 
@@ -60,20 +61,6 @@ type GenCharReq struct {
 	Level int `json:"level"`
 }
 
-//type InsDetReq struct {
-//	Name string `json:"name"`
-//	Level string `json:"level"`
-//	HitPoints string `json:"hit_points"`
-//	Exp string `json:"exp"`
-//	B_str string `json:"b_str"`
-//	B_dex string `json:"b_dex"`
-//	B_con string `json:"b_con"`
-//	B_int string `json:"b_int"`
-//	B_wis string `json:"b_wis"`
-//	B_cha string `json:"b_cha"`
-//	Sex string `json:"sex"`
-//}
-
 type InsDetResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
@@ -94,6 +81,15 @@ type AbilPrefs struct {
 type AbilityPref struct {
 	Attribute string `json:"att"`
 	Rank int `json:"rank"`
+}
+
+type AbilityMods struct {
+	Mods []AbilityMod `json:"abil_mods"`
+}
+
+type AbilityMod struct {
+	Mod string `json:"mod"`
+	ModVal int `json:"mod_val"`
 }
 
 func (this *CharacterController)  GetCharList() {
@@ -230,6 +226,7 @@ func (this *CharacterController) Delete() {
 func (this *CharacterController) GenerateRandom() {
 	user := this.GetSession("user")
 	if user != nil {
+		rand.Seed(time.Now().UTC().UnixNano())
 		var genReq GenCharReq
 		err := json.Unmarshal(this.Ctx.Input.RequestBody, &genReq)
 		resp := InsDetResp{Success: false, Error: ""}
@@ -246,41 +243,45 @@ func (this *CharacterController) GenerateRandom() {
 			}
 
 			races := models.GetAllRaces()
+			var subRaces []models.SubRace
+			raceInt := -1
+			sRaceInt := -1
 			n_rb := new(models.RaceBuild)
 			if splLen := len(races); splLen > 0 {
-				randInt = rand.Intn(splLen)
+				raceInt = rand.Intn(splLen)
 				n_rb.Race = new(models.Race)
-				n_rb.Race.Race_id = races[randInt].Race_id
+				n_rb.Race.Race_id = races[raceInt].Race_id
 
-				scaleDif := races[randInt].MaxHeightIn - races[randInt].MinHeightIn + 1
-				scaleDif = rand.Intn(scaleDif) + races[randInt].MinHeightIn
+				scaleDif := races[raceInt].MaxHeightIn - races[raceInt].MinHeightIn + 1
+				scaleDif = rand.Intn(scaleDif) + races[raceInt].MinHeightIn
 				n_rb.HeightIn = scaleDif
 
-				scaleDif = races[randInt].MaxWeight - races[randInt].MinWeight + 1
-				scaleDif = rand.Intn(scaleDif) + races[randInt].MinWeight
+				scaleDif = races[raceInt].MaxWeight - races[raceInt].MinWeight + 1
+				scaleDif = rand.Intn(scaleDif) + races[raceInt].MinWeight
 				n_rb.Weight = scaleDif
 
-				scaleDif = races[randInt].MaxAge - races[randInt].AdultAge + 1
-				scaleDif = rand.Intn(scaleDif) + races[randInt].AdultAge
+				scaleDif = races[raceInt].MaxAge - races[raceInt].AdultAge + 1
+				scaleDif = rand.Intn(scaleDif) + races[raceInt].AdultAge
 				n_rb.Age = scaleDif
 
-				subRaces := models.GetPreSubRaceList(n_rb.Race.Race_id)
+				subRaces = models.GetSubRaces(n_rb.Race.Race_id)
 				if splLen = len(subRaces); splLen > 0 {
-					randInt = rand.Intn(splLen)
+					sRaceInt = rand.Intn(splLen)
 					n_rb.SubRace = new(models.SubRace)
-					n_rb.SubRace.SubRace_id = subRaces[randInt]["SubRace_id"].(int64)
+					n_rb.SubRace.SubRace_id = subRaces[sRaceInt].SubRace_id
 				}
 			}
 			resp.Data.RaceBuild = n_rb
 
 			classes := models.GetClassList()
+			var classInt int
 			n_cb := new(models.ClassBuild)
 			abil_prefs := new(AbilPrefs)
 			if splLen := len(classes); splLen > 0 {
-				randInt = rand.Intn(splLen)
+				classInt = rand.Intn(splLen)
 				n_cb.Class = new(models.Class)
-				n_cb.Class.Class_id = classes[randInt].Class_id
-				ap_bytes := []byte(classes[randInt].AbilPrefs)
+				n_cb.Class.Class_id = classes[classInt].Class_id
+				ap_bytes := []byte(classes[classInt].AbilPrefs)
 				json.Unmarshal(ap_bytes, &abil_prefs)
 				if resp.Data.Level >= 3 {
 					classPaths := models.GetPreClassPathList(n_cb.Class.Class_id)
@@ -346,6 +347,47 @@ func (this *CharacterController) GenerateRandom() {
 				resp.Data.B_cha = abils[5]
 			}
 
+			addCon := resp.Data.B_con
+
+			r_mods := new(AbilityMods)
+			mods_st := []byte(races[raceInt].AbilityMods)
+			json.Unmarshal(mods_st, &r_mods)
+
+			for i := 0; i < len(r_mods.Mods); i++ {
+				if r_mods.Mods[i].Mod == "con" {
+					addCon += r_mods.Mods[i].ModVal
+					break
+				}
+			}
+
+			if sRaceInt > -1 {
+				sr_mods := new(AbilityMods)
+				mods_st = []byte(subRaces[sRaceInt].AbilityMods)
+				json.Unmarshal(mods_st, &sr_mods)
+				for i := 0; i < len(sr_mods.Mods); i++ {
+					if sr_mods.Mods[i].Mod == "con" {
+						addCon += sr_mods.Mods[i].ModVal
+						break
+					}
+				}
+			}
+
+			if addCon < 10 {
+				addCon = (addCon - 11) / 2
+			} else {
+				addCon = (addCon - 10) / 2
+			}
+
+			totalHP := classes[classInt].HitDice + addCon
+
+			if genReq.Level > 1 {
+				for i := 1; i < genReq.Level; i++ {
+					totalHP += rand.Intn(classes[classInt].HitDice) + 1
+				}
+			}
+
+			resp.Data.HitPoints = totalHP
+
 			backs := models.GetPreBackgroundList()
 			n_bb := new(models.BackgroundBuild)
 			if splLen := len(backs); splLen > 0 {
@@ -354,6 +396,13 @@ func (this *CharacterController) GenerateRandom() {
 				n_bb.Background.Background_id = backs[randInt]["Background_id"].(int64)
 			}
 			resp.Data.BackgroundBuild = n_bb
+
+//			class_profs := models.GetClassProficiencies(classes[classInt].Class_id)
+
+//			ch_profs := make([]int, 0)
+//			for len(ch_profs) < classes[classInt].SkillProfs {
+//				randInt = rand.Intn(len)
+//			}
 
 			resp.Success = true
 		} else {
@@ -437,73 +486,3 @@ func SortDown(list []int, st_ind int) []int {
 	}
 	return list
 }
-
-//func (this *CharacterController) InsertDetails() {
-//	user := this.GetSession("user")
-//	if user != nil {
-//		var insDetReq InsDetReq
-//		err := json.Unmarshal(this.Ctx.Input.RequestBody, &insDetReq)
-//		resp := CharGetDetResp{Success: false, Error: ""}
-//		if err == nil {
-//			var pc models.Playchar
-//			var perr error
-//			pc.Name = insDetReq.Name
-//			pc.Level, perr = strconv.Atoi(insDetReq.Level)
-//			if perr == nil {
-//				if pc.Level > 20 {
-//					pc.Level = 20
-//				}
-//			}
-//			pc.HitPoints, _ = strconv.Atoi(insDetReq.HitPoints)
-//			pc.Exp, _ = strconv.Atoi(insDetReq.Exp)
-//			pc.B_str, perr = strconv.Atoi(insDetReq.B_str)
-//			if perr == nil {
-//				if pc.B_str > 30 {
-//					pc.B_str = 30
-//				}
-//			}
-//			pc.B_dex, perr = strconv.Atoi(insDetReq.B_dex)
-//			if perr == nil {
-//				if pc.B_dex > 30 {
-//					pc.B_dex = 30
-//				}
-//			}
-//			pc.B_con, perr = strconv.Atoi(insDetReq.B_con)
-//			if perr == nil {
-//				if pc.B_con > 30 {
-//					pc.B_con = 30
-//				}
-//			}
-//			pc.B_int, perr = strconv.Atoi(insDetReq.B_int)
-//			if perr == nil {
-//				if pc.B_int > 30 {
-//					pc.B_int = 30
-//				}
-//			}
-//			pc.B_wis, perr = strconv.Atoi(insDetReq.B_wis)
-//			if perr == nil {
-//				if pc.B_wis > 30 {
-//					pc.B_wis = 30
-//				}
-//			}
-//			pc.B_cha, perr = strconv.Atoi(insDetReq.B_cha)
-//			if perr == nil {
-//				if pc.B_cha > 30 {
-//					pc.B_cha = 30
-//				}
-//			}
-//			pc.Sex = insDetReq.Sex
-//			pc.User = new(models.User)
-//			pc.User.User_id = user.(models.User).User_id
-//			pc.IsPartial = true
-//			resp.Success = models.InsertPlaychar(pc)
-//			if resp.Success {
-//				resp.Data = pc
-//			}
-//		}
-//		this.Data["json"] = resp
-//		this.ServeJSON()
-//	} else {
-//		this.Redirect("/", 302)
-//	}
-//}
