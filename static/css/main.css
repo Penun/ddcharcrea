@@ -27,6 +27,59 @@ body {
 	position: relative;
 }
 
+@keyframes fade_in {
+	0% {opacity: 0}
+	100% {opacity: 1}
+}
+
+@-webkit-keyframes fade_in {
+	0% {opacity: 0}
+	100% {opacity: 1}
+}
+
+@-moz-keyframes fade_in {
+	0% {opacity: 0}
+	100% {opacity: 1}
+}
+
+@keyframes fade_out {
+	0% {opacity: 1}
+	100% {opacity: 0}
+}
+
+@-webkit-keyframes fade_out {
+	0% {opacity: 1}
+	100% {opacity: 0}
+}
+
+@-moz-keyframes fade_out {
+	0% {opacity: 1}
+	100% {opacity: 0}
+}
+
+.fade_in {
+	animation-name: fade_in;
+	animation-duration: 750ms;
+	-webkit-animation-name: fade_in;
+	-webkit-animation-duration: 750ms;
+	-moz-animation-name: fade_in;
+	-moz-animation-duration: 750ms;
+}
+
+.fade_out {
+	animation-name: fade_out;
+	animation-duration: 350ms;
+	-webkit-animation-name: fade_out;
+	-webkit-animation-duration: 350ms;
+	-moz-animation-name: fade_out;
+	-moz-animation-duration: 350ms;
+	opacity: 0;
+}
+
+.fade_nu {
+	display: none;
+}
+
 .left_page_col {
 	position: absolute;
 	width: 47%;
@@ -37,9 +90,9 @@ body {
 	right: 0%;
 	width: 47%;
 	margin-right: 3%;
-	transition: all 500ms ease-out;
-	-webkit-transition: all 500ms ease-out;
-	-moz-transition: all 500ms ease-out;
+	transition: all 500ms ease;
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
 }
 
 .left_page_colr_in {

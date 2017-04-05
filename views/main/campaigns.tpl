@@ -1,6 +1,6 @@
 <div class="sixty_he">
 	<div class="left_page_col left_page">
-		<div class="left_page_col" id="campaign_col" ng-show="campCont.ShowCampaigns()">
+		<div class="left_page_col" id="campaign_col">
 			<h2>Campaigns</h2>
 			<img src="static/img/pencil_underline.png" class="p_underline" />
 			<ul class="left_page_colr_in">
@@ -22,7 +22,7 @@
 				</li>
 			</ul>
 		</div>
-        <div class="left_page_colr" ng-show="campCont.ShowEncounters()" id="encounter_col">
+        <div class="left_page_colr fade_nu" id="encounter_col"> <!-- ng-show="campCont.ShowEncounters()"> -->
 			<h2 style="float: left;">Encounters</h2>
 			<img src="static/img/pencil_underline.png" class="p_underline" />
 			<ul class="left_page_colr_in">

@@ -1,7 +1,6 @@
 (function(){
 	var app = angular.module('ddchar_campaigns', []);
 	app.controller('mainCampController', ['$http', '$scope', function($http, $scope){
-		$scope.showCamps = false;
 		$scope.showRegs = false;
 		$scope.showEncs = false;
 		$scope.regionColRight = "0%";
@@ -10,9 +9,39 @@
 			$http.get("/campaigns").then(function(result){
 				if (result.data.success){
 					$scope.campaigns = result.data.campaigns;
-					$scope.showCamps = true;
 				}
 			});
+
+			var encCol = document.querySelector("#encounter_col");
+			encCol.addEventListener('webkitAnimationEnd', function(event){
+		        var encCol = angular.element(event.target);
+				if (encCol.hasClass("fade_out")) {
+					encCol.addClass("fade_nu");
+					encCol.removeClass("fade_out");
+				}
+			}, true);
+			encCol.addEventListener('animationend', function(event) {
+        		var encCol = angular.element(event.target);
+				if (encCol.hasClass("fade_out")) {
+					encCol.addClass("fade_nu");
+					encCol.removeClass("fade_out");
+				}
+			}, true);
+			var campCol = document.querySelector("#campaign_col");
+			campCol.addEventListener('webkitAnimationEnd', function(event){
+				var campCol = angular.element(event.target);
+				if (campCol.hasClass("fade_out")) {
+					campCol.addClass("fade_nu");
+					campCol.removeClass("fade_out");
+				}
+			}, true);
+			campCol.addEventListener('animationend', function(event){
+				var campCol = angular.element(event.target);
+				if (campCol.hasClass("fade_out")) {
+					campCol.addClass("fade_nu");
+					campCol.removeClass("fade_out");
+				}
+			}, true);
         });
 
         this.RevealRegions = function(ind){
@@ -62,22 +91,36 @@
 							$scope.campaigns[data.data.c_ind].regions[data.data.r_ind].encounters = $scope.curEncounters = data.data.encounters;
 							$scope.curEncounters.region_id = $scope.campaigns[data.data.c_ind].regions[data.data.r_ind].region_id;
 							$scope.showEncs = true;
-							$scope.showCamps = false;
 							$scope.regionColRight = "47%";
+							var encCol = angular.element(document.querySelector("#encounter_col"));
+							encCol.removeClass("fade_nu");
+							encCol.addClass("fade_in");
+							var campCol = angular.element(document.querySelector("#campaign_col"));
+							campCol.addClass("fade_out");
 						}
 					});
 				} else if ($scope.showEncs){
 					if ($scope.curEncounters.region_id == $scope.campaigns[c_ind].regions[ind].region_id){
 						$scope.showEncs = false;
-						$scope.showCamps = true;
 						$scope.regionColRight = "0%";
+						var encCol = angular.element(document.querySelector("#encounter_col"));
+						encCol.removeClass("fade_in");
+						encCol.addClass("fade_out");
+						var campCol = angular.element(document.querySelector("#campaign_col"));
+						campCol.removeClass("fade_nu");
+						campCol.addClass("fade_in");
 					} else {
 						$scope.curEncounters = $scope.campaigns[c_ind].regions[ind].encounters;
 					}
 				} else {
 					$scope.showEncs = true;
-					$scope.showCamps = false;
 					$scope.regionColRight = "47%";
+					var encCol = angular.element(document.querySelector("#encounter_col"));
+					encCol.removeClass("fade_nu");
+					encCol.addClass("fade_in");
+					var campCol = angular.element(document.querySelector("#campaign_col"));
+					campCol.removeClass("fade_in");
+					campCol.addClass("fade_out");
 					$scope.curEncounters = $scope.campaigns[c_ind].regions[ind].encounters;
 				}
 			}
@@ -87,16 +130,8 @@
 
         };
 
-        this.ShowCampaigns = function(){
-            return $scope.showCamps;
-        };
-
         this.ShowRegions = function(){
             return $scope.showRegs;
-        };
-
-        this.ShowEncounters = function(){
-            return $scope.showEncs;
         };
 
         this.AddElement = function(){
