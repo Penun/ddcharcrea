@@ -4,6 +4,7 @@
 		$scope.showCamps = false;
 		$scope.showRegs = false;
 		$scope.showEncs = false;
+		$scope.regionColRight = "0%";
 
 		$scope.$on('tab2_go', function(){
 			$http.get("/campaigns").then(function(result){
@@ -61,16 +62,22 @@
 							$scope.campaigns[data.data.c_ind].regions[data.data.r_ind].encounters = $scope.curEncounters = data.data.encounters;
 							$scope.curEncounters.region_id = $scope.campaigns[data.data.c_ind].regions[data.data.r_ind].region_id;
 							$scope.showEncs = true;
+							$scope.showCamps = false;
+							$scope.regionColRight = "47%";
 						}
 					});
 				} else if ($scope.showEncs){
 					if ($scope.curEncounters.region_id == $scope.campaigns[c_ind].regions[ind].region_id){
 						$scope.showEncs = false;
+						$scope.showCamps = true;
+						$scope.regionColRight = "0%";
 					} else {
 						$scope.curEncounters = $scope.campaigns[c_ind].regions[ind].encounters;
 					}
 				} else {
 					$scope.showEncs = true;
+					$scope.showCamps = false;
+					$scope.regionColRight = "47%";
 					$scope.curEncounters = $scope.campaigns[c_ind].regions[ind].encounters;
 				}
 			}

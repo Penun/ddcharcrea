@@ -28,15 +28,17 @@ body {
 }
 
 .left_page_col {
-	float: left;
-	margin-left: 1em;
-	width: 40%;
-	overflow: auto;
+	position: absolute;
+	width: 47%;
 }
 
 .left_page_colr {
-	float: right;
+	position: absolute;
+	right: 0%;
 	width: 47%;
+	margin-right: 3%;
+	transition: all 500ms ease-out;
+	-webkit-transition: all 500ms ease-out;
 }
 
 .left_page_colr_in {

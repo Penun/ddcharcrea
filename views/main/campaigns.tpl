@@ -3,7 +3,7 @@
 		<div class="left_page_col" id="campaign_col" ng-show="campCont.ShowCampaigns()">
 			<h2>Campaigns</h2>
 			<img src="static/img/pencil_underline.png" class="p_underline" />
-			<ul>
+			<ul class="left_page_colr_in">
 				<li ng-repeat="(ind, campaign) in campaigns">
 					<span ng-click="campCont.RevealRegions(ind)" class="clickable">
 						{{"{{campaign.name}}"}}
@@ -11,10 +11,10 @@
 				</li>
 			</ul>
 		</div>
-		<div class="left_page_colr" id="region_col">
+		<div class="left_page_colr" id="region_col" ng-show="campCont.ShowRegions()" ng-style="{'right': regionColRight}">
 			<h2 style="float: left;">Regions</h2>
 			<img src="static/img/pencil_underline.png" class="p_underline" />
-			<ul ng-show="campCont.ShowRegions()" class="left_page_colr_in">
+			<ul class="left_page_colr_in">
 				<li ng-repeat="(r_ind, region) in curRegions">
 					<span ng-click="campCont.RevealEncounters(r_ind)" class="clickable">
 						{{"{{region.name}}"}}
@@ -36,6 +36,6 @@
 		<div class="button char_add_butt" ng-click="campCont.AddElement()"><span class="button_text">+</span></div>
 	</div>
 	<div class="right_page">
-		
+
 	</div>
 </div>
