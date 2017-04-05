@@ -39,6 +39,7 @@ body {
 	margin-right: 3%;
 	transition: all 500ms ease-out;
 	-webkit-transition: all 500ms ease-out;
+	-moz-transition: all 500ms ease-out;
 }
 
 .left_page_colr_in {
