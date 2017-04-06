@@ -1,4 +1,4 @@
-<div ng-show="mainCont.ShowCharDetails()" class="right_page_in">
+<div class="right_page_in">
 	<div><b>{{"{{chara.name}}"}}</b> <span class="char_right reset"><b>Level</b>: <b>{{"{{chara.level}}"}}</b></span></div>
 	<br />
 	<div><b>Race</b>: <b>{{"{{chara.raceRef}}"}}</b><span class="char_right reset"><b>Class</b>: <b>{{"{{chara.class_build.class.name}}"}} <span class="reset" ng-show="chara.level >= 3">({{"{{chara.class_build.class_path.name}}"}})</span></b></span></div>
@@ -53,7 +53,7 @@
 			<h3>{{"{{chara.background_build.background.name}}"}}</h3>
 			<div>
 				<b>Feature</b> - <i>{{"{{chara.background_build.background.feature.name}}"}}</i><br />
-				<span class="reset">{{"{{chara.background_build.background.feature.description}}"}}</span>	
+				<span class="reset">{{"{{chara.background_build.background.feature.description}}"}}</span>
 			</div>
 			<div><b>Trait</b> - <span class="reset">{{"{{chara.background_build.trait.description}}"}}</span></div>
 			<div><b>Ideal</b><span class="reset"> - {{"{{chara.background_build.ideal.description}}"}}</span></div>

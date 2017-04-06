@@ -209,7 +209,7 @@ type EncMonster struct {
 
 type CampSub struct {
 	CampSub_id int64 `orm:"pk" json:"camp_sub_id"`
-	Playchar *Playchar `orm:"rel(fk)" json:"playchar"`
+	User *User `orm:"rel(fk)" json:"user"`
 	Campaign *Campaign `orm:"rel(fk)" json:"campaign"`
 }
 
