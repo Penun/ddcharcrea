@@ -18,6 +18,7 @@
 				if (encCol.hasClass("fade_out")) {
 					encCol.addClass("fade_nu");
 					encCol.removeClass("fade_out");
+					encCol.removeClass("fade_in");
 				}
 			}, true);
 			encCol.addEventListener('animationend', function(event) {
@@ -25,6 +26,7 @@
 				if (encCol.hasClass("fade_out")) {
 					encCol.addClass("fade_nu");
 					encCol.removeClass("fade_out");
+					encCol.removeClass("fade_in");
 				}
 			}, true);
 			var campCol = document.querySelector("#campaign_col");
@@ -33,6 +35,7 @@
 				if (campCol.hasClass("fade_out")) {
 					campCol.addClass("fade_nu");
 					campCol.removeClass("fade_out");
+					campCol.removeClass("fade_in");
 				}
 			}, true);
 			campCol.addEventListener('animationend', function(event){
@@ -40,6 +43,24 @@
 				if (campCol.hasClass("fade_out")) {
 					campCol.addClass("fade_nu");
 					campCol.removeClass("fade_out");
+					campCol.removeClass("fade_in");
+				}
+			}, true);
+			var regCol = document.querySelector("#region_col");
+			regCol.addEventListener('webkitAnimationEnd', function(event){
+				var regCol = angular.element(event.target);
+				if (regCol.hasClass("fade_out")) {
+					regCol.addClass("fade_nu");
+					regCol.removeClass("fade_out");
+					regCol.removeClass("fade_in");
+				}
+			}, true);
+			regCol.addEventListener('animationend', function(event){
+				var regCol = angular.element(event.target);
+				if (regCol.hasClass("fade_out")) {
+					regCol.addClass("fade_nu");
+					regCol.removeClass("fade_out");
+					regCol.removeClass("fade_in");
 				}
 			}, true);
         });
@@ -56,16 +77,28 @@
 						$scope.campaigns[data.data.c_ind].regions = $scope.curRegions = data.data.regions;
 						$scope.curRegions.campaign_id = $scope.campaigns[data.data.c_ind].campaign_id;
 						$scope.showRegs = true;
+						var regCol = angular.element(document.querySelector("#region_col"));
+						regCol.removeClass("fade_nu");
+						regCol.removeClass("fade_out");
+						regCol.addClass("fade_in");
 					}
 				});
 			} else if ($scope.showRegs){
 				if ($scope.curRegions.campaign_id == $scope.campaigns[ind].campaign_id){
 					$scope.showRegs = false;
+					var regCol = angular.element(document.querySelector("#region_col"));
+					regCol.removeClass("fade_in");
+					regCol.removeClass("fade_nu");
+					regCol.addClass("fade_out");
 				} else {
 					$scope.curRegions = $scope.campaigns[ind].regions;
 				}
 			} else {
 				$scope.showRegs = true;
+				var regCol = angular.element(document.querySelector("#region_col"));
+				regCol.removeClass("fade_nu");
+				regCol.removeClass("fade_out");
+				regCol.addClass("fade_in");
 				$scope.curRegions = $scope.campaigns[ind].regions;
 			}
         };
@@ -94,6 +127,7 @@
 							$scope.regionColRight = "47%";
 							var encCol = angular.element(document.querySelector("#encounter_col"));
 							encCol.removeClass("fade_nu");
+							encCol.removeClass("fade_out");
 							encCol.addClass("fade_in");
 							var campCol = angular.element(document.querySelector("#campaign_col"));
 							campCol.addClass("fade_out");
@@ -105,9 +139,11 @@
 						$scope.regionColRight = "0%";
 						var encCol = angular.element(document.querySelector("#encounter_col"));
 						encCol.removeClass("fade_in");
+						encCol.removeClass("fade_nu");
 						encCol.addClass("fade_out");
 						var campCol = angular.element(document.querySelector("#campaign_col"));
 						campCol.removeClass("fade_nu");
+						campCol.removeClass("fade_out");
 						campCol.addClass("fade_in");
 					} else {
 						$scope.curEncounters = $scope.campaigns[c_ind].regions[ind].encounters;
@@ -117,9 +153,11 @@
 					$scope.regionColRight = "47%";
 					var encCol = angular.element(document.querySelector("#encounter_col"));
 					encCol.removeClass("fade_nu");
+					encCol.removeClass("fade_out");
 					encCol.addClass("fade_in");
 					var campCol = angular.element(document.querySelector("#campaign_col"));
 					campCol.removeClass("fade_in");
+					campCol.removeClass("fade_nu");
 					campCol.addClass("fade_out");
 					$scope.curEncounters = $scope.campaigns[c_ind].regions[ind].encounters;
 				}
@@ -128,10 +166,6 @@
 
         this.RevealDetails = function(ind){
 
-        };
-
-        this.ShowRegions = function(){
-            return $scope.showRegs;
         };
 
         this.AddElement = function(){

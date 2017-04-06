@@ -1,5 +1,5 @@
 <div class="sixty_he">
-	<div class="left_page_col left_page">
+	<div class="left_page_col left_page fade_in">
 		<div class="left_page_col" id="campaign_col">
 			<h2>Campaigns</h2>
 			<img src="static/img/pencil_underline.png" class="p_underline" />
@@ -11,7 +11,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="left_page_colr" id="region_col" ng-show="campCont.ShowRegions()" ng-style="{'right': regionColRight}">
+		<div class="left_page_colr fade_nu" id="region_col" ng-style="{'right': regionColRight}">
 			<h2 style="float: left;">Regions</h2>
 			<img src="static/img/pencil_underline.png" class="p_underline" />
 			<ul class="left_page_colr_in">
