@@ -115,6 +115,11 @@
 		this.RevealInfo = function(){
 			if ($scope.users[this.set_u_in].playchars[this.set_p_in].showInfo == null || !$scope.users[this.set_u_in].playchars[this.set_p_in].showInfo){
 				$scope.users[this.set_u_in].playchars[this.set_p_in].showInfo = true;
+				$scope.users[this.set_u_in].playchars[this.set_p_in].showFeatures = false;
+				$scope.users[this.set_u_in].playchars[this.set_p_in].showBackground = false;
+				if ($scope.users[this.set_u_in].playchars[this.set_p_in].showSkills != null){
+					$scope.users[this.set_u_in].playchars[this.set_p_in].showSkills = false;
+				}
 			} else {
 				$scope.users[this.set_u_in].playchars[this.set_p_in].showInfo = false;
 			}
@@ -128,6 +133,7 @@
 				$scope.users[this.set_u_in].playchars[this.set_p_in].showSkills = true;
 				$scope.users[this.set_u_in].playchars[this.set_p_in].showFeatures = false;
 				$scope.users[this.set_u_in].playchars[this.set_p_in].showBackground = false;
+				$scope.users[this.set_u_in].playchars[this.set_p_in].showInfo = false;
 			} else {
 				$scope.users[this.set_u_in].playchars[this.set_p_in].showSkills = false;
 			}
@@ -137,6 +143,7 @@
 			if ($scope.users[this.set_u_in].playchars[this.set_p_in].showFeatures == null || !$scope.users[this.set_u_in].playchars[this.set_p_in].showFeatures){
 				$scope.users[this.set_u_in].playchars[this.set_p_in].showFeatures = true;
 				$scope.users[this.set_u_in].playchars[this.set_p_in].showBackground = false;
+				$scope.users[this.set_u_in].playchars[this.set_p_in].showInfo = false;
 				if ($scope.users[this.set_u_in].playchars[this.set_p_in].showSkills != null){
 					$scope.users[this.set_u_in].playchars[this.set_p_in].showSkills = false;
 				}
@@ -149,6 +156,7 @@
 			if ($scope.users[this.set_u_in].playchars[this.set_p_in].showBackground == null || !$scope.users[this.set_u_in].playchars[this.set_p_in].showBackground){
 				$scope.users[this.set_u_in].playchars[this.set_p_in].showBackground = true;
 				$scope.users[this.set_u_in].playchars[this.set_p_in].showFeatures = false;
+				$scope.users[this.set_u_in].playchars[this.set_p_in].showInfo = false;
 				if ($scope.users[this.set_u_in].playchars[this.set_p_in].showSkills != null){
 					$scope.users[this.set_u_in].playchars[this.set_p_in].showSkills = false;
 				}

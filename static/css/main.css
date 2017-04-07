@@ -185,13 +185,13 @@ span.button_text:hover {
 .back_butt {
 	position: absolute;
 	left: 50%;
-	bottom: 0;
+	bottom: 7px;
 }
 
 .next_butt {
 	position: absolute;
 	right: 35px;
-	bottom: 0;
+	bottom: 7px;
 }
 
 ul {
@@ -383,6 +383,25 @@ input[type=radio]:checked ~ label{
 	font-weight: 200;
 }
 
+.clickable_det {
+	cursor: pointer;
+	text-align: center;
+}
+
+.clickable_d_head {
+	font-size: 150%;
+	width: 50%;
+	padding-left: 15%;
+}
+
+.clickable_d_head:hover {
+	font-weight: bold;
+}
+
+.clickable_d_in {
+	width: 80%;
+}
+
 .fright {
 	position: absolute;
     right: 6%;
@@ -399,6 +418,31 @@ input[type=radio]:checked ~ label{
 
 .ng-valid.ng-dirty {
 	border-color: #78FA89;
+}
+
+#loginForm {
+	width: 500px;
+	background-color: #DBAB37;
+	position: relative;
+}
+
+#loginForm button {
+	float: right;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	background-color: #494725;
+	border-color: #000000;
+	color: #AA8939;
+}
+
+#loginForm input {
+	border: solid;
+	width: 66%;
+}
+
+#loginForm p {
+	width: 100%;
 }
 
 /*
